@@ -1,0 +1,63 @@
+# 快速开始
+
+本节将帮助你快速搭建本地开发环境并运行文档站点。
+
+## 环境准备
+
+请确保你的开发环境满足以下要求：
+
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0（或 pnpm / yarn）
+
+## 安装依赖
+
+```bash
+npm install
+```
+
+## 本地开发
+
+启动开发服务器：
+
+```bash
+npm run dev
+```
+
+启动后访问 `http://localhost:5173` 即可预览文档。
+
+## 构建与部署
+
+### 构建静态文件
+
+```bash
+npm run build
+```
+
+构建产物将输出到 `.vitepress/dist` 目录。
+
+### 本地预览构建结果
+
+```bash
+npm run preview
+```
+
+## 项目结构
+
+```
+wiki/
+├── .vitepress/
+│   └── config.mts        # VitePress 配置文件
+├── docs/
+│   └── guide/
+│       ├── index.md      # 指南首页
+│       └── getting-started.md  # 快速开始
+├── index.md              # 站点首页
+├── package.json
+└── README.md
+```
+
+## 编写文档
+
+所有文档使用 Markdown 格式编写，放在项目根目录或 `docs/` 目录下即可。VitePress 会自动根据文件结构生成对应的路由。
+
+更多用法请参考 [VitePress 官方文档](https://vitepress.dev/)。

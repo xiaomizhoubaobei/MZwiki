@@ -1,0 +1,13 @@
+{
+  "name": "xmzzuzhi-wiki",
+  "version": "1.0.0",
+  "description": "XMZZUZHI Wiki - 使用 VitePress 构建的知识库",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.3"
+  }
+}
