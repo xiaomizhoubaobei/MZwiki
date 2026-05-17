@@ -7,12 +7,12 @@
 请确保你的开发环境满足以下要求：
 
 - **Node.js** >= 18.0.0
-- **npm** >= 9.0.0（或 pnpm / yarn）
+- **pnpm** >= 8.0.0
 
 ## 安装依赖
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## 本地开发
@@ -20,7 +20,7 @@ npm install
 启动开发服务器：
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 启动后访问 `http://localhost:5173` 即可预览文档。
@@ -30,7 +30,7 @@ npm run dev
 ### 构建静态文件
 
 ```bash
-npm run build
+pnpm build
 ```
 
 构建产物将输出到 `.vitepress/dist` 目录。
@@ -38,7 +38,7 @@ npm run build
 ### 本地预览构建结果
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 ## 项目结构

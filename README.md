@@ -6,16 +6,16 @@
 
 ```bash
 # 安装依赖
-npm install
+pnpm install
 
 # 启动开发服务器
-npm run dev
+pnpm dev
 
 # 构建静态文件
-npm run build
+pnpm build
 
 # 预览构建结果
-npm run preview
+pnpm preview
 ```
 
 ## 项目结构
