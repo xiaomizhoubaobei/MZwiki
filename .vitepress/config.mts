@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitepress'
+import { defineTeekConfig } from 'vitepress-theme-teek/config'
 
+// Teek 主题配置
+const teekConfig = defineTeekConfig({})
+
+// VitePress 配置
 export default defineConfig({
+  extends: teekConfig,
   title: 'XMZZUZHI Wiki',
   description: 'XMZZUZHI 组织知识库',
   lang: 'zh-CN',
