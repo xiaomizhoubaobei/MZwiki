@@ -7,6 +7,12 @@ const teekConfig = defineTeekConfig({
     { provider: "google", options: { id: "G-22HLSJXMGWh" } },
     { provider: "baidu", options: { id: "42e6f8bd423ef428b0f9a1a80980da7f" } },
   ],
+
+  // 站点分析配置（docAnalysis）
+  docAnalysis: {
+    wordCount: true,    // 开启字数统计
+    readingTime: true,  // 开启阅读时间预估
+  },
 })
 
 // VitePress 配置
