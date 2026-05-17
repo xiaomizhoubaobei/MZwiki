@@ -2,7 +2,12 @@ import { defineConfig } from 'vitepress'
 import { defineTeekConfig } from 'vitepress-theme-teek/config'
 
 // Teek 主题配置
-const teekConfig = defineTeekConfig({})
+const teekConfig = defineTeekConfig({
+  siteAnalytics: [
+    { provider: "google", options: { id: "G-22HLSJXMGWh" } },
+    { provider: "baidu", options: { id: "42e6f8bd423ef428b0f9a1a80980da7f" } },
+  ],
+})
 
 // VitePress 配置
 export default defineConfig({
