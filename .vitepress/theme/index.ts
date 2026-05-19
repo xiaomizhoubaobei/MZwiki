@@ -3,6 +3,11 @@ import "vitepress-theme-teek/index.css";
 import { TkArticleAnalyze, teekConfigContext } from "vitepress-theme-teek";
 import { h, provide } from "vue";
 
+// Lumen 美化组件样式
+import "@theojs/lumen/style";
+import "@theojs/lumen/doc-blocks";
+import "@theojs/lumen/badge";
+
 // 样式增强 - 推荐引入
 import "vitepress-theme-teek/theme-chalk/tk-doc-h1-gradient.css"; // 标题渐变色
 import "vitepress-theme-teek/theme-chalk/tk-sidebar.css"; // 侧边栏样式增强
