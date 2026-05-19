@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { defineTeekConfig } from 'vitepress-theme-teek/config'
+import Sidebar from 'vitepress-plugin-sidebar-resolve'
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -22,24 +23,26 @@ export default defineConfig({
   description: 'XMZZUZHI 组织知识库',
   lang: 'zh-CN',
 
+  vite: {
+    plugins: [Sidebar({
+      ignoreList: [/\.git/, /\.gemini/, /node_modules/],
+      sortNumFromFileName: true,
+      titleFormMd: true,
+      ignoreWarn: true,
+    })],
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     
     nav: [
       { text: '首页', link: '/' },
-      { text: '指南', link: '/guide/' },
-      { text: '关于', link: '/about' }
+      { text: '指南', link: '/01.指南/01.简介' },
+      { text: '配置', link: '/02.配置/01.主题配置' }
     ],
 
-    sidebar: [
-      {
-        text: '开始使用',
-        items: [
-          { text: '简介', link: '/guide/' },
-          { text: '快速开始', link: '/guide/getting-started' }
-        ]
-      }
-    ],
+    // 侧边栏由 vitepress-plugin-sidebar-resolve 自动生成
+    // 按 docs/ 目录结构生成多级嵌套分类
 
     socialLinks: [
       { icon: 'github', link: 'https://cnb.cool/XMZZUZHI/wiki' }
