@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import { defineTeekConfig } from 'vitepress-theme-teek/config'
 import Sidebar from 'vitepress-plugin-sidebar-resolve'
 
@@ -17,7 +18,8 @@ const teekConfig = defineTeekConfig({
 })
 
 // VitePress 配置
-export default defineConfig({
+export default withMermaid(
+  defineConfig({
   extends: teekConfig,
   title: 'XMZZUZHI Wiki',
   description: 'XMZZUZHI 组织知识库',
@@ -84,5 +86,12 @@ export default defineConfig({
       prev: '上一页',
       next: '下一页'
     }
-  }
-})
+  },
+
+  // Mermaid 全局配置
+  mermaid: {
+    theme: 'neutral',
+    securityLevel: 'loose',
+  },
+  })
+)
