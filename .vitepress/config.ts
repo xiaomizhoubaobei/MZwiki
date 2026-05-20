@@ -27,6 +27,22 @@ const teekConfig = defineTeekConfig({
   search: {
     provider: "local",
   },
+
+  // 站点统计
+  siteAnalytics: [
+    {
+      provider: "google",
+      options: {
+        id: "G-22HLSJXMGWh",
+      },
+    },
+    {
+      provider: "baidu",
+      options: {
+        id: "42e6f8bd423ef428b0f9a1a80980da7f",
+      },
+    },
+  ],
 });
 
 export default withMermaid(
