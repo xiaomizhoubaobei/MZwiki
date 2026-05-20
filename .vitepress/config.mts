@@ -36,9 +36,7 @@ export default defineConfig({
     logo: '/logo.svg',
     
     nav: [
-      { text: '首页', link: '/' },
-      { text: '指南', link: '/01.指南/01.简介' },
-      { text: '配置', link: '/02.配置/01.主题配置' }
+      { text: '首页', link: '/' }
     ],
 
     // 侧边栏由 vitepress-plugin-sidebar-resolve 自动生成
