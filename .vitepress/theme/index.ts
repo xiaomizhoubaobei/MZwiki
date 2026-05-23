@@ -15,6 +15,8 @@ import Backlinks from "./Backlinks.vue";
 import NotFound from "./NotFound.vue";
 import RelatedTags from "./RelatedTags.vue";
 import GraphView from "./GraphView.vue";
+import RandomPage from "./RandomPage.vue";
+import TodayPage from "./TodayPage.vue";
 
 export default {
   extends: Teek,
@@ -26,5 +28,7 @@ export default {
     app.component("Backlinks", Backlinks);
     app.component("RelatedTags", RelatedTags);
     app.component("graph-view", GraphView);
+    app.component("random-page", RandomPage);
+    app.component("today-page", TodayPage);
   },
 };
