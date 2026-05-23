@@ -7,7 +7,9 @@ import { data } from "../tag.data";
     <h1>标签索引</h1>
 
     <section v-for="item in data" :key="item.tag">
-      <h2>{{ item.tag }}</h2>
+      <h2>
+        <a :href="`/标签/${encodeURIComponent(item.tag)}.html`">{{ item.tag }}</a>
+      </h2>
       <ul>
         <li v-for="p in item.pages" :key="p.url">
           <a :href="p.url">{{ p.title }}</a>

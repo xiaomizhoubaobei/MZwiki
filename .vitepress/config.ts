@@ -3,6 +3,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 import Teek from "vitepress-theme-teek";
 import { defineTeekConfig } from "vitepress-theme-teek";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
+import tagPages from "./tag-pages.data";
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -71,6 +72,22 @@ export default withMermaid(
     // Markdown 配置
     markdown: {
       remarkPlugins: [remarkWikiLink],
+    },
+
+    // 动态生成标签页面路由
+    transformPageData(pageData) {
+      if (pageData.relativePath === "标签/[tag].md") {
+        return {
+          params: {
+            tag: pageData.params?.tag || "",
+          },
+        };
+      }
+    },
+
+    // 注册数据
+    data: {
+      tags: tagPages,
     },
   })
 );

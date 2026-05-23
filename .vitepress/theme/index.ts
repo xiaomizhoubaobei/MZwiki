@@ -10,11 +10,13 @@ import "@theojs/lumen/badge";
 import "@theojs/lumen/link-card";
 
 import TagIndex from "./TagIndex.vue";
+import TagPage from "./TagPage.vue";
 
 export default {
   extends: Teek,
   Layout: DefaultTheme.Layout,
   enhanceApp({ app }) {
     app.component("tag-index", TagIndex);
+    app.component("tag-page", TagPage);
   },
 };
