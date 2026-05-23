@@ -3,6 +3,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 import Teek from "vitepress-theme-teek";
 import { defineTeekConfig } from "vitepress-theme-teek";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
+import { injectTagsPlugin } from "./plugins/inject-tags";
 import tagPages from "./tag-pages.data";
 import previewData from "./preview.data";
 import graphData from "./graph.data";
@@ -54,6 +55,11 @@ export default withMermaid(
     lang: "zh-CN",
     title: "我的百科",
     description: "个人精选维基知识库",
+
+    // Vite 插件
+    vite: {
+      plugins: [injectTagsPlugin()],
+    },
 
     // 主题继承
     extends: Teek,

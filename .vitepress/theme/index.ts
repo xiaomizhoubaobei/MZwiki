@@ -17,6 +17,7 @@ import RelatedTags from "./RelatedTags.vue";
 import GraphView from "./GraphView.vue";
 import RandomPage from "./RandomPage.vue";
 import TodayPage from "./TodayPage.vue";
+import SearchWithTags from "./SearchWithTags.vue";
 
 export default {
   extends: Teek,
@@ -30,5 +31,6 @@ export default {
     app.component("graph-view", GraphView);
     app.component("random-page", RandomPage);
     app.component("today-page", TodayPage);
+    app.component("search-with-tags", SearchWithTags);
   },
 };
