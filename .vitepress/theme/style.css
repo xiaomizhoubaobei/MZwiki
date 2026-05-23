@@ -1,0 +1,25 @@
+/* 维基内链样式 */
+
+.wiki-link {
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--vp-c-brand);
+  transition: border-bottom-color 0.25s;
+}
+
+.wiki-link:hover {
+  border-bottom-style: solid;
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+/* 词条不存在时标红 */
+.wiki-link.broken {
+  color: var(--vp-c-danger-1);
+  border-bottom-color: var(--vp-c-danger-1);
+  cursor: not-allowed;
+}
+
+.wiki-link.broken:hover {
+  color: var(--vp-c-danger-2);
+  border-bottom-color: var(--vp-c-danger-2);
+}

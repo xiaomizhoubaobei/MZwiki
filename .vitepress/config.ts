@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import Teek from "vitepress-theme-teek";
 import { defineTeekConfig } from "vitepress-theme-teek";
+import { remarkWikiLink } from "./plugins/remark-wiki-link";
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -66,5 +67,10 @@ export default withMermaid(
     // 构建优化
     cleanUrls: true,
     lastUpdated: true,
+
+    // Markdown 配置
+    markdown: {
+      remarkPlugins: [remarkWikiLink],
+    },
   })
 );

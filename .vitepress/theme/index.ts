@@ -1,6 +1,7 @@
 import Teek from "vitepress-theme-teek";
 import "vitepress-theme-teek/style";
 import DefaultTheme from "vitepress/theme";
+import "./style.css";
 
 // Lumen 组件
 import "@theojs/lumen/style";
