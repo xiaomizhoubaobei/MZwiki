@@ -4,6 +4,7 @@ import Teek from "vitepress-theme-teek";
 import { defineTeekConfig } from "vitepress-theme-teek";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
 import tagPages from "./tag-pages.data";
+import previewData from "./preview.data";
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -88,6 +89,7 @@ export default withMermaid(
     // 注册数据
     data: {
       tags: tagPages,
+      preview: previewData,
     },
   })
 );

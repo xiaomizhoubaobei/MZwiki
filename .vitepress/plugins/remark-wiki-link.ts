@@ -2,11 +2,40 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * 生成词条名称 → URL 路径的映射表
+ * 词条信息接口
+ */
+interface WikiEntry {
+  title: string;
+  url: string;
+  desc: string;
+  tags: string[];
+}
+
+/**
+ * 从 frontmatter 解析 description 和 tags
+ */
+function parseFrontmatter(content: string): { description?: string; tags?: string[] } {
+  const result: { description?: string; tags?: string[] } = {};
+  const descMatch = content.match(/^---[\s\S]*?^description:\s*(.+)$/m);
+  if (descMatch) {
+    result.description = descMatch[1].trim().replace(/^["']|["']$/g, "");
+  }
+  const tagsMatch = content.match(/^---[\s\S]*?^tags:\s*\[([^\]]*)\]/m);
+  if (tagsMatch) {
+    result.tags = tagsMatch[1]
+      .split(",")
+      .map((t) => t.trim().replace(/^["']|["']$/g, ""))
+      .filter(Boolean);
+  }
+  return result;
+}
+
+/**
+ * 生成词条名称 → 完整信息的映射表
  * 匹配规则：文件名（去掉 .md）和 frontmatter 中的 title 都作为词条名
  */
-function buildWikiMap(): Map<string, string> {
-  const map = new Map<string, string>();
+function buildWikiMap(): Map<string, WikiEntry> {
+  const map = new Map<string, WikiEntry>();
   const root = process.cwd();
   const docsDir = path.join(root, "docs");
 
@@ -21,14 +50,20 @@ function buildWikiMap(): Map<string, string> {
         const urlPath = "/" + relativePath.replace(/\.md$/, "");
         const fileName = entry.name.replace(/\.md$/, "");
 
-        map.set(fileName, urlPath);
+        const content = fs.readFileSync(fullPath, "utf-8");
+        const { description, tags } = parseFrontmatter(content);
 
         // 解析 frontmatter title
-        const content = fs.readFileSync(fullPath, "utf-8");
         const titleMatch = content.match(/^---[\s\S]*?^title:\s*(.+)$/m);
+        const title = titleMatch
+          ? titleMatch[1].trim().replace(/^["']|["']$/g, "")
+          : fileName;
+
+        const entry: WikiEntry = { title, url: urlPath, desc: description || "", tags: tags || [] };
+        map.set(fileName, entry);
+
         if (titleMatch) {
-          const title = titleMatch[1].trim().replace(/^["']|["']$/g, "");
-          map.set(title, urlPath);
+          map.set(title, entry);
         }
       }
     }
@@ -42,7 +77,7 @@ export const remarkWikiLink = () => {
   const wikiMap = buildWikiMap();
 
   return (tree: any) => {
-    // 手动遍历 AST（避免引入 ESM-only 的 unist-util-visit）
+    // 手动遍历 AST
     function visitText(node: any) {
       if (node.type === "text" && typeof node.value === "string") {
         const regex = /\[\[([^\]]+)\]\]/g;
@@ -55,10 +90,18 @@ export const remarkWikiLink = () => {
           const targetName = parts.length > 1 ? parts[1].trim() : content.trim();
           const displayName = parts.length > 1 ? parts[0].trim() : content.trim();
 
-          const url = wikiMap.get(targetName);
+          const entry = wikiMap.get(targetName);
 
-          if (url) {
-            return `<a href="${url}" class="wiki-link" title="${targetName}">${displayName}</a>`;
+          if (entry) {
+            // 词词条存在 → 生成带悬停预览卡片的 HTML
+            const tagsHtml = entry.tags.length
+              ? `<small>${entry.tags.join(" · ")}</small>`
+              : "";
+            const descHtml = entry.desc
+              ? `<p>${entry.desc}</p>`
+              : "";
+
+            return `\n<div class="wiki-popover">\n  <a href="${entry.url}" class="wiki-link" title="${entry.title}">${displayName}</a>\n  <div class="wiki-card">\n    <strong>${entry.title}</strong>\n    ${descHtml}\n    ${tagsHtml}\n  </div>\n</div>\n`;
           }
 
           // 词条不存在 → 标红样式

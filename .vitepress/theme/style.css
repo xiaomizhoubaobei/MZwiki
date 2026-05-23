@@ -1,5 +1,10 @@
 /* 维基内链样式 */
 
+.wiki-popover {
+  position: relative;
+  display: inline-block;
+}
+
 .wiki-link {
   color: var(--vp-c-brand);
   text-decoration: none;
@@ -22,4 +27,49 @@
 .wiki-link.broken:hover {
   color: var(--vp-c-danger-2);
   border-bottom-color: var(--vp-c-danger-2);
+}
+
+/* ====== 悬停预览卡片样式 ====== */
+
+/* 卡片默认隐藏 */
+.wiki-card {
+  position: absolute;
+  z-index: 100;
+  top: 1.6em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  padding: 0.8rem;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+/* 悬停显示 */
+.wiki-popover:hover .wiki-card {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wiki-card strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--vp-c-text-1);
+}
+
+.wiki-card p {
+  margin: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--vp-c-text-2);
+}
+
+.wiki-card small {
+  color: var(--vp-c-text-3);
+  font-size: 0.8rem;
 }
