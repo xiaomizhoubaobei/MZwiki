@@ -13,6 +13,7 @@ import TagIndex from "./TagIndex.vue";
 import TagPage from "./TagPage.vue";
 import Backlinks from "./Backlinks.vue";
 import NotFound from "./NotFound.vue";
+import RelatedTags from "./RelatedTags.vue";
 
 export default {
   extends: Teek,
@@ -22,5 +23,6 @@ export default {
     app.component("tag-index", TagIndex);
     app.component("tag-page", TagPage);
     app.component("Backlinks", Backlinks);
+    app.component("RelatedTags", RelatedTags);
   },
 };
