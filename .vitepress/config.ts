@@ -19,6 +19,30 @@ const teekConfig = defineTeekConfig({
     description: "精选维基词条与个人知识库",
   },
 
+  // 默认作者
+  author: {
+    name: "祁筱欣",
+  },
+
+  // 文章元信息栏（作者、日期、分类、标签、字数、阅读时长）
+  articleAnalyze: {
+    showInfo: ["article"],
+    showIcon: true,
+    showAuthor: ["article"],
+    showCreateDate: ["article"],
+    showUpdateDate: true,
+    showCategory: ["article"],
+    showTag: ["article"],
+    dateFormat: "yyyy-MM-dd",
+    dateUTC: false,
+  },
+
+  // 文档分析（字数统计、阅读时长）
+  docAnalysis: {
+    wordCount: true,
+    readingTime: true,
+  },
+
   // 页脚（类似维基百科）
   footer: {
     message: "基于 VitePress + Teek + Lumen 构建",
