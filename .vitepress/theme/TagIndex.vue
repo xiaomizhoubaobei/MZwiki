@@ -1,19 +1,19 @@
 <script setup>
-import { data as tagData } from "../tag.data";
+import { data } from "../tag.data";
 </script>
 
 <template>
   <div class="tag-index">
     <h1>标签索引</h1>
 
-    <div v-for="item in tagData" :key="item.tag" class="tag-group">
+    <section v-for="item in data" :key="item.tag">
       <h2>{{ item.tag }}</h2>
       <ul>
-        <li v-for="page in item.pages" :key="page.url">
-          <a :href="page.url">{{ page.title }}</a>
+        <li v-for="p in item.pages" :key="p.url">
+          <a :href="p.url">{{ p.title }}</a>
         </li>
       </ul>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -21,10 +21,10 @@ import { data as tagData } from "../tag.data";
 .tag-index h1 {
   margin-bottom: 1.5rem;
 }
-.tag-group {
+.tag-index section {
   margin-bottom: 2rem;
 }
-.tag-group h2 {
+.tag-index h2 {
   font-size: 1.2rem;
   border-left: 4px solid var(--vp-c-brand);
   padding-left: 0.5rem;
