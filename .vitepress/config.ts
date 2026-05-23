@@ -54,6 +54,12 @@ const teekConfig = defineTeekConfig({
     auto: true,
   },
 
+  // TOC 配置（桌面端侧边栏大纲 + 高亮同步滚动）
+  outline: {
+    level: [2, 3],
+    label: "目录",
+  },
+
   // 搜索（内置）
   search: {
     provider: "local",
