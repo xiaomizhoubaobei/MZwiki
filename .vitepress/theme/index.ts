@@ -14,6 +14,7 @@ import TagPage from "./TagPage.vue";
 import Backlinks from "./Backlinks.vue";
 import NotFound from "./NotFound.vue";
 import RelatedTags from "./RelatedTags.vue";
+import GraphView from "./GraphView.vue";
 
 export default {
   extends: Teek,
@@ -24,5 +25,6 @@ export default {
     app.component("tag-page", TagPage);
     app.component("Backlinks", Backlinks);
     app.component("RelatedTags", RelatedTags);
+    app.component("graph-view", GraphView);
   },
 };

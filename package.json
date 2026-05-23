@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@theojs/lumen": "^6.4.7",
+    "force-graph": "^1.51.4",
     "vitepress": "^1.6.3",
     "vitepress-plugin-mermaid": "^2.0.17",
     "vitepress-plugin-sidebar-resolve": "^1.2.3",
