@@ -39,6 +39,7 @@ const teekConfig = defineTeekConfig({
 
   // 文档分析（字数统计、阅读时长）
   docAnalysis: {
+    createTime: "2026-05-16",
     wordCount: true,
     readingTime: true,
   },
