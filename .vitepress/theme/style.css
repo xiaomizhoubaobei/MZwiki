@@ -73,3 +73,25 @@
   color: var(--vp-c-text-3);
   font-size: 0.8rem;
 }
+
+/* ====== 首页快捷操作 ====== */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  flex-wrap: wrap;
+}
+.actions a {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--vp-c-text-1);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.actions a:hover {
+  border-color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
+}
