@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import { withPWA } from "@vite-pwa/vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import Teek from "vitepress-theme-teek";
 import { defineTeekConfig } from "vitepress-theme-teek";
@@ -52,54 +53,84 @@ const teekConfig = defineTeekConfig({
 });
 
 export default withMermaid(
-  defineConfig({
-    lang: "zh-CN",
-    title: "我的百科",
-    description: "个人精选维基知识库",
+  withPWA(
+    defineConfig({
+      lang: "zh-CN",
+      title: "我的百科",
+      description: "个人精选维基知识库",
 
-    // Vite 插件
-    vite: {
-      plugins: [injectTagsPlugin()],
-    },
+      // Vite 插件
+      vite: {
+        plugins: [injectTagsPlugin()],
+      },
 
-    // 主题继承
-    extends: Teek,
+      // 主题继承
+      extends: Teek,
 
-    // Teek 配置注入
-    themeConfig: teekConfig,
+      // Teek 配置注入
+      themeConfig: teekConfig,
 
-    // Mermaid 全局配置（维基风）
-    mermaid: {
-      theme: "neutral",
-      securityLevel: "loose",
-    },
+      // Mermaid 全局配置（维基风）
+      mermaid: {
+        theme: "neutral",
+        securityLevel: "loose",
+      },
 
-    // 构建优化
-    cleanUrls: true,
-    lastUpdated: true,
+      // 构建优化
+      cleanUrls: true,
+      lastUpdated: true,
 
-    // Markdown 配置
-    markdown: {
-      remarkPlugins: [remarkWikiLink],
-    },
+      // Markdown 配置
+      markdown: {
+        remarkPlugins: [remarkWikiLink],
+      },
 
-    // 动态生成标签页面路由
-    transformPageData(pageData) {
-      if (pageData.relativePath === "标签/[tag].md") {
-        return {
-          params: {
-            tag: pageData.params?.tag || "",
+      // 动态生成标签页面路由
+      transformPageData(pageData) {
+        if (pageData.relativePath === "标签/[tag].md") {
+          return {
+            params: {
+              tag: pageData.params?.tag || "",
+            },
+          };
+        }
+      },
+
+      // 注册数据
+      data: {
+        tags: tagPages,
+        preview: previewData,
+        graph: graphData,
+        redlinks: redlinksData,
+      },
+    }),
+    {
+      // PWA 配置
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.svg", "robots.txt"],
+      manifest: {
+        name: "XMZZUZHI Wiki",
+        short_name: "Wiki",
+        start_url: "/",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#42a5f5",
+        icons: [
+          {
+            src: "/favicon.svg",
+            sizes: "192x192",
+            type: "image/svg+xml",
           },
-        };
-      }
-    },
-
-    // 注册数据
-    data: {
-      tags: tagPages,
-      preview: previewData,
-      graph: graphData,
-      redlinks: redlinksData,
-    },
-  })
+          {
+            src: "/favicon.svg",
+            sizes: "512x512",
+            type: "image/svg+xml",
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,md,png,svg,webp}"],
+      },
+    }
+  )
 );
