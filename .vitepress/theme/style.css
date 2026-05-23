@@ -17,14 +17,14 @@
   border-bottom-color: var(--vp-c-brand-1);
 }
 
-/* 词条不存在时标红 */
-.wiki-link.broken {
+/* 词条不存在时标红（使用 span 标签） */
+.wiki-link.missing {
   color: var(--vp-c-danger-1);
   border-bottom-color: var(--vp-c-danger-1);
-  cursor: not-allowed;
+  cursor: help;
 }
 
-.wiki-link.broken:hover {
+.wiki-link.missing:hover {
   color: var(--vp-c-danger-2);
   border-bottom-color: var(--vp-c-danger-2);
 }

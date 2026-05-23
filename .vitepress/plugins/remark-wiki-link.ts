@@ -80,17 +80,15 @@ export const remarkWikiLink = () => {
     // 手动遍历 AST
     function visitText(node: any) {
       if (node.type === "text" && typeof node.value === "string") {
-        const regex = /\[\[([^\]]+)\]\]/g;
+        const regex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
         if (!regex.test(node.value)) return;
 
         node.type = "html";
-        node.value = node.value.replace(regex, (_match: string, content: string) => {
-          // 支持别名语法：[[显示名|目标名]]
-          const parts = content.split("|");
-          const targetName = parts.length > 1 ? parts[1].trim() : content.trim();
-          const displayName = parts.length > 1 ? parts[0].trim() : content.trim();
+        node.value = node.value.replace(regex, (_match: string, targetName: string, alias: string | undefined) => {
+          const displayName = (alias || targetName).trim();
+          const target = targetName.trim();
 
-          const entry = wikiMap.get(targetName);
+          const entry = wikiMap.get(target);
 
           if (entry) {
             // 词词条存在 → 生成带悬停预览卡片的 HTML
@@ -104,8 +102,8 @@ export const remarkWikiLink = () => {
             return `\n<div class="wiki-popover">\n  <a href="${entry.url}" class="wiki-link" title="${entry.title}">${displayName}</a>\n  <div class="wiki-card">\n    <strong>${entry.title}</strong>\n    ${descHtml}\n    ${tagsHtml}\n  </div>\n</div>\n`;
           }
 
-          // 词条不存在 → 标红样式
-          return `<a href="#" class="wiki-link broken" title="词条不存在: ${targetName}">${displayName}</a>`;
+          // 词条不存在 → 标红 + 问号（使用 span 而非 a 标签）
+          return `<span class="wiki-link missing" title="词条不存在: ${target}">${displayName}?</span>`;
         });
       } else if (Array.isArray(node.children)) {
         node.children.forEach(visitText);
