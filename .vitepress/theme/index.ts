@@ -1,6 +1,5 @@
 import Teek from "vitepress-theme-teek";
 import "vitepress-theme-teek/style";
-import DefaultTheme from "vitepress/theme";
 import "./style.css";
 
 // Lumen 组件
@@ -9,14 +8,17 @@ import "@theojs/lumen/doc-blocks";
 import "@theojs/lumen/badge";
 import "@theojs/lumen/link-card";
 
+import Layout from "./Layout.vue";
 import TagIndex from "./TagIndex.vue";
 import TagPage from "./TagPage.vue";
+import Backlinks from "./Backlinks.vue";
 
 export default {
   extends: Teek,
-  Layout: DefaultTheme.Layout,
+  Layout: Layout,
   enhanceApp({ app }) {
     app.component("tag-index", TagIndex);
     app.component("tag-page", TagPage);
+    app.component("Backlinks", Backlinks);
   },
 };
