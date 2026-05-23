@@ -7,6 +7,7 @@ import { injectTagsPlugin } from "./plugins/inject-tags";
 import tagPages from "./tag-pages.data";
 import previewData from "./preview.data";
 import graphData from "./graph.data";
+import redlinksData from "./redlinks.data";
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -98,6 +99,7 @@ export default withMermaid(
       tags: tagPages,
       preview: previewData,
       graph: graphData,
+      redlinks: redlinksData,
     },
   })
 );
