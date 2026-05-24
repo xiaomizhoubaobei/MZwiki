@@ -1,0 +1,26 @@
+name: 🔴 红链追踪
+description: 记录内链指向了不存在的词条
+labels: ["redlink", "todo"]
+assignees: []
+body:
+  - type: input
+    id: source
+    attributes:
+      label: 来源词条
+      placeholder: 例如：量子力学
+    validations:
+      required: true
+
+  - type: input
+    id: target
+    attributes:
+      label: 缺失词条（红链）
+      placeholder: 例如：波函数坍缩
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 上下文
+      description: 这个词条大概应该讲什么？

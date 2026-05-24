@@ -1,0 +1,47 @@
+name: 🐞 词条纠错
+description: 报告词条中的事实错误、排版问题或格式错误
+labels: ["bug", "content"]
+assignees: []
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: 词条名称
+      placeholder: 例如：量子力学
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 错误类型
+      options:
+        - 事实错误
+        - 公式 / 代码错误
+        - 排版 / 格式问题
+        - 链接失效
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: wrong
+    attributes:
+      label: 错误内容
+      description: 请引用原文中错误的部分
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: 建议修正
+      description: 请提供你认为正确的内容或参考资料
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 参考资料（可选）
+      placeholder: 例如：https://example.com

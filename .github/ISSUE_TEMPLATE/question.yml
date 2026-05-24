@@ -1,0 +1,30 @@
+name: ❓ 词条讨论
+description: 对词条内容的讨论、存疑或求教
+labels: ["question"]
+assignees: []
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: 相关词条
+      placeholder: 例如：薛定谔方程
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 问题描述
+      description: 请详细描述你的疑问
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 问题类型
+      options:
+        - 内容存疑
+        - 事实争议
+        - 求教 / 补充
+        - 讨论建议

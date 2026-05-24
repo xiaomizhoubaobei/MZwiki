@@ -1,0 +1,35 @@
+name: 💡 功能建议
+description: 对网站功能、UI、体验提出建议
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 相关问题
+      description: 这个功能是为了解决什么问题？
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 建议方案
+      description: 你希望看到什么样的解决方案？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级
+      options:
+        - 低 - 有更好就更好
+        - 中 - 影响日常使用
+        - 高 - 严重影响体验
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充说明（可选）
+      description: 任何其他想法或参考
