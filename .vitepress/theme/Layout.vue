@@ -3,10 +3,14 @@ import DefaultTheme from "vitepress/theme";
 import Backlinks from "./Backlinks.vue";
 import TocToggle from "./TocToggle.vue";
 import DocMeta from "./components/DocMeta.vue";
+import ReadingBadge from "./components/ReadingBadge.vue";
 </script>
 
 <template>
   <DefaultTheme.Layout>
+    <template #doc-before>
+      <ReadingBadge />
+    </template>
     <template #doc-after>
       <Backlinks />
     </template>
