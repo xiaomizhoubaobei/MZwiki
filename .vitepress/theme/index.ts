@@ -22,6 +22,7 @@ import HeroToday from "./HeroToday.vue";
 import CategoryPortal from "./CategoryPortal.vue";
 import Timeline from "./Timeline.vue";
 import Redlinks from "./Redlinks.vue";
+import BlogIndex from "./components/BlogIndex.vue";
 
 export default {
   extends: Teek,
@@ -40,5 +41,6 @@ export default {
     app.component("CategoryPortal", CategoryPortal);
     app.component("Timeline", Timeline);
     app.component("redlinks", Redlinks);
+    app.component("BlogIndex", BlogIndex);
   },
 };
