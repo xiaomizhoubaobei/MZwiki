@@ -2,20 +2,16 @@
 import DefaultTheme from "vitepress/theme";
 import Backlinks from "./Backlinks.vue";
 import TocToggle from "./TocToggle.vue";
-import DocMeta from "./components/DocMeta.vue";
-import ReadingBadge from "./components/ReadingBadge.vue";
+import EntryMeta from "./components/EntryMeta.vue";
 </script>
 
 <template>
   <DefaultTheme.Layout>
     <template #doc-before>
-      <ReadingBadge />
+      <EntryMeta />
     </template>
     <template #doc-after>
       <Backlinks />
-    </template>
-    <template #doc-footer-before>
-      <DocMeta />
     </template>
     <template #aside-outline-before>
       <TocToggle />

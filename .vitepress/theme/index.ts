@@ -22,6 +22,7 @@ import HeroToday from "./HeroToday.vue";
 import CategoryPortal from "./CategoryPortal.vue";
 import Timeline from "./Timeline.vue";
 import Redlinks from "./Redlinks.vue";
+import EntryMeta from "./components/EntryMeta.vue";
 import BlogIndex from "./components/BlogIndex.vue";
 
 export default {
@@ -41,6 +42,7 @@ export default {
     app.component("CategoryPortal", CategoryPortal);
     app.component("Timeline", Timeline);
     app.component("redlinks", Redlinks);
+    app.component("EntryMeta", EntryMeta);
     app.component("BlogIndex", BlogIndex);
   },
 };
