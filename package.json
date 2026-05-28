@@ -15,7 +15,6 @@
     "vite-plugin-pwa": "^1.3.0",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "vitepress-plugin-sidebar-resolve": "^1.2.3",
     "vitepress-theme-teek": "1.6.0"
   },
   "dependencies": {

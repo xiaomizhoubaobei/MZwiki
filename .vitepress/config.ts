@@ -1,227 +1,97 @@
 import { defineConfig } from "vitepress";
-import { withPwa } from "@vite-pwa/vitepress";
+import Teek from "vitepress-theme-teek";
 import { withMermaid } from "vitepress-plugin-mermaid";
-import { defineTeekConfig } from "vitepress-theme-teek/config";
+import { withPwa } from "@vite-pwa/vitepress";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
 import { injectTagsPlugin } from "./plugins/inject-tags";
 
-// Teek 主题配置
-const teekConfig = defineTeekConfig({
-  // 站点基础信息
-  site: {
-    logo: "/favicon.svg",
-    title: "我的个人百科",
-    description: "精选维基词条与个人知识库",
-  },
-
-  // 默认作者
-  author: {
-    name: "祁筱欣",
-  },
-
-  // 文章元信息栏（作者、日期、分类、标签、字数、阅读时长）
-  articleAnalyze: {
-    showInfo: ["article"],
-    showIcon: true,
-    showAuthor: ["article"],
-    showCreateDate: ["article"],
-    showUpdateDate: true,
-    showCategory: ["article"],
-    showTag: ["article"],
-    dateFormat: "yyyy-MM-dd",
-    dateUTC: false,
-  },
-
-  // 文档分析（字数统计、阅读时长）
-  docAnalysis: {
-    createTime: "2026-05-16",
-    wordCount: true,
-    readingTime: true,
-  },
-
-  // 页脚（类似维基百科）
-  footer: {
-    message: "基于 VitePress + Teek + Lumen 构建",
-    copyright: "© 2026 CC BY-SA 3.0",
-  },
-
-  // 侧边栏自动生成（推荐）
-  sidebar: {
-    auto: true,
-  },
-
-  // 分类卡片栏配置
-  category: {
-    enabled: true,
-    path: "/categories",
-    limit: 5,
-    autoPage: false,
-    pageSpeed: 4000,
-    homeTitle: "📁 文章分类",
-    pageTitle: "📁 全部分类",
-    moreLabel: "更多...",
-    emptyLabel: "暂无文章分类",
-  },
-
-  // 标签卡片栏配置
-  tag: {
-    enabled: true,
-    path: "/tags",
-    limit: 5,
-    autoPage: false,
-    pageSpeed: 4000,
-    homeTitle: "🏷️ 热门标签",
-    pageTitle: "🏷️ 全部标签",
-    moreLabel: "更多...",
-    emptyLabel: "暂无标签",
-  },
-
-  // TOC 配置（桌面端侧边栏大纲 + 高亮同步滚动）
-  outline: {
-    level: [2, 3],
-    label: "目录",
-  },
-
-  // 搜索（内置）
-  search: {
-    provider: "local",
-  },
-
-  // 功能页配置
-  functionPage: {
-    archives: {
-      enabled: true,
-      title: "📦 词条归档",
-      path: "/archives",
-    },
-    categories: {
-      enabled: true,
-      title: "📁 分类索引",
-      path: "/categories",
-    },
-    tags: {
-      enabled: true,
-      title: "🏷️ 标签索引",
-      path: "/tags",
-    },
-    graph: {
-      enabled: true,
-      title: "🕸️ 知识图谱",
-      path: "/graph",
-    },
-    timeline: {
-      enabled: true,
-      title: "🕰️ 时间线",
-      path: "/timeline",
-    },
-  },
-
-  // 导航栏
-  nav: [
-    { text: "归档", link: "/archives" },
-    { text: "分类", link: "/categories" },
-    { text: "标签", link: "/tags" },
-    { text: "图谱", link: "/graph" },
-    { text: "时间线", link: "/timeline" },
-    { text: "🎲 随机", link: "/random" },
-  ],
-
-  // Lumen 组件（通过 Teek 主题启用，不再手动导入样式）
-  lumen: {
-    enabled: true,
-    docBlocks: true,
-    badge: true,
-    linkCard: true,
-  },
-
-  // 站点统计
-  siteAnalytics: [
-    {
-      provider: "google",
-      options: {
-        id: "G-22HLSJXMGWh",
-      },
-    },
-    {
-      provider: "baidu",
-      options: {
-        id: "42e6f8bd423ef428b0f9a1a80980da7f",
-      },
-    },
-  ],
-});
-
-export default withMermaid(
-  withPwa(
+export default withPwa(
+  withMermaid(
     defineConfig({
-      lang: "zh-CN",
       title: "VitePedia",
       description: "一座慢慢生长的数字知识花园",
+      lang: "zh-CN",
+
+      extends: Teek,
 
       // Vite 插件
       vite: {
         plugins: [injectTagsPlugin()],
       },
 
-      // Teek 配置注入（defineTeekConfig 返回完整配置对象）
-      ...teekConfig,
+      themeConfig: {
+        logo: "/favicon.svg",
+        siteTitle: "VitePedia",
 
-      // Mermaid 全局配置（维基风）
-      mermaid: {
-        theme: "neutral",
-        securityLevel: "loose",
-      },
+        // ===== Lumen（由 Teek 托管）=====
+        lumen: {
+          enabled: true,
+          docBlocks: true,
+          badge: true,
+          linkCard: true,
+        },
 
-      // 构建优化
-      cleanUrls: true,
-      lastUpdated: true,
+        // ===== 最后更新 =====
+        lastUpdated: {
+          text: "最后更新于",
+        },
 
-      // Markdown 配置
-      markdown: {
-        remarkPlugins: [remarkWikiLink],
-      },
+        // ===== 编辑链接 =====
+        editLink: {
+          pattern: "https://github.com/your-repo/edit/main/docs/:path",
+          text: "在 GitHub 上编辑此页",
+        },
 
-      // 动态生成标签页面路由
-      transformPageData(pageData) {
-        if (pageData.relativePath === "标签/[tag].md") {
-          return {
-            params: {
-              tag: pageData.params?.tag || "",
-            },
-          };
-        }
-      },
+        // ===== 页脚 =====
+        footer: {
+          message: "采用 CC BY-NC-SA 4.0 许可协议",
+          copyright: "Copyright © 2026 VitePedia",
+        },
 
-      // data loader 文件通过 VitePress .data.ts 约定自动发现
-      // 无需在此手动 import 注册
-    }),
-    // PWA 配置
-    {
-      registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "robots.txt"],
-      manifest: {
-        name: "XMZZUZHI Wiki",
-        short_name: "Wiki",
-        start_url: "/",
-        display: "standalone",
-        background_color: "#ffffff",
-        theme_color: "#42a5f5",
-        icons: [
-          {
-            src: "/favicon.svg",
-            sizes: "192x192",
-            type: "image/svg+xml",
-          },
-          {
-            src: "/favicon.svg",
-            sizes: "512x512",
-            type: "image/svg+xml",
-          },
+        // ===== 搜索（Pagefind）=====
+        search: {
+          provider: "pagefind",
+        },
+
+        // ===== 导航 =====
+        nav: [
+          { text: "首页", link: "/" },
+          { text: "归档", link: "/archives" },
+          { text: "分类", link: "/categories" },
+          { text: "标签", link: "/tags" },
+          { text: "图谱", link: "/graph" },
+          { text: "时间线", link: "/timeline" },
+          { text: "🎲 随机", link: "/random" },
+          { text: "🔴 待创建", link: "/待创建词条" },
         ],
       },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,md,png,svg,webp}"],
+
+      // ===== Mermaid 配置 =====
+      mermaid: {
+        theme: "neutral",
       },
-    }
+
+      // ===== PWA 配置 =====
+      pwa: {
+        registerType: "autoUpdate",
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,svg,png,jpg,gif,webp,woff2}"],
+        },
+      },
+
+      // ===== Markdown 增强 =====
+      markdown: {
+        remarkPlugins: [remarkWikiLink],
+        image: {
+          lazyLoading: true,
+        },
+        lineNumbers: true,
+        codeTransformers: [],
+      },
+
+      // ===== 构建优化 =====
+      cleanUrls: true,
+      metaChunk: true,
+    })
   )
 );
