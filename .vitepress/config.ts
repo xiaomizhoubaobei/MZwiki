@@ -113,8 +113,10 @@ export default withPwa(
       pwa: {
         registerType: "autoUpdate",
         workbox: {
+          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
           globPatterns: ["**/*.{js,css,html,svg,png,jpg,gif,webp,woff2}"],
         },
+        strict: false,
       },
 
       // ===== Markdown 增强 =====
