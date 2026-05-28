@@ -27,6 +27,7 @@ import TocToggle from "./TocToggle.vue";
 import EntryMeta from "./components/EntryMeta.vue";
 import BlogIndex from "./components/BlogIndex.vue";
 import EntryLicense from "./components/EntryLicense.vue";
+import HomeFeatured from "./components/HomeFeatured.vue";
 import ReadingProgress from "./components/ReadingProgress.vue";
 
 export default {
@@ -40,6 +41,10 @@ export default {
       // ====== 全局插槽 ======
       // 全局阅读进度条（固定在页面顶部）
       "teek-theme-enhance-top": () => h(ReadingProgress),
+
+      // ====== 首页插槽 ======
+      // Hero 区域后：插入最近更新组件
+      "home-hero-after": () => h(HomeFeatured),
 
       // ====== 文章页插槽 ======
       // 文章分析栏前：插入元信息栏（分类、标签、阅读时间等）
