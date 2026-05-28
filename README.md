@@ -3,6 +3,7 @@
   <img src="https://img.shields.io/badge/VitePress-1.x-green?style=for-the-badge" alt="VitePress">
   <img src="https://img.shields.io/badge/Teek-Lumen-orange?style=for-the-badge" alt="Theme">
   <img src="https://img.shields.io/badge/PWA-Ready-purple?style=for-the-badge" alt="PWA">
+  <img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey?style=for-the-badge" alt="License">
 </p>
 
 <p align="center">
@@ -140,7 +141,13 @@ date: 2026-05-28
 
 ## 📜 许可证
 
-MIT License
+本知识库采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)（署名 · 非商业 · 相同方式共享）协议。
+
+- ✅ 允许查看、学习、引用、分享（须署名）
+- ❌ 禁止商业用途
+- 🔁 衍生作品须使用相同协议
+
+详见 [LICENSE](./LICENSE) 文件。
 
 ---
 
