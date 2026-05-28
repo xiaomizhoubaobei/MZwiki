@@ -4,11 +4,7 @@ import "./style.css";
 import { h } from "vue";
 import type { Theme } from "vitepress";
 
-// Lumen 组件
-import "@theojs/lumen/style";
-import "@theojs/lumen/doc-blocks";
-import "@theojs/lumen/badge";
-import "@theojs/lumen/link-card";
+// Lumen 由 Teek 主题通过 config.ts 的 themeConfig.lumen 统一管理，无需在此手动导入
 
 import TagIndex from "./TagIndex.vue";
 import TagPage from "./TagPage.vue";

@@ -131,6 +131,14 @@ const teekConfig = defineTeekConfig({
     { text: "🎲 随机", link: "/random" },
   ],
 
+  // Lumen 组件（通过 Teek 主题启用，不再手动导入样式）
+  lumen: {
+    enabled: true,
+    docBlocks: true,
+    badge: true,
+    linkCard: true,
+  },
+
   // 站点统计
   siteAnalytics: [
     {
