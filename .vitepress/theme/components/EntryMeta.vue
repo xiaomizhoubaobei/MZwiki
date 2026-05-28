@@ -29,6 +29,24 @@ const date = computed(() => {
   if (!d) return ''
   return new Date(d).toLocaleDateString('zh-CN')
 })
+
+/* 4. 最后更新时间 */
+const lastUpdated = computed(() => {
+  if (!page.value?.lastUpdated) return ''
+  return new Date(page.value.lastUpdated).toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+})
+
+// 仅当更新时间与创建时间不同时才显示徽章
+const showUpdateBadge = computed(() => {
+  if (!lastUpdated.value) return false
+  const d = frontmatter.value.date
+  if (!d) return true
+  return new Date(d).toLocaleDateString('zh-CN') !== lastUpdated.value
+})
 </script>
 
 <template>
@@ -57,6 +75,9 @@ const date = computed(() => {
         <span class="dot">·</span>
         <span>📅 {{ date }}</span>
       </template>
+      <span v-if="showUpdateBadge" class="update-badge">
+        🔄 {{ lastUpdated }}
+      </span>
     </span>
   </div>
 </template>
@@ -109,6 +130,17 @@ const date = computed(() => {
 
 .dot {
   opacity: 0.4;
+}
+
+/* 最后更新时间徽章 */
+.update-badge {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-dark);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 4px;
 }
 
 @media (max-width: 768px) {
