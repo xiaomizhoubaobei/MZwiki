@@ -114,6 +114,11 @@ const teekConfig = defineTeekConfig({
       title: "🕸️ 知识图谱",
       path: "/graph",
     },
+    timeline: {
+      enabled: true,
+      title: "🕰️ 时间线",
+      path: "/timeline",
+    },
   },
 
   // 导航栏
@@ -122,6 +127,8 @@ const teekConfig = defineTeekConfig({
     { text: "分类", link: "/categories" },
     { text: "标签", link: "/tags" },
     { text: "图谱", link: "/graph" },
+    { text: "时间线", link: "/timeline" },
+    { text: "🎲 随机", link: "/random" },
   ],
 
   // 站点统计
