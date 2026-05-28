@@ -55,6 +55,19 @@ const teekConfig = defineTeekConfig({
     auto: true,
   },
 
+  // 分类卡片栏配置
+  category: {
+    enabled: true,
+    path: "/categories",
+    limit: 5,
+    autoPage: false,
+    pageSpeed: 4000,
+    homeTitle: "📁 文章分类",
+    pageTitle: "📁 全部分类",
+    moreLabel: "更多...",
+    emptyLabel: "暂无文章分类",
+  },
+
   // TOC 配置（桌面端侧边栏大纲 + 高亮同步滚动）
   outline: {
     level: [2, 3],
