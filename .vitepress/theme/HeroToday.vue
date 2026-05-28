@@ -10,8 +10,8 @@ const page = pages[day % pages.length];
 
 <template>
   <section class="hero">
-    <h1 class="hero-title">📘 我的百科</h1>
-    <p class="hero-sub">个人精选知识库</p>
+    <h1 class="hero-title">📘 VitePedia</h1>
+    <p class="hero-sub">一座慢慢生长的数字知识花园</p>
 
     <div class="featured" v-if="page">
       <h2>📅 今日词条</h2>

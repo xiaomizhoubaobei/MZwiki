@@ -87,8 +87,8 @@ export default withMermaid(
   withPWA(
     defineConfig({
       lang: "zh-CN",
-      title: "我的百科",
-      description: "个人精选维基知识库",
+      title: "VitePedia",
+      description: "一座慢慢生长的数字知识花园",
 
       // Vite 插件
       vite: {
