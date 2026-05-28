@@ -74,6 +74,17 @@
   font-size: 0.8rem;
 }
 
+/* ====== 首页许可声明 ====== */
+.license {
+  margin-top: 40px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg-soft);
+  border-left: 4px solid var(--vp-c-brand);
+  border-radius: 8px;
+}
+
 /* ====== 首页快捷操作 ====== */
 .actions {
   display: flex;

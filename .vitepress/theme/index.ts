@@ -24,6 +24,7 @@ import Timeline from "./Timeline.vue";
 import Redlinks from "./Redlinks.vue";
 import EntryMeta from "./components/EntryMeta.vue";
 import BlogIndex from "./components/BlogIndex.vue";
+import EntryLicense from "./components/EntryLicense.vue";
 
 export default {
   extends: Teek,
@@ -44,5 +45,6 @@ export default {
     app.component("redlinks", Redlinks);
     app.component("EntryMeta", EntryMeta);
     app.component("BlogIndex", BlogIndex);
+    app.component("EntryLicense", EntryLicense);
   },
 };
