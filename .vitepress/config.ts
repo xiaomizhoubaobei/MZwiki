@@ -1,14 +1,9 @@
 import { defineConfig } from "vitepress";
-import { withPWA } from "@vite-pwa/vitepress";
+import { withPwa } from "@vite-pwa/vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
-import Teek from "vitepress-theme-teek";
-import { defineTeekConfig } from "vitepress-theme-teek";
+import { defineTeekConfig } from "vitepress-theme-teek/config";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
 import { injectTagsPlugin } from "./plugins/inject-tags";
-import tagPages from "./tag-pages.data";
-import previewData from "./preview.data";
-import graphData from "./graph.data";
-import redlinksData from "./redlinks.data";
 
 // Teek 主题配置
 const teekConfig = defineTeekConfig({
@@ -157,7 +152,7 @@ const teekConfig = defineTeekConfig({
 });
 
 export default withMermaid(
-  withPWA(
+  withPwa(
     defineConfig({
       lang: "zh-CN",
       title: "VitePedia",
@@ -168,11 +163,8 @@ export default withMermaid(
         plugins: [injectTagsPlugin()],
       },
 
-      // 主题继承
-      extends: Teek,
-
-      // Teek 配置注入
-      themeConfig: teekConfig,
+      // Teek 配置注入（defineTeekConfig 返回完整配置对象）
+      ...teekConfig,
 
       // Mermaid 全局配置（维基风）
       mermaid: {
@@ -200,16 +192,11 @@ export default withMermaid(
         }
       },
 
-      // 注册数据
-      data: {
-        tags: tagPages,
-        preview: previewData,
-        graph: graphData,
-        redlinks: redlinksData,
-      },
+      // data loader 文件通过 VitePress .data.ts 约定自动发现
+      // 无需在此手动 import 注册
     }),
+    // PWA 配置
     {
-      // PWA 配置
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "robots.txt"],
       manifest: {
