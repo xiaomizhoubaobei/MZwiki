@@ -68,6 +68,19 @@ const teekConfig = defineTeekConfig({
     emptyLabel: "暂无文章分类",
   },
 
+  // 标签卡片栏配置
+  tag: {
+    enabled: true,
+    path: "/tags",
+    limit: 5,
+    autoPage: false,
+    pageSpeed: 4000,
+    homeTitle: "🏷️ 热门标签",
+    pageTitle: "🏷️ 全部标签",
+    moreLabel: "更多...",
+    emptyLabel: "暂无标签",
+  },
+
   // TOC 配置（桌面端侧边栏大纲 + 高亮同步滚动）
   outline: {
     level: [2, 3],
