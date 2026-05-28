@@ -34,19 +34,25 @@ export default {
   NotFound,
 
   // 使用 h() 函数 + Teek Layout 插槽系统注入自定义组件
+  // 插槽名对齐 Teek 官方文档：https://tk.ysundy.com/guide/slot.html
   Layout() {
     return h(Teek.Layout, null, {
+      // ====== 全局插槽 ======
       // 全局阅读进度条（固定在页面顶部）
-      "layout-top": () => h(ReadingProgress),
+      "teek-theme-enhance-top": () => h(ReadingProgress),
 
-      // 文章页：标题下方插入元信息栏（分类、标签、阅读时间等）
-      "doc-before": () => h(EntryMeta),
+      // ====== 文章页插槽 ======
+      // 文章分析栏前：插入元信息栏（分类、标签、阅读时间等）
+      // 等同于 VitePress 的 doc-before 插槽
+      "teek-article-analyze-before": () => h(EntryMeta),
 
-      // 文章页：正文结束后插入反向链接 + 许可声明
-      "doc-after": () => [h(Backlinks), h(EntryLicense)],
+      // 文章页：正文结束后、打赏栏前插入反向链接 + 许可声明
+      // 等同于 VitePress 的 doc-after 插槽
+      "teek-doc-after-appreciation-before": () => [h(Backlinks), h(EntryLicense)],
 
-      // 侧边栏目录前插入 TOC 切换按钮
-      "aside-outline-before": () => h(TocToggle),
+      // 文章分享栏后：插入 TOC 切换按钮（侧边栏目录前）
+      // 等同于 VitePress 的 aside-outline-before 插槽
+      "teek-article-share-after": () => h(TocToggle),
     });
   },
 
