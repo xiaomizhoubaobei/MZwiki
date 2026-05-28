@@ -16,7 +16,18 @@ export default withPwa(
 
       // Vite 插件
       vite: {
-        plugins: [injectTagsPlugin()],
+        plugins: [
+          injectTagsPlugin(),
+          // 将 pagefind 标记为外部依赖，避免构建时报错
+          {
+            name: "pagefind-external",
+            resolveId(id) {
+              if (id.includes("pagefind")) {
+                return { id, external: true };
+              }
+            },
+          },
+        ],
       },
 
       themeConfig: {

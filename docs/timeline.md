@@ -5,8 +5,4 @@ layout: home
 article: false
 ---
 
-<script setup>
-import Timeline from './.vitepress/theme/Timeline.vue'
-</script>
-
 <Timeline />

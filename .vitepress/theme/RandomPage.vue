@@ -1,12 +1,13 @@
 <script setup>
+import { onMounted } from "vue";
 import { data as pages } from "../pages.data";
 
-const target =
-  pages[Math.floor(Math.random() * pages.length)];
-
-if (target) {
-  window.location.href = target.url;
-}
+onMounted(() => {
+  const target = pages[Math.floor(Math.random() * pages.length)];
+  if (target) {
+    window.location.href = target.url;
+  }
+});
 </script>
 
 <template>

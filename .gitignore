@@ -24,3 +24,5 @@ Thumbs.db
 # 临时文件
 comment.md
 comment.json
+.vitepress/*.timestamp-*.mjs
+.vitepress/dist/

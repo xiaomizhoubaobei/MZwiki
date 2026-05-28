@@ -30,7 +30,7 @@ const posts = computed(() => {
       categories: f.frontmatter?.categories || [],
       date: f.frontmatter?.date || '',
     }))
-    .sort((a: any, b: any) => (b.date || '').localeCompare(a.date || ''))
+    .sort((a: any, b: any) => String(b.date || '').localeCompare(String(a.date || '')))
 })
 
 function formatWords(count: number) {

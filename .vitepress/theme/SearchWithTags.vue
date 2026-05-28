@@ -14,8 +14,20 @@ const allTags = tags.map((t) => t.tag);
 // 初始化 Pagefind
 onMounted(async () => {
   try {
-    const { Pagefind } = await import(/* @vite-ignore */ "/pagefind/pagefind.js");
-    const pagefind = await Pagefind.new();
+    // pagefind 在构建后才由 npx pagefind --site dist 生成到 dist/pagefind/
+    // SSR 构建使用 shim，浏览器运行时动态加载真正的 pagefind
+    const pagefindUrl = "/pagefind/pagefind.js";
+    let pagefind: any;
+    try {
+      const { Pagefind } = await new Function(
+        "return import(" + JSON.stringify(pagefindUrl) + ")"
+      )();
+      pagefind = await Pagefind.new();
+    } catch {
+      // SSR 或开发模式回落到 shim
+      const mod = await import("./pagefind-shim.ts");
+      pagefind = await mod.Pagefind.new();
+    }
     pagefindInstance.value = pagefind;
   } catch (e) {
     console.warn("Pagefind 未加载（开发模式下不可用）:", e);

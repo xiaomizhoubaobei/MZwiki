@@ -1,5 +1,5 @@
 import Teek from "vitepress-theme-teek";
-import "vitepress-theme-teek/style";
+import "vitepress-theme-teek/index.css";
 import "./style.css";
 import { h } from "vue";
 import type { Theme } from "vitepress";

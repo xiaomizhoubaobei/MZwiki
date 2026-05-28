@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build && npx pagefind --site dist",
+    "build": "vitepress build && npx pagefind --site .vitepress/dist",
     "preview": "vitepress preview"
   },
   "devDependencies": {
