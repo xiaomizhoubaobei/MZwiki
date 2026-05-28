@@ -1,16 +1,61 @@
-import { createContentLoader } from 'vitepress'
+import { readFileSync, readdirSync } from "fs";
+import { join, extname } from "path";
 
-export default createContentLoader('**/*.md', {
-  transform(rawData) {
-    const categories = new Set<string>()
+function extractFrontmatter(content: string): Record<string, unknown> {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const frontmatter: Record<string, unknown> = {};
+  for (const line of match[1].split("\n")) {
+    const m = line.match(/^(\w[\w-]*):\s*(.+)$/);
+    if (m) {
+      const key = m[1];
+      let value: unknown = m[2].trim();
+      if (String(value).startsWith("[") && String(value).endsWith("]")) {
+        value = String(value)
+          .slice(1, -1)
+          .split(",")
+          .map((s) => s.trim().replace(/^['"]|['"]$/g, ""));
+      }
+      frontmatter[key] = value;
+    }
+  }
+  return frontmatter;
+}
 
-    rawData.forEach(page => {
-      const cat = page.frontmatter?.category
-      if (cat) categories.add(cat)
-    })
+function getAllMarkdownFiles(dir: string): string[] {
+  const results: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (
+      entry.name.startsWith(".") ||
+      entry.name === "node_modules" ||
+      entry.name === "dist"
+    )
+      continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...getAllMarkdownFiles(full));
+    } else if (extname(entry.name) === ".md") {
+      results.push(full);
+    }
+  }
+  return results;
+}
 
-    return Array.from(categories).map(category => ({
+export default {
+  paths(): { params: { category: string } }[] {
+    const docsDir = join(process.cwd(), "docs");
+    const files = getAllMarkdownFiles(docsDir);
+    const categories = new Set<string>();
+    for (const file of files) {
+      const content = readFileSync(file, "utf-8");
+      const fm = extractFrontmatter(content);
+      const cat = fm.category;
+      if (typeof cat === "string" && cat) {
+        categories.add(cat);
+      }
+    }
+    return Array.from(categories).map((category) => ({
       params: { category },
-    }))
+    }));
   },
-})
+};
