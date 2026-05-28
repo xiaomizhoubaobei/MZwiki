@@ -99,7 +99,19 @@ export default withPwa(
         teek: {
           sidebarResolve: {
             scanDirs: ["docs"],
-            ignoreDirs: ["scripts", "node_modules", ".pnpm-store"],
+            ignoreDirs: [
+              "node_modules",
+              ".pnpm-store",
+              "scripts",
+              ".git",
+              "dist",
+              ".vitepress",
+              "drafts",
+            ],
+            ignoreFiles: [
+              "README.md",
+              "CHANGELOG.md",
+            ],
           },
         },
       },
