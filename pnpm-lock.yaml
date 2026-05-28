@@ -13,8 +13,8 @@ importers:
         version: 1.1.0(vite-plugin-pwa@1.3.0(vite@5.4.21(terser@5.48.0))(workbox-build@7.4.1)(workbox-window@7.4.1))
     devDependencies:
       '@theojs/lumen':
-        specifier: ^6.4.7
-        version: 6.4.7(vue@3.5.34(typescript@6.0.3))
+        specifier: ^6.2.0
+        version: 6.2.0(vue@3.5.34(typescript@5.9.3))
       force-graph:
         specifier: ^1.51.4
         version: 1.51.4
@@ -26,16 +26,16 @@ importers:
         version: 1.3.0(vite@5.4.21(terser@5.48.0))(workbox-build@7.4.1)(workbox-window@7.4.1)
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+        version: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
       vitepress-plugin-mermaid:
         specifier: ^2.0.17
-        version: 2.0.17(mermaid@11.15.0)(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))
+        version: 2.0.17(mermaid@11.15.0)(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))
       vitepress-plugin-sidebar-resolve:
         specifier: ^1.2.3
-        version: 1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))
+        version: 1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))
       vitepress-theme-teek:
         specifier: ^1.5.7
-        version: 1.6.0(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))(vue@3.5.34(typescript@6.0.3))
+        version: 1.6.0(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3))
 
 packages:
 
@@ -1089,8 +1089,8 @@ packages:
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
-  '@theojs/lumen@6.4.7':
-    resolution: {integrity: sha512-DMMP5+DiT+1WgOO931TgaBEkosBlqK4w2WsAR52nxxWcRf/b8kn2KL1e6NPQpajc0geI6CUzyX5DhuH/3Orgdg==}
+  '@theojs/lumen@6.2.0':
+    resolution: {integrity: sha512-40ekqXf9J1FrzkTwW+WkFyJks3mywUho/1+8fKQuh6wesOq6fW4s/LF7eMN9cgpzuqj9KeLcWBhG0V6ucsgdGw==}
 
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     resolution: {integrity: sha512-/67zpWDBLV+oYAEL682s1ktXL0HgqX76f6gaVGkGnVZlBbm1zd0v4Bz8MFF2GGhoX9rvfq3KSQHubFHwa6w6/Q==}
@@ -2619,8 +2619,8 @@ packages:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
 
-  typescript@6.0.3:
-    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -3770,15 +3770,15 @@ snapshots:
       '@iconify/types': 2.0.0
       import-meta-resolve: 4.2.0
 
-  '@iconify/vue@4.3.0(vue@3.5.34(typescript@6.0.3))':
+  '@iconify/vue@4.3.0(vue@3.5.34(typescript@5.9.3))':
     dependencies:
       '@iconify/types': 2.0.0
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
 
-  '@iconify/vue@5.0.1(vue@3.5.34(typescript@6.0.3))':
+  '@iconify/vue@5.0.1(vue@3.5.34(typescript@5.9.3))':
     dependencies:
       '@iconify/types': 2.0.0
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
 
   '@isaacs/cliui@9.0.0': {}
 
@@ -4000,12 +4000,12 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
-  '@theojs/lumen@6.4.7(vue@3.5.34(typescript@6.0.3))':
+  '@theojs/lumen@6.2.0(vue@3.5.34(typescript@5.9.3))':
     dependencies:
-      '@iconify/vue': 5.0.1(vue@3.5.34(typescript@6.0.3))
-      '@waline/client': 3.13.0(typescript@6.0.3)
+      '@iconify/vue': 5.0.1(vue@3.5.34(typescript@5.9.3))
+      '@waline/client': 3.13.0(typescript@5.9.3)
       iconify-icon: 3.0.2
-      typescript: 6.0.3
+      typescript: 5.9.3
     transitivePeerDependencies:
       - vue
 
@@ -4175,10 +4175,10 @@ snapshots:
     dependencies:
       vite-plugin-pwa: 1.3.0(vite@5.4.21(terser@5.48.0))(workbox-build@7.4.1)(workbox-window@7.4.1)
 
-  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(terser@5.48.0))(vue@3.5.34(typescript@6.0.3))':
+  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(terser@5.48.0))(vue@3.5.34(typescript@5.9.3))':
     dependencies:
       vite: 5.4.21(terser@5.48.0)
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
 
   '@vue/compiler-core@3.5.34':
     dependencies:
@@ -4244,35 +4244,35 @@ snapshots:
       '@vue/shared': 3.5.34
       csstype: 3.2.3
 
-  '@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.3))':
+  '@vue/server-renderer@3.5.34(vue@3.5.34(typescript@5.9.3))':
     dependencies:
       '@vue/compiler-ssr': 3.5.34
       '@vue/shared': 3.5.34
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
 
   '@vue/shared@3.5.34': {}
 
-  '@vueuse/core@12.8.2(typescript@6.0.3)':
+  '@vueuse/core@12.8.2(typescript@5.9.3)':
     dependencies:
       '@types/web-bluetooth': 0.0.21
       '@vueuse/metadata': 12.8.2
-      '@vueuse/shared': 12.8.2(typescript@6.0.3)
-      vue: 3.5.34(typescript@6.0.3)
+      '@vueuse/shared': 12.8.2(typescript@5.9.3)
+      vue: 3.5.34(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/core@14.3.0(vue@3.5.34(typescript@6.0.3))':
+  '@vueuse/core@14.3.0(vue@3.5.34(typescript@5.9.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
       '@vueuse/metadata': 14.3.0
-      '@vueuse/shared': 14.3.0(vue@3.5.34(typescript@6.0.3))
-      vue: 3.5.34(typescript@6.0.3)
+      '@vueuse/shared': 14.3.0(vue@3.5.34(typescript@5.9.3))
+      vue: 3.5.34(typescript@5.9.3)
 
-  '@vueuse/integrations@12.8.2(focus-trap@7.8.0)(typescript@6.0.3)':
+  '@vueuse/integrations@12.8.2(focus-trap@7.8.0)(typescript@5.9.3)':
     dependencies:
-      '@vueuse/core': 12.8.2(typescript@6.0.3)
-      '@vueuse/shared': 12.8.2(typescript@6.0.3)
-      vue: 3.5.34(typescript@6.0.3)
+      '@vueuse/core': 12.8.2(typescript@5.9.3)
+      '@vueuse/shared': 12.8.2(typescript@5.9.3)
+      vue: 3.5.34(typescript@5.9.3)
     optionalDependencies:
       focus-trap: 7.8.0
     transitivePeerDependencies:
@@ -4282,27 +4282,27 @@ snapshots:
 
   '@vueuse/metadata@14.3.0': {}
 
-  '@vueuse/shared@12.8.2(typescript@6.0.3)':
+  '@vueuse/shared@12.8.2(typescript@5.9.3)':
     dependencies:
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/shared@14.3.0(vue@3.5.34(typescript@6.0.3))':
+  '@vueuse/shared@14.3.0(vue@3.5.34(typescript@5.9.3))':
     dependencies:
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
 
   '@waline/api@1.1.0': {}
 
-  '@waline/client@3.13.0(typescript@6.0.3)':
+  '@waline/client@3.13.0(typescript@5.9.3)':
     dependencies:
-      '@vueuse/core': 14.3.0(vue@3.5.34(typescript@6.0.3))
+      '@vueuse/core': 14.3.0(vue@3.5.34(typescript@5.9.3))
       '@waline/api': 1.1.0
       autosize: 6.0.1
       marked: 17.0.6
       marked-highlight: 2.2.4(marked@17.0.6)
       recaptcha-v3: 1.11.3
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -5788,7 +5788,7 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typescript@6.0.3: {}
+  typescript@5.9.3: {}
 
   unbox-primitive@1.1.0:
     dependencies:
@@ -5893,54 +5893,54 @@ snapshots:
       gray-matter: 4.0.3
       picocolors: 1.1.1
 
-  vitepress-plugin-file-content-loader@1.0.13(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)):
+  vitepress-plugin-file-content-loader@1.0.13(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)):
     dependencies:
       gray-matter: 4.0.3
       picocolors: 1.1.1
       tinyglobby: 0.2.16
-      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
 
   vitepress-plugin-md-h1@1.0.11:
     dependencies:
       gray-matter: 4.0.3
 
-  vitepress-plugin-mermaid@2.0.17(mermaid@11.15.0)(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)):
+  vitepress-plugin-mermaid@2.0.17(mermaid@11.15.0)(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)):
     dependencies:
       mermaid: 11.15.0
-      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
     optionalDependencies:
       '@mermaid-js/mermaid-mindmap': 9.3.0
 
-  vitepress-plugin-permalink@1.2.1(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)):
+  vitepress-plugin-permalink@1.2.1(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)):
     dependencies:
       gray-matter: 4.0.3
       picocolors: 1.1.1
-      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
 
-  vitepress-plugin-sidebar-resolve@1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)):
+  vitepress-plugin-sidebar-resolve@1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)):
     dependencies:
       gray-matter: 4.0.3
       picocolors: 1.1.1
-      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
 
-  vitepress-theme-teek@1.6.0(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))(vue@3.5.34(typescript@6.0.3)):
+  vitepress-theme-teek@1.6.0(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))(vue@3.5.34(typescript@5.9.3)):
     dependencies:
-      '@iconify/vue': 4.3.0(vue@3.5.34(typescript@6.0.3))
+      '@iconify/vue': 4.3.0(vue@3.5.34(typescript@5.9.3))
       gray-matter: 4.0.3
       js-yaml: 4.1.1
       markdown-it-container: 4.0.0
-      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3)
+      vitepress: 1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3)
       vitepress-plugin-auto-frontmatter: 1.0.13
       vitepress-plugin-catalogue: 1.1.2
       vitepress-plugin-doc-analysis: 1.0.13
-      vitepress-plugin-file-content-loader: 1.0.13(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))
+      vitepress-plugin-file-content-loader: 1.0.13(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))
       vitepress-plugin-md-h1: 1.0.11
-      vitepress-plugin-permalink: 1.2.1(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))
-      vitepress-plugin-sidebar-resolve: 1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3))
+      vitepress-plugin-permalink: 1.2.1(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))
+      vitepress-plugin-sidebar-resolve: 1.2.3(vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3))
     transitivePeerDependencies:
       - vue
 
-  vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@6.0.3):
+  vitepress@1.6.4(@algolia/client-search@5.52.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(typescript@5.9.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.52.1)(search-insights@2.17.3)
@@ -5949,17 +5949,17 @@ snapshots:
       '@shikijs/transformers': 2.5.0
       '@shikijs/types': 2.5.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 5.2.4(vite@5.4.21(terser@5.48.0))(vue@3.5.34(typescript@6.0.3))
+      '@vitejs/plugin-vue': 5.2.4(vite@5.4.21(terser@5.48.0))(vue@3.5.34(typescript@5.9.3))
       '@vue/devtools-api': 7.7.9
       '@vue/shared': 3.5.34
-      '@vueuse/core': 12.8.2(typescript@6.0.3)
-      '@vueuse/integrations': 12.8.2(focus-trap@7.8.0)(typescript@6.0.3)
+      '@vueuse/core': 12.8.2(typescript@5.9.3)
+      '@vueuse/integrations': 12.8.2(focus-trap@7.8.0)(typescript@5.9.3)
       focus-trap: 7.8.0
       mark.js: 8.11.1
       minisearch: 7.2.0
       shiki: 2.5.0
       vite: 5.4.21(terser@5.48.0)
-      vue: 3.5.34(typescript@6.0.3)
+      vue: 3.5.34(typescript@5.9.3)
     optionalDependencies:
       postcss: 8.5.15
     transitivePeerDependencies:
@@ -5989,15 +5989,15 @@ snapshots:
       - typescript
       - universal-cookie
 
-  vue@3.5.34(typescript@6.0.3):
+  vue@3.5.34(typescript@5.9.3):
     dependencies:
       '@vue/compiler-dom': 3.5.34
       '@vue/compiler-sfc': 3.5.34
       '@vue/runtime-dom': 3.5.34
-      '@vue/server-renderer': 3.5.34(vue@3.5.34(typescript@6.0.3))
+      '@vue/server-renderer': 3.5.34(vue@3.5.34(typescript@5.9.3))
       '@vue/shared': 3.5.34
     optionalDependencies:
-      typescript: 6.0.3
+      typescript: 5.9.3
 
   webidl-conversions@4.0.2: {}
 
