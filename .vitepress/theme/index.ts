@@ -14,6 +14,7 @@ import TocToggle from "./TocToggle.vue";
 // 功能页组件
 import TagIndex from "./TagIndex.vue";
 import TagPage from "./TagPage.vue";
+import CategoryPage from "./CategoryPage.vue";
 import Backlinks from "./Backlinks.vue";
 import GraphView from "./GraphView.vue";
 import RandomPage from "./RandomPage.vue";
@@ -44,6 +45,7 @@ export default {
     // 注册业务组件
     app.component("tag-index", TagIndex);
     app.component("tag-page", TagPage);
+    app.component("category-page", CategoryPage);
     app.component("Backlinks", Backlinks);
     app.component("graph-view", GraphView);
     app.component("random-page", RandomPage);
