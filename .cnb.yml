@@ -10,9 +10,6 @@ $:
         - vscode
         - docker
       stages:
-        - name: 授予install_gpg_keys.sh权限
-          script:
-            - chmod +x /workspace/install_gpg_keys.sh
         - name: 安装iflow CLI
           script:
             - npm i -g @iflow-ai/iflow-cli@latest
