@@ -92,6 +92,38 @@ const teekConfig = defineTeekConfig({
     provider: "local",
   },
 
+  // 功能页配置
+  functionPage: {
+    archives: {
+      enabled: true,
+      title: "📦 词条归档",
+      path: "/archives",
+    },
+    categories: {
+      enabled: true,
+      title: "📁 分类索引",
+      path: "/categories",
+    },
+    tags: {
+      enabled: true,
+      title: "🏷️ 标签索引",
+      path: "/tags",
+    },
+    graph: {
+      enabled: true,
+      title: "🕸️ 知识图谱",
+      path: "/graph",
+    },
+  },
+
+  // 导航栏
+  nav: [
+    { text: "归档", link: "/archives" },
+    { text: "分类", link: "/categories" },
+    { text: "标签", link: "/tags" },
+    { text: "图谱", link: "/graph" },
+  ],
+
   // 站点统计
   siteAnalytics: [
     {
