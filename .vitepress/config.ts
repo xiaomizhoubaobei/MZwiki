@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-import Teek from "vitepress-theme-teek";
+import { defineTeekConfig } from "vitepress-theme-teek/config";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { withPwa } from "@vite-pwa/vitepress";
 import { remarkWikiLink } from "./plugins/remark-wiki-link";
@@ -12,7 +12,7 @@ export default withPwa(
       description: "一座慢慢生长的数字知识花园",
       lang: "zh-CN",
 
-      extends: Teek,
+      extends: defineTeekConfig(),
 
       // Vite 插件
       vite: {
