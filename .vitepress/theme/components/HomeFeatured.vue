@@ -1,74 +1,89 @@
-<template>
-  <section class="home-featured">
-    <h2>📖 最近更新</h2>
-    <div class="grid">
-      <a v-for="item in recentPosts" :key="item.path" :href="item.path" class="card">
-        <span class="title">{{ item.title }}</span>
-        <span class="desc">{{ item.readingTime }} · {{ formatDate(item.updated) }}</span>
-      </a>
-    </div>
-    <div v-if="recentPosts.length === 0" class="empty-hint">
-      <span>暂无词条，快去添加第一篇吧 🌱</span>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 
 const { theme } = useData()
 
-// 从 docAnalysisInfo 获取所有词条文件信息
-const files = computed(() => {
+interface Post {
+  title: string
+  path: string
+  categories: string[]
+  readingTime: string
+  updated: number
+}
+
+const posts = computed((): Post[] => {
   const info = (theme.value as any)?.docAnalysisInfo
   if (!info?.eachFileWords) return []
 
   return info.eachFileWords
-    .filter((f: any) => {
-      const p = f.fileInfo?.relativePath || ''
-      // 过滤索引页、标签页、功能页
-      if (p === 'index.md' || p === '404.md') return false
-      if (p.startsWith('标签/')) return false
-      if (p.startsWith('索引/')) return false
-      if (p.endsWith('/index.md')) return false
-      const fname = p.replace(/\.md$/, '')
-      if (['random', 'today', 'search', '图谱', '待创建词条', '站点统计', '使用规范', 'CONTRIBUTING'].includes(fname)) return false
-      return true
-    })
-    .map((f: any) => ({
-      path: '/' + (f.fileInfo?.relativePath || '').replace(/\.md$/, ''),
-      title: f.frontmatter?.title || (f.fileInfo?.relativePath || '').replace(/\.md$/, '').split('/').pop()?.replace(/-/g, ' ') || '',
-      readingTime: f.readingTime || '几分钟',
-      updated: f.fileInfo?.lastCommitTime || 0,
-    }))
-})
+    .map((item: any) => {
+      const fm = item.frontmatter || {}
+      const relativePath = item.fileInfo?.relativePath || ''
 
-// 按更新时间倒序，取前 6 个
-const recentPosts = computed(() => {
-  return [...files.value]
+      return {
+        title: fm.title || relativePath.replace(/\.md$/, '').split('/').pop()?.replace(/-/g, ' ') || '',
+        path: '/' + relativePath.replace(/\.md$/, ''),
+        categories: fm.categories || [],
+        readingTime: item.readingTime || '几分钟',
+        updated: item.fileInfo?.lastCommitTime || 0,
+      }
+    })
+    // 过滤非词条页面
+    .filter((p: Post) =>
+      p.path !== '/' &&
+      !p.path.includes('使用规范') &&
+      !p.path.includes('待创建词条') &&
+      !p.path.includes('标签') &&
+      !p.path.includes('索引') &&
+      !p.path.endsWith('/index') &&
+      !p.path.includes('CONTRIBUTING')
+    )
+    // 按 Git 提交时间倒序
     .sort((a, b) => b.updated - a.updated)
+    // 取前 6 条
     .slice(0, 6)
 })
-
-function formatDate(timestamp: number) {
-  if (!timestamp) return ''
-  return new Date(timestamp).toLocaleDateString('zh-CN', {
-    month: 'short',
-    day: 'numeric',
-  })
-}
 </script>
+
+<template>
+  <section class="home-featured">
+    <h2>📖 最近更新</h2>
+    <div class="grid">
+      <a v-for="item in posts" :key="item.path" :href="item.path" class="card">
+        <div class="meta">
+          <span v-if="item.categories.length" class="cat">📁 {{ item.categories[0] }}</span>
+          <span v-else class="cat">📁 未分类</span>
+          <span class="time">🕒 {{ item.readingTime }}</span>
+        </div>
+        <h3 class="title">{{ item.title }}</h3>
+        <div class="date">
+          🔄 {{ item.updated ? new Date(item.updated).toLocaleDateString('zh-CN') : '' }}
+        </div>
+      </a>
+    </div>
+    <div v-if="posts.length === 0" class="empty-hint">
+      <span>暂无词条，快去添加第一篇吧 🌱</span>
+    </div>
+  </section>
+</template>
 
 <style scoped>
 .home-featured {
   margin-top: 48px;
 }
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
 }
+
 .card {
   display: block;
   padding: 16px;
@@ -76,20 +91,36 @@ function formatDate(timestamp: number) {
   background: var(--vp-c-bg-soft);
   text-decoration: none;
   color: inherit;
-  transition: all 0.2s;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
 }
+
 .card:hover {
+  border-color: var(--vp-c-brand);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
-.title {
-  font-weight: 600;
-  display: block;
-}
-.desc {
-  font-size: 14px;
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
   color: var(--vp-c-text-2);
+  margin-bottom: 8px;
 }
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 8px 0;
+  color: var(--vp-c-text-1);
+}
+
+.date {
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
 .empty-hint {
   text-align: center;
   padding: 2rem;
