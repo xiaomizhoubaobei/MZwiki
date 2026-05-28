@@ -14,8 +14,9 @@ export default withPwa(
 
       extends: defineTeekConfig(),
 
-      // Vite 插件
+      // Vite 配置
       vite: {
+        logLevel: "warn",
         plugins: [
           injectTagsPlugin(),
           // 将 pagefind 标记为外部依赖，避免构建时报错
@@ -28,6 +29,24 @@ export default withPwa(
             },
           },
         ],
+        build: {
+          chunkSizeWarningLimit: 1024,
+          rollupOptions: {
+            output: {
+              manualChunks(id) {
+                if (id.includes("node_modules")) {
+                  return "vendor";
+                }
+                if (id.includes("mermaid")) {
+                  return "mermaid";
+                }
+                if (id.includes("force-graph")) {
+                  return "graph";
+                }
+              },
+            },
+          },
+        },
       },
 
       themeConfig: {
@@ -75,6 +94,14 @@ export default withPwa(
           { text: "🎲 随机", link: "/random" },
           { text: "🔴 待创建", link: "/待创建词条" },
         ],
+
+        // ===== Teek 侧边栏扫描范围限制 =====
+        teek: {
+          sidebarResolve: {
+            scanDirs: ["docs"],
+            ignoreDirs: ["scripts", "node_modules", ".pnpm-store"],
+          },
+        },
       },
 
       // ===== Mermaid 配置 =====

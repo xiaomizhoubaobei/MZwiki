@@ -3,7 +3,11 @@ layout: doc
 title: 首页
 ---
 
+<div data-pagefind-body>
+
 <BlogIndex />
+
+</div>
 
 <br>
 
