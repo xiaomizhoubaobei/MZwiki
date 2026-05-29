@@ -45,7 +45,6 @@ export default withPwa(
         optimizeDeps: {
           include: [],
           exclude: [
-            '@braintree/sanitize-url',
             'dayjs',
             'debug',
           ],
@@ -54,7 +53,6 @@ export default withPwa(
         ssr: {
           noExternal: [],
           external: [
-            '@braintree/sanitize-url',
             'dayjs',
             'debug',
           ],
