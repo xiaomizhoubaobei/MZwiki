@@ -1,6 +1,7 @@
 ---
 title: 人文
 description: 人文学科分类首页
+article: false
 ---
 
 # 人文

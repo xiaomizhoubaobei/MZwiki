@@ -1,6 +1,7 @@
 ---
 title: 生物
 description: 生物学分类首页
+article: false
 ---
 
 # 生物
