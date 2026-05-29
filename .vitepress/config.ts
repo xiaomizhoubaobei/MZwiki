@@ -40,6 +40,14 @@ export default withPwa(
     vite: {
       logLevel: "warn",
 
+      server: {
+        host: "0.0.0.0",
+      },
+
+      preview: {
+        host: "0.0.0.0",
+      },
+
       optimizeDeps: {
         include: [],
         exclude: [],
