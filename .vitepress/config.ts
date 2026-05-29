@@ -17,6 +17,19 @@ export default withPwa(
       // Vite 配置
       vite: {
         logLevel: "warn",
+
+        optimizeDeps: {
+          // 排除图谱等会在 pnpm 虚拟存储下预构建失败的包
+          exclude: [
+            "force-graph",
+            "cytoscape",
+            "cytoscape-cose-bilkent",
+            "dayjs",
+            "debug",
+            "@braintree/sanitize-url",
+          ],
+        },
+
         plugins: [
           injectTagsPlugin(),
           // 将 pagefind 标记为外部依赖，避免构建时报错
