@@ -15,8 +15,8 @@ hero:
       text: 🌿 开始漫游
       link: /random
     - theme: alt
-      text: 📚 查看图谱
-      link: /图谱
+      text: 📚 归档
+      link: /archives
 
 # Features（Teek 原生）
 features:

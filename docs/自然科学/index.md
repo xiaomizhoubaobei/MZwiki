@@ -1,6 +1,7 @@
 ---
 title: 自然科学
 description: 自然科学分类首页
+article: false
 ---
 
 # 自然科学

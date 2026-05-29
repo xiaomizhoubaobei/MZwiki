@@ -1,5 +1,6 @@
 ---
 layout: home
+article: false
 ---
 
 <div data-pagefind-body>
@@ -13,7 +14,6 @@ layout: home
 - 📚 **[归档](/archives)** — 按时间看一切
 - 📁 **[分类](/categories)** — 按结构看世界
 - 🏷️ **[标签](/tags)** — 按兴趣自由跳
-- 🕸️ **[图谱](/图谱)** — 看见知识之间的关系
 - 🕰️ **[时间线](/timeline)** — 看见知识的生长
 
 </div>
