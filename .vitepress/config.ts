@@ -9,10 +9,34 @@ export default withPwa(
   withMermaid(
     defineConfig({
       title: "VitePedia",
-      description: "一座慢慢生长的数字知识花园",
+      description: "一座慢慢生长的数字知识花园，涵盖哲学、科学、技术与人文的开放知识库。",
       lang: "zh-CN",
 
       extends: defineTeekConfig(),
+
+      // ===== SEO =====
+      head: [
+        // 站点关键词
+        ["meta", { name: "keywords", content: "知识库,百科,数字花园,VitePedia,哲学,科学,技术,人文" }],
+
+        // Open Graph（社交分享卡片）
+        ["meta", { property: "og:title", content: "VitePedia" }],
+        ["meta", { property: "og:description", content: "一座慢慢生长的数字知识花园。" }],
+        ["meta", { property: "og:type", content: "website" }],
+        ["meta", { property: "og:locale", content: "zh_CN" }],
+
+        // Twitter Card
+        ["meta", { name: "twitter:card", content: "summary_large_image" }],
+
+        // 站点图标
+        ["link", { rel: "icon", href: "/favicon.svg" }],
+      ],
+
+      // ===== Sitemap =====
+      sitemap: {
+        hostname: "https://wiki.example.com", // 请替换为实际域名
+        exclude: ["/404", "/待创建词条"],
+      },
 
       // Vite 配置
       vite: {
@@ -110,6 +134,12 @@ export default withPwa(
 
         // ===== Teek 配置 =====
         teek: {
+          // SEO（自动生成 og:image 和 JSON-LD 结构化数据）
+          seo: {
+            autoOgImage: true,
+            jsonLd: true,
+          },
+
           // 图谱（生产环境启用）
           graph: {
             enabled: true,
