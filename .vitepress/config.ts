@@ -44,12 +44,26 @@ export default withPwa(
 
         optimizeDeps: {
           include: [],
-          exclude: [],
+          exclude: [
+            'cytoscape',
+            'cytoscape-cose-bilkent',
+            'force-graph',
+            '@braintree/sanitize-url',
+            'dayjs',
+            'debug',
+          ],
         },
 
         ssr: {
           noExternal: [],
-          external: [],
+          external: [
+            'cytoscape',
+            'cytoscape-cose-bilkent',
+            'force-graph',
+            '@braintree/sanitize-url',
+            'dayjs',
+            'debug',
+          ],
         },
 
         plugins: [
