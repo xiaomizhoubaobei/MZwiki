@@ -108,8 +108,16 @@ export default withPwa(
           { text: "🔴 待创建", link: "/待创建词条" },
         ],
 
-        // ===== Teek 侧边栏扫描范围限制 =====
+        // ===== Teek 配置 =====
         teek: {
+          // 图谱（生产环境启用）
+          graph: {
+            enabled: true,
+            maxNodes: 150,
+            maxLinks: 300,
+          },
+
+          // 侧边栏扫描范围限制
           sidebarResolve: {
             scanDirs: ["docs"],
             ignoreDirs: [

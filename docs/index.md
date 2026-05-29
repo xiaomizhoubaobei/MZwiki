@@ -1,19 +1,19 @@
 ---
-layout: doc
-title: 首页
+layout: home
 ---
 
 <div data-pagefind-body>
 
-<BlogIndex />
+# VitePedia
 
-</div>
+一座慢慢生长的数字知识花园。
 
-<br>
+## 浏览方式
 
-<div class="license">
-
-本文档采用 **知识共享 署名-非商业性使用-相同方式共享 4.0 国际许可协议（CC BY-NC-SA 4.0）**。
-你可以自由阅读、分享与非商业性使用，唯须遵守署名与相同方式共享条款。
+- 📚 **[归档](/archives)** — 按时间看一切
+- 📁 **[分类](/categories)** — 按结构看世界
+- 🏷️ **[标签](/tags)** — 按兴趣自由跳
+- 🕸️ **[图谱](/graph)** — 看见知识之间的关系
+- 🕰️ **[时间线](/timeline)** — 看见知识的生长
 
 </div>
