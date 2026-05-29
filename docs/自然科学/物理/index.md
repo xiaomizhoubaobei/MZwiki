@@ -1,6 +1,7 @@
 ---
 title: 物理
 description: 物理学分类首页
+article: false
 ---
 
 # 物理

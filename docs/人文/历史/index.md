@@ -1,6 +1,7 @@
 ---
 title: 历史
 description: 历史分类首页
+article: false
 ---
 
 # 历史
