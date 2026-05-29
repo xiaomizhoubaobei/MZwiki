@@ -16,7 +16,6 @@ import TagIndex from "./TagIndex.vue";
 import TagPage from "./TagPage.vue";
 import CategoryPage from "./CategoryPage.vue";
 import Backlinks from "./Backlinks.vue";
-import GraphView from "./GraphView.vue";
 import RandomPage from "./RandomPage.vue";
 import Timeline from "./Timeline.vue";
 import Redlinks from "./Redlinks.vue";
@@ -47,7 +46,6 @@ export default {
     app.component("tag-page", TagPage);
     app.component("category-page", CategoryPage);
     app.component("Backlinks", Backlinks);
-    app.component("graph-view", GraphView);
     app.component("random-page", RandomPage);
     app.component("Timeline", Timeline);
     app.component("redlinks", Redlinks);

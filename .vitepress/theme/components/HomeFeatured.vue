@@ -50,7 +50,6 @@ const posts = computed((): Post[] => {
   <section class="home-featured">
     <div class="hero-actions">
       <a href="/random" class="hero-btn brand">🎲 随机漫游</a>
-      <a href="/graph" class="hero-btn alt">📚 查看图谱</a>
     </div>
     <h2>📖 最近更新</h2>
     <div class="grid">
@@ -105,16 +104,6 @@ const posts = computed((): Post[] => {
   transform: translateY(-1px);
 }
 
-.hero-btn.alt {
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-1);
-  border: 1px solid var(--vp-c-divider);
-}
-
-.hero-btn.alt:hover {
-  border-color: var(--vp-c-brand);
-  color: var(--vp-c-brand);
-}
 
 h2 {
   font-size: 1.4rem;
