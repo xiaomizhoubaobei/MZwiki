@@ -43,6 +43,9 @@ export default withPwa(
         logLevel: "warn",
 
         optimizeDeps: {
+          // 显式清空 include，覆盖 Teek 1.6.0 默认的预构建列表
+          include: [],
+
           // 排除图谱等会在 pnpm 虚拟存储下预构建失败的包
           exclude: [
             "force-graph",
@@ -51,6 +54,15 @@ export default withPwa(
             "dayjs",
             "debug",
             "@braintree/sanitize-url",
+          ],
+        },
+
+        // 防止 SSR 阶段把 cytoscape 相关包当作 entry point
+        ssr: {
+          external: [
+            "cytoscape",
+            "cytoscape-cose-bilkent",
+            "force-graph",
           ],
         },
 
