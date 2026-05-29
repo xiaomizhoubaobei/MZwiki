@@ -150,6 +150,7 @@ export default withPwa(
           ignoreFiles: [
             "README.md",
             "CHANGELOG.md",
+            "index.md",
           ],
         },
       },
