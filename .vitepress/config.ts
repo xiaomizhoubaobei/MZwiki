@@ -10,13 +10,7 @@ export default withPwa(
     description: "一座慢慢生长的数字知识花园，涵盖哲学、科学、技术与人文的开放知识库。",
     lang: "zh-CN",
 
-    extends: defineTeekConfig({
-      vitePlugins: {
-        sidebarOption: {
-          ignoreList: [".pnpm-store", ".git", "scripts", "drafts"],
-        },
-      },
-    }),
+    extends: defineTeekConfig({}),
 
     // ===== SEO =====
     head: [
@@ -133,24 +127,6 @@ export default withPwa(
         seo: {
           autoOgImage: true,
           jsonLd: true,
-        },
-
-        // 侧边栏扫描范围限制
-        sidebarResolve: {
-          scanDirs: ["docs"],
-          ignoreDirs: [
-            "node_modules",
-            ".pnpm-store",
-            "scripts",
-            ".git",
-            "dist",
-            ".vitepress",
-            "drafts",
-          ],
-          ignoreFiles: [
-            "README.md",
-            "CHANGELOG.md",
-          ],
         },
       },
     },
