@@ -34,7 +34,7 @@ export default withPwa(
 
       // ===== Sitemap =====
       sitemap: {
-        hostname: "https://wiki.example.com", // 请替换为实际域名
+        hostname: "https://wiki.mizhoubaobei.top",
         exclude: ["/404", "/待创建词条"],
       },
 
