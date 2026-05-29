@@ -45,7 +45,6 @@ export default withPwa(
         optimizeDeps: {
           include: [],
           exclude: [
-            'dayjs',
             'debug',
           ],
         },
@@ -53,7 +52,6 @@ export default withPwa(
         ssr: {
           noExternal: [],
           external: [
-            'dayjs',
             'debug',
           ],
         },
