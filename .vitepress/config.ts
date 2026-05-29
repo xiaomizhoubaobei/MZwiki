@@ -43,27 +43,13 @@ export default withPwa(
         logLevel: "warn",
 
         optimizeDeps: {
-          // 显式清空 include，覆盖 Teek 1.6.0 默认的预构建列表
           include: [],
-
-          // 排除图谱等会在 pnpm 虚拟存储下预构建失败的包
-          exclude: [
-            "force-graph",
-            "cytoscape",
-            "cytoscape-cose-bilkent",
-            "dayjs",
-            "debug",
-            "@braintree/sanitize-url",
-          ],
+          exclude: [],
         },
 
-        // 防止 SSR 阶段把 cytoscape 相关包当作 entry point
         ssr: {
-          external: [
-            "cytoscape",
-            "cytoscape-cose-bilkent",
-            "force-graph",
-          ],
+          noExternal: [],
+          external: [],
         },
 
         plugins: [
@@ -89,9 +75,7 @@ export default withPwa(
                 if (id.includes("mermaid")) {
                   return "mermaid";
                 }
-                if (id.includes("force-graph")) {
-                  return "graph";
-                }
+
               },
             },
           },
@@ -138,7 +122,6 @@ export default withPwa(
           { text: "归档", link: "/archives" },
           { text: "分类", link: "/categories" },
           { text: "标签", link: "/tags" },
-          { text: "图谱", link: "/graph" },
           { text: "时间线", link: "/timeline" },
           { text: "🎲 随机", link: "/random" },
           { text: "🔴 待创建", link: "/待创建词条" },
@@ -150,13 +133,6 @@ export default withPwa(
           seo: {
             autoOgImage: true,
             jsonLd: true,
-          },
-
-          // 图谱（生产环境启用）
-          graph: {
-            enabled: true,
-            maxNodes: 150,
-            maxLinks: 300,
           },
 
           // 侧边栏扫描范围限制
