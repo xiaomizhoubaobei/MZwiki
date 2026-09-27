@@ -253,8 +253,8 @@ selfcheck_ok=0
 if (
     cd "$VERIFY_DIR" || exit 1
     git init -q . || exit 1
-    git config user.name  "$(git config --global user.name  || echo "$KEY_ID")"
-    git config user.email "$(git config --global user.email || echo "${KEY_ID}@localhost")"
+    git config user.name  "qixiaoxin"
+    git config user.email "qixiaoxin@stu.sqxy.edu.cn"
     echo "hello GPG" > selfcheck.txt
     git add selfcheck.txt
     git commit -q -S -m "chore(gpg): 签名环境自检" || exit 1
