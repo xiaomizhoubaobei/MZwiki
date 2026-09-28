@@ -35,10 +35,12 @@
 - ❌ 错误：`update App.tsx` (格式错误且无意义)
 
 ### 1.4 提交前检查 (Pre-commit Checks)
-- 本仓库**未配置** `.pre-commit-config.yaml`，无需执行 pre-commit 流程；若日后引入该文件，则必须在 `git commit` 前执行：
+- 本仓库**已配置** `.pre-commit-config.yaml`，提交前须执行 pre-commit 流程：
   1. 安装：`pip install pre-commit`
-  2. 全量检查：`pre-commit run --all-files`
-- 本仓库的等价质量门禁是 **类型检查**：提交前必须运行 `pnpm lint`（`tsc --noEmit`）且零错误（详见 10.7）。
+  2. 安装钩子（首次）：`pre-commit install`
+  3. 全量检查：`pre-commit run --all-files`（日常 `git commit` 会自动触发）
+- 钩子集合：通用文本卫生（行尾空白 / 文件末尾换行 / 行尾符 / 大小写冲突 / 合并冲突 / 大文件 / 私钥检测 / 禁直推 `main`）、配置合法性（YAML / JSON），以及本地 `tsc --noEmit` 类型检查（等价 `pnpm lint`）。
+- 本仓库的质量门禁核心是 **类型检查**：`pnpm lint`（`tsc --noEmit`）必须零错误（详见 10.7）。
 
 ### 1.5 GPG 签名
 项目开启了 commit 签名。
@@ -796,7 +798,8 @@ pnpm dev
 
 ### 10.7. 代码质量与提交规范
 
-- **类型检查**：提交前运行 `pnpm lint`（`tsc --noEmit`），确保无类型错误；`build` 亦会先跑 `tsc`。
+- **类型检查**：提交前运行 `pnpm lint`（`tsc --noEmit`），确保无类型错误；`build` 亦会先跑 `tsc`。该检查已作为本地钩子写入 `.pre-commit-config.yaml`（`tsc-typecheck`），提交时自动执行。
+- **pre-commit**：仓库配置了 `.pre-commit-config.yaml`，钩子覆盖文本卫生、配置合法性与类型检查；`git commit` 前需先 `pre-commit install` 完成钩子挂载（见 1.4）。
 - **提交信息**：遵循第 1 章 Angular 规范，**中文描述**，如 `feat(router): 新增 Special:内容统计 页面路由`、`fix(seo): 修正 canonical 路径未编码的问题`。
 - **GPG 签名**：提交前必须先执行 `bash install_gpg_keys.sh`（见 1.5），本仓库已开启 commit 签名。
 - **分支与 PR**：从 `main` 拉出特性分支，完成后提交 PR，说明变更点与验证方式；面向 Issue / PR 的自动化模板见 `.github/`。

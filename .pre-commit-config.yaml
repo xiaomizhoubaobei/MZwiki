@@ -1,0 +1,50 @@
+# pre-commit 钩子配置
+# 安装：pip install pre-commit && pre-commit install
+# 手动全量运行：pre-commit run --all-files
+fail_fast: false
+default_stages: [pre-commit]
+
+# 排除依赖锁文件与构建产物，避免被自动修复钩子反复改写
+exclude: |
+  (?x)^(
+    pnpm-lock\.yaml|
+    node_modules/|
+    dist/|
+    .*\.min\.(js|css)
+  )$
+
+repos:
+  # ---------- 通用文本卫生 ----------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch, main]
+
+  # ---------- 配置文件合法性 ----------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+        # tsconfig 允许注释（JSONC），跳过
+        exclude: ^tsconfig.*\.json$
+
+  # ---------- TypeScript 类型检查（本地，复用项目工具链）----------
+  - repo: local
+    hooks:
+      - id: tsc-typecheck
+        name: tsc 类型检查（等价 pnpm lint）
+        entry: pnpm lint
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
