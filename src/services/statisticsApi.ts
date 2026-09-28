@@ -1,10 +1,10 @@
-import { 
-  GlobalContentStatistics, 
-  ArticleContentStats, 
-  getGlobalContentStatistics, 
-  getAllArticlesContentStats, 
-  getFeaturedTamponStats, 
-  getWikiEntryStats 
+import {
+  GlobalContentStatistics,
+  ArticleContentStats,
+  getGlobalContentStatistics,
+  getAllArticlesContentStats,
+  getFeaturedTamponStats,
+  getWikiEntryStats
 } from '../utils/contentStatisticsAutomation';
 import { ReadingMetrics, calculateReadingMetrics } from '../utils/headerAutomation';
 

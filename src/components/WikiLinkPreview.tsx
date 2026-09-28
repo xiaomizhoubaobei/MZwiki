@@ -299,16 +299,16 @@ export const WikiLinkScannerText: React.FC<{
 
 export interface WikiLinkPreviewProps {
   term: string;
-  position: { 
-    x: number; 
-    y: number; 
-    rect?: { 
-      left: number; 
-      top: number; 
-      bottom: number; 
-      right: number; 
-      width: number; 
-      height: number 
+  position: {
+    x: number;
+    y: number;
+    rect?: {
+      left: number;
+      top: number;
+      bottom: number;
+      right: number;
+      width: number;
+      height: number
     };
   };
   onClose: () => void;
@@ -345,7 +345,7 @@ export const WikiLinkPreview: React.FC<WikiLinkPreviewProps> = ({
     imageUrl: entry.imageUrl,
     iconType: (entry.category === 'anatomy' ? 'anatomy' : entry.category === 'medical' ? 'medical' : 'product') as 'anatomy' | 'medical' | 'product'
   } : (
-    WIKILINK_DATA[cleanKey] || 
+    WIKILINK_DATA[cleanKey] ||
     WIKILINK_DATA[cleanKey.replace(/[（(].*?[）)]/g, '').trim()] || {
       title: cleanKey,
       boldTerm: cleanKey,
@@ -375,7 +375,7 @@ export const WikiLinkPreview: React.FC<WikiLinkPreviewProps> = ({
   // Dimensions & Coordinates
   const cardWidth = 310;
   const rect = position.rect;
-  
+
   // Decide whether card is positioned below or above the hovered link
   const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
   const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
@@ -432,14 +432,14 @@ export const WikiLinkPreview: React.FC<WikiLinkPreviewProps> = ({
       onMouseLeave={onClose}
       onClick={handleClick}
       className={`rounded-lg shadow-[0_30px_90px_-20px_rgba(0,0,0,0.35),0_0_1px_1px_rgba(0,0,0,0.08)] border transition-all animate-in fade-in zoom-in-95 duration-150 cursor-pointer select-none ${
-        isDarkMode 
-          ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]'
           : 'bg-white border-[#c8ccd1] text-[#202122]'
       }`}
     >
       {/* 1. Wikipedia Upward/Downward Pointer Caret */}
       {isBelow ? (
-        <div 
+        <div
           className={`absolute -top-2 w-3.5 h-3.5 rotate-45 border-t border-l z-20 transition-colors ${
             data.imageUrl && !imageError
               ? (isDarkMode ? 'bg-[#18191a] border-[#54595d]' : 'bg-[#f4f5f7] border-[#c8ccd1]')
@@ -448,7 +448,7 @@ export const WikiLinkPreview: React.FC<WikiLinkPreviewProps> = ({
           style={{ left: pointerOffset - 7 }}
         />
       ) : (
-        <div 
+        <div
           className={`absolute -bottom-2 w-3.5 h-3.5 rotate-45 border-b border-r z-20 ${
             isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-white border-[#c8ccd1]'
           }`}
@@ -459,8 +459,8 @@ export const WikiLinkPreview: React.FC<WikiLinkPreviewProps> = ({
       {/* 2. Top Lead Image (Wikipedia Page Previews Header Photo) */}
       {data.imageUrl && !imageError && (
         <div className="w-full h-44 overflow-hidden rounded-t-lg bg-[#eaecf0] dark:bg-[#1a1b1c] relative border-b border-black/5 dark:border-white/5 group">
-          <img 
-            src={data.imageUrl} 
+          <img
+            src={data.imageUrl}
             alt={data.title}
             onError={() => setImageError(true)}
             className="w-full h-full object-cover select-none pointer-events-none"

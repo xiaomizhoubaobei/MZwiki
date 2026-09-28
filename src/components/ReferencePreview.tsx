@@ -25,8 +25,8 @@ export const ReferencePreview: React.FC<ReferencePreviewProps> = ({
       }}
       onMouseLeave={onClose}
       className={`w-80 rounded-lg shadow-2xl border text-xs p-3 transition-all animate-in fade-in zoom-in-95 duration-150 ${
-        isDarkMode 
-          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]'
           : 'bg-white border-[#c8ccd1] text-[#202122]'
       }`}
     >

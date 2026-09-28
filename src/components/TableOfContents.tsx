@@ -29,11 +29,11 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   };
 
   return (
-    <nav 
+    <nav
       aria-label="目录"
       className={`rounded-lg border p-3 text-xs transition-colors select-none shadow-xs ${
-        isDarkMode 
-          ? 'bg-[#1e2022] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#1e2022] border-[#54595d] text-[#eaecf0]'
           : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
       }`}
     >

@@ -31,8 +31,8 @@ export const AppearanceModal: React.FC<AppearanceModalProps> = ({
 
       {/* Modal Card (Vector 2022 Appearance Panel) */}
       <div className={`relative w-full max-w-sm rounded-lg shadow-2xl border p-5 z-10 transition-colors ${
-        isDarkMode 
-          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]'
           : 'bg-white border-[#c8ccd1] text-[#202122]'
       }`}>
         <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/5">

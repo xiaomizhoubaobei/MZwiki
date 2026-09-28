@@ -52,7 +52,7 @@ export const WikipediaMediaViewer: React.FC<WikipediaMediaViewerProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex flex-col bg-black/95 text-white backdrop-blur-xs select-none animate-in fade-in duration-150"
       role="dialog"
       aria-modal="true"
@@ -129,7 +129,7 @@ export const WikipediaMediaViewer: React.FC<WikipediaMediaViewerProps> = ({
         )}
 
         {/* Scaled Image Container */}
-        <div 
+        <div
           className="max-w-[760px] w-full max-h-full flex items-center justify-center transition-transform duration-200"
           style={{ transform: `scale(${zoomLevel})` }}
         >
@@ -194,7 +194,7 @@ function renderLargeGraphic(type: WikiImageData['type']) {
         <svg viewBox="0 0 480 300" className="w-full h-auto block max-h-[58vh]">
           {/* Detailed background & ruler */}
           <rect width="480" height="300" fill="#f8fafc" />
-          
+
           {/* Metric Ruler */}
           <g transform="translate(30, 210)">
             <rect x="0" y="0" width="420" height="48" rx="2" fill="#dec08c" stroke="#9a7b45" strokeWidth="1" />
@@ -223,7 +223,7 @@ function renderLargeGraphic(type: WikiImageData['type']) {
           <g transform="translate(60, 75)">
             {/* Cord */}
             <path d="M 25,48 C 5,55 -15,70 -35,62 C -45,58 -50,75 -60,78" fill="none" stroke="#cbd5e1" strokeWidth="3" strokeDasharray="3,3" />
-            
+
             {/* Twisted wrapper end */}
             <path d="M 20,30 C 10,35 2,42 6,50 C 10,58 18,62 25,65 Z" fill="#ffffff" fillOpacity="0.8" stroke="#94a3b8" strokeWidth="0.8" />
 

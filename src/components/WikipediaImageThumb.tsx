@@ -30,10 +30,10 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
   isDarkMode,
   onImageClick,
 }) => {
-  const alignClass = 
-    align === 'right' 
-      ? 'float-none sm:float-right clear-right ml-0 sm:ml-5 mb-4' 
-      : align === 'left' 
+  const alignClass =
+    align === 'right'
+      ? 'float-none sm:float-right clear-right ml-0 sm:ml-5 mb-4'
+      : align === 'left'
       ? 'float-none sm:float-left clear-left mr-0 sm:mr-5 mb-4'
       : align === 'center'
       ? 'mx-auto mb-4 block'
@@ -47,28 +47,28 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`thumb tright not-italic select-none my-2 transition-colors ${alignClass}`}
       style={{ width: `${width + 4}px`, maxWidth: '100%' }}
     >
       {/* Outer Wikipedia Thumb Container: 1px border, 3px padding, #f8f9fa bg */}
-      <div 
+      <div
         className={`thumbinner p-[3px] border rounded-[2px] transition-colors ${
-          isDarkMode 
-            ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' 
+          isDarkMode
+            ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]'
             : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
         }`}
         style={{ width: '100%' }}
       >
         {/* Image Area */}
-        <a 
+        <a
           href={`#view-${image.id}`}
           onClick={handleClick}
           className="image block relative overflow-hidden group cursor-pointer border border-[#c8ccd1]/40 dark:border-[#54595d]/40 bg-white dark:bg-[#1a1b1e]"
           title={`${image.title} - 点击放大`}
         >
           {renderImageGraphic(image.type)}
-          
+
           {/* Subtle hover overlay hint */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors pointer-events-none" />
         </a>
@@ -78,10 +78,10 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
           <div className="flex-1 text-[#202122] dark:text-[#eaecf0]">
             {image.caption}
           </div>
-          
+
           {/* Wikipedia's Classic Magnify Icon: Two overlapping rectangles */}
           <div className="magnify shrink-0 mt-0.5">
-            <a 
+            <a
               href={`#view-${image.id}`}
               onClick={handleClick}
               className="internal block p-0.5 text-[#72777d] hover:text-[#3366cc] dark:hover:text-[#6699ff] transition-colors"
@@ -89,9 +89,9 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
               aria-label="放大"
             >
               {/* MediaWiki SVG Magnify / Enlarge Icon */}
-              <svg 
-                className="w-3.5 h-3.5 fill-current" 
-                viewBox="0 0 20 20" 
+              <svg
+                className="w-3.5 h-3.5 fill-current"
+                viewBox="0 0 20 20"
                 aria-hidden="true"
               >
                 {/* Front window and back window icon */}
@@ -114,8 +114,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'cellophane':
       // Recreates File:Tampon.JPG - Cellophane wrapped tampon above cm ruler
       return (
-        <svg 
-          viewBox="0 0 320 200" 
+        <svg
+          viewBox="0 0 320 200"
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -125,7 +125,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <stop offset="50%" stopColor="#ffffff" />
               <stop offset="100%" stopColor="#e5e7eb" />
             </linearGradient>
-            
+
             {/* Wooden ruler gradient */}
             <linearGradient id="rulerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#e9cf9f" />
@@ -157,7 +157,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <stop offset="50%" stopColor="#f87171" />
               <stop offset="100%" stopColor="#dc2626" />
             </linearGradient>
-            
+
             <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.25" />
             </filter>
@@ -201,28 +201,28 @@ function renderImageGraphic(type: WikiImageData['type']) {
           {/* The Tampon in Cellophane (File:Tampon.JPG) */}
           <g transform="translate(45, 52)" filter="url(#subtleShadow)">
             {/* Withdrawal string peeking out left */}
-            <path 
-              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55" 
-              fill="none" 
-              stroke="#e2e8f0" 
-              strokeWidth="2.2" 
-              strokeLinecap="round" 
+            <path
+              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55"
+              fill="none"
+              stroke="#e2e8f0"
+              strokeWidth="2.2"
+              strokeLinecap="round"
             />
-            <path 
-              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55" 
-              fill="none" 
-              stroke="#cbd5e1" 
-              strokeWidth="1.2" 
-              strokeDasharray="2,2" 
+            <path
+              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55"
+              fill="none"
+              stroke="#cbd5e1"
+              strokeWidth="1.2"
+              strokeDasharray="2,2"
             />
 
             {/* Left twisted cellophane tail wrapper */}
-            <path 
-              d="M 10,22 C 3,25 -2,32 0,37 C 2,42 8,46 12,48 Z" 
-              fill="#ffffff" 
-              fillOpacity="0.75" 
-              stroke="#94a3b8" 
-              strokeWidth="0.6" 
+            <path
+              d="M 10,22 C 3,25 -2,32 0,37 C 2,42 8,46 12,48 Z"
+              fill="#ffffff"
+              fillOpacity="0.75"
+              stroke="#94a3b8"
+              strokeWidth="0.6"
             />
             {/* Twist crimp lines */}
             <path d="M 2,32 Q 8,36 12,35" stroke="#64748b" strokeWidth="0.8" fill="none" opacity="0.6" />
@@ -253,12 +253,12 @@ function renderImageGraphic(type: WikiImageData['type']) {
             <rect x="12" y="16" width="180" height="38" rx="19" fill="url(#cellophaneShine)" pointerEvents="none" />
 
             {/* Right rounded tip smooth curve */}
-            <path 
-              d="M 172,16 C 188,16 200,25 200,35 C 200,45 188,54 172,54 Z" 
-              fill="none" 
-              stroke="#ffffff" 
-              strokeWidth="1.5" 
-              opacity="0.8" 
+            <path
+              d="M 172,16 C 188,16 200,25 200,35 C 200,45 188,54 172,54 Z"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="1.5"
+              opacity="0.8"
             />
 
             {/* Printed micro-labels on wrapper */}
@@ -283,8 +283,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'applicator':
       // Recreates File:Tampon with applicator.jpg - Modern white applicator tampon
       return (
-        <svg 
-          viewBox="0 0 320 200" 
+        <svg
+          viewBox="0 0 320 200"
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -322,19 +322,19 @@ function renderImageGraphic(type: WikiImageData['type']) {
           {/* Tampon with Applicator Assembly */}
           <g transform="translate(30, 85)" filter="url(#applicatorShadow)">
             {/* White Braided Cotton Withdrawal Cord extending from plunger */}
-            <path 
-              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42" 
-              fill="none" 
-              stroke="#e2e8f0" 
-              strokeWidth="2.8" 
-              strokeLinecap="round" 
+            <path
+              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42"
+              fill="none"
+              stroke="#e2e8f0"
+              strokeWidth="2.8"
+              strokeLinecap="round"
             />
-            <path 
-              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42" 
-              fill="none" 
-              stroke="#94a3b8" 
-              strokeWidth="1.2" 
-              strokeDasharray="2,2" 
+            <path
+              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42"
+              fill="none"
+              stroke="#94a3b8"
+              strokeWidth="1.2"
+              strokeDasharray="2,2"
             />
             {/* Cord knot at the end */}
             <circle cx="290" cy="42" r="2.5" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="0.8" />
@@ -346,7 +346,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
 
             {/* Outer Barrel (外导管) */}
             <rect x="42" y="2" width="108" height="24" rx="3" fill="url(#barrelGrad)" stroke="#cbd5e1" strokeWidth="1" />
-            
+
             {/* Finger Grip Rings (防滑指握区) */}
             <g transform="translate(125, 2)">
               <rect x="0" y="0" width="22" height="24" rx="2" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="1" />
@@ -356,11 +356,11 @@ function renderImageGraphic(type: WikiImageData['type']) {
             </g>
 
             {/* Rounded Petal Tip (花瓣状圆头开口) */}
-            <path 
-              d="M 42,2 C 26,3 15,9 15,14 C 15,19 26,25 42,26 Z" 
-              fill="url(#barrelGrad)" 
-              stroke="#cbd5e1" 
-              strokeWidth="1" 
+            <path
+              d="M 42,2 C 26,3 15,9 15,14 C 15,19 26,25 42,26 Z"
+              fill="url(#barrelGrad)"
+              stroke="#cbd5e1"
+              strokeWidth="1"
             />
             {/* Petal seam slit cuts */}
             <path d="M 15,14 L 34,14" stroke="#94a3b8" strokeWidth="1" />
@@ -386,8 +386,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'elements':
       // Recreates File:Elements of a tampon with applicator.jpg
       return (
-        <svg 
-          viewBox="0 0 320 220" 
+        <svg
+          viewBox="0 0 320 220"
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -450,8 +450,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'absorbency':
       // Absorbency standard droplet chart
       return (
-        <svg 
-          viewBox="0 0 320 180" 
+        <svg
+          viewBox="0 0 320 180"
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -479,9 +479,9 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <text x="120" y={row.y + 14} fontSize="9.5" fontFamily="monospace" fill="#0369a1">{row.g}</text>
               <g transform={`translate(210, ${row.y + 4})`}>
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <path 
-                    key={i} 
-                    d="M 6,0 C 6,0 12,7 12,10 C 12,13 9,15 6,15 C 3,15 0,13 0,10 C 0,7 6,0 6,0 Z" 
+                  <path
+                    key={i}
+                    d="M 6,0 C 6,0 12,7 12,10 C 12,13 9,15 6,15 C 3,15 0,13 0,10 C 0,7 6,0 6,0 Z"
                     transform={`translate(${i * 15}, 0)`}
                     fill={i < row.drops ? '#0284c7' : '#e2e8f0'}
                   />
@@ -498,30 +498,30 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'anatomy':
       // Anatomical sagittal cross section
       return (
-        <svg 
-          viewBox="0 0 320 200" 
+        <svg
+          viewBox="0 0 320 200"
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect width="320" height="200" fill="#f8fafc" />
-          
+
           {/* Uterus & Pelvic Organs Outline */}
-          <path 
-            d="M 70,60 C 90,40 140,40 160,60 C 170,72 165,95 155,105 C 150,110 145,115 145,125 L 140,175 C 135,178 120,178 115,175 L 125,125 C 125,115 120,110 115,105 C 100,90 55,80 70,60 Z" 
-            fill="#ffe4e6" 
-            stroke="#f43f5e" 
-            strokeWidth="1.5" 
+          <path
+            d="M 70,60 C 90,40 140,40 160,60 C 170,72 165,95 155,105 C 150,110 145,115 145,125 L 140,175 C 135,178 120,178 115,175 L 125,125 C 125,115 120,110 115,105 C 100,90 55,80 70,60 Z"
+            fill="#ffe4e6"
+            stroke="#f43f5e"
+            strokeWidth="1.5"
           />
           {/* Cervix marker */}
           <path d="M 125,120 Q 135,123 145,120" stroke="#e11d48" strokeWidth="2" fill="none" />
 
           {/* Vaginal Canal with 45 degree angle */}
-          <path 
-            d="M 125,125 L 115,175" 
-            stroke="#fda4af" 
-            strokeWidth="20" 
-            strokeLinecap="round" 
-            opacity="0.4" 
+          <path
+            d="M 125,125 L 115,175"
+            stroke="#fda4af"
+            strokeWidth="20"
+            strokeLinecap="round"
+            opacity="0.4"
           />
 
           {/* Correctly placed tampon in upper vaginal fornix */}

@@ -468,7 +468,7 @@ export function getWikiEntryById(id: string): WikiEntry | undefined {
 
 export function getWikiEntryByTitle(term: string): WikiEntry | undefined {
   const clean = term.replace(/[（(].*?[）)]/g, '').trim().toLowerCase();
-  return WIKI_ENTRIES.find(e => 
+  return WIKI_ENTRIES.find(e =>
     e.title.toLowerCase() === clean ||
     e.id.toLowerCase() === clean ||
     e.enTitle.toLowerCase() === clean ||

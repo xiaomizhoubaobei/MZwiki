@@ -51,12 +51,12 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
     <div className={`space-y-4 font-sans leading-relaxed text-sm ${
       isDarkMode ? 'text-[#eaecf0]' : 'text-[#202122]'
     }`}>
-      
+
       {/* 1. Header Note (维基百科分类顶部的引导文字) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs pt-1 pb-2 border-b border-black/5 dark:border-white/5">
         <div>
           <span>有关本</span>
-          <a 
+          <a
             href="https://zh.wikipedia.org/wiki/Help:%E5%88%86%E7%B1%BB"
             target="_blank"
             rel="noopener noreferrer"
@@ -65,7 +65,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             分类
           </a>
           <span>的更多信息，请参阅“</span>
-          <button 
+          <button
             onClick={(e) => handleLinkClick('女性生理用品', e)}
             className="text-[#3366cc] dark:text-[#6699ff] font-bold hover:underline cursor-pointer"
           >
@@ -112,7 +112,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                     {expandedCategories['brands'] ? '▼' : '►'}
                   </span>
                 </button>
-                <button 
+                <button
                   onClick={() => toggleCategory('brands')}
                   className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer font-medium"
                 >
@@ -128,7 +128,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                 <div className="pl-6 pt-1 space-y-1">
                   <div className="flex items-center gap-1.5 text-xs">
                     <span className="text-[#a2a9b1] dark:text-[#54595d] text-[10px] select-none">►</span>
-                    <button 
+                    <button
                       onClick={(e) => handleLinkClick('丹碧丝', e)}
                       onMouseEnter={(e) => handleLinkHover('丹碧丝', e)}
                       className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -138,7 +138,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5 text-xs">
                     <span className="text-[#a2a9b1] dark:text-[#54595d] text-[10px] select-none">►</span>
-                    <button 
+                    <button
                       onClick={(e) => handleLinkClick('高洁丝', e)}
                       onMouseEnter={(e) => handleLinkHover('高洁丝', e)}
                       className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -148,7 +148,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5 text-xs">
                     <span className="text-[#a2a9b1] dark:text-[#54595d] text-[10px] select-none">►</span>
-                    <button 
+                    <button
                       onClick={(e) => handleLinkClick('苏菲', e)}
                       onMouseEnter={(e) => handleLinkHover('苏菲', e)}
                       className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -178,7 +178,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                     {expandedCategories['cultureAndMenstruation'] ? '▼' : '►'}
                   </span>
                 </button>
-                <button 
+                <button
                   onClick={() => toggleCategory('cultureAndMenstruation')}
                   className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer font-medium"
                 >
@@ -203,7 +203,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                         {expandedCategories['religionAndMenstruation'] ? '▼' : '►'}
                       </span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => toggleCategory('religionAndMenstruation')}
                       className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
                     >
@@ -219,7 +219,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                     <div className="pl-6 pt-0.5">
                       <div className="flex items-center gap-1.5 text-xs">
                         <span className="text-[#a2a9b1] dark:text-[#54595d] text-[10px] select-none">•</span>
-                        <button 
+                        <button
                           onClick={(e) => handleLinkClick('月经禁忌', e)}
                           onMouseEnter={(e) => handleLinkHover('月经禁忌', e)}
                           className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -247,7 +247,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
 
         {/* 3-Column Standard Wikipedia Category Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 text-xs">
-          
+
           {/* Column 1 */}
           <div className="space-y-4">
             {/* D */}
@@ -257,7 +257,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('清洗 (医学)', e)}
                     onMouseEnter={(e) => handleLinkHover('清洗 (医学)', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -275,7 +275,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('卫生巾', e)}
                     onMouseEnter={(e) => handleLinkHover('卫生巾', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -293,7 +293,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('中国大陆铁路卫生巾售卖争议', e)}
                     onMouseEnter={(e) => handleLinkHover('中国大陆铁路卫生巾售卖争议', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -314,7 +314,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('女性生理用品', e)}
                     onMouseEnter={(e) => handleLinkHover('女性生理用品', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer font-medium"
@@ -332,7 +332,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('月经杯', e)}
                     onMouseEnter={(e) => handleLinkHover('月经杯', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -350,7 +350,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('粉红税', e)}
                     onMouseEnter={(e) => handleLinkHover('粉红税', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -371,7 +371,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={() => onNavigateToArticle()}
                     onMouseEnter={(e) => handleLinkHover('卫生棉条', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] font-semibold hover:underline cursor-pointer"
@@ -390,7 +390,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('护垫', e)}
                     onMouseEnter={(e) => handleLinkHover('护垫', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
@@ -408,7 +408,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
               </h3>
               <ul className="list-disc list-inside space-y-1 pl-1">
                 <li>
-                  <button 
+                  <button
                     onClick={(e) => handleLinkClick('阴道菌群', e)}
                     onMouseEnter={(e) => handleLinkHover('阴道菌群', e)}
                     className="text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"

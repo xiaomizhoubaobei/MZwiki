@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  BarChart3, 
-  FileText, 
-  BookOpen, 
-  ShieldCheck, 
-  GitBranch, 
-  Tag, 
-  Layers, 
-  Sparkles, 
-  Download, 
-  RefreshCw, 
-  Search, 
-  ArrowUpDown, 
-  ExternalLink, 
-  Award, 
-  CheckCircle2, 
+import {
+  BarChart3,
+  FileText,
+  BookOpen,
+  ShieldCheck,
+  GitBranch,
+  Tag,
+  Layers,
+  Sparkles,
+  Download,
+  RefreshCw,
+  Search,
+  ArrowUpDown,
+  ExternalLink,
+  Award,
+  CheckCircle2,
   Info,
   Clock,
   Database,
@@ -26,20 +26,20 @@ import {
   Zap,
   Check
 } from 'lucide-react';
-import { 
-  getGlobalContentStatistics, 
-  getAllArticlesContentStats, 
-  generateStatisticsJSON, 
+import {
+  getGlobalContentStatistics,
+  getAllArticlesContentStats,
+  generateStatisticsJSON,
   generateStatisticsCSV,
   ArticleContentStats,
   GlobalContentStatistics
 } from '../utils/contentStatisticsAutomation';
-import { 
-  fetchGlobalStatisticsApi, 
-  fetchArticlesStatisticsApi, 
-  recalculateStatisticsApi, 
+import {
+  fetchGlobalStatisticsApi,
+  fetchArticlesStatisticsApi,
+  recalculateStatisticsApi,
   fetchGraphTopologyStatisticsApi,
-  STATS_API_ENDPOINTS 
+  STATS_API_ENDPOINTS
 } from '../services/statisticsApi';
 
 interface ContentStatisticsPageProps {
@@ -70,7 +70,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
   const [gradeFilter, setGradeFilter] = useState<string>('all');
   const [sortField, setSortField] = useState<SortField>('wordCount');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-  
+
   // API State
   const [globalStats, setGlobalStats] = useState<GlobalContentStatistics>(() => getGlobalContentStatistics());
   const [articlesList, setArticlesList] = useState<ArticleContentStats[]>(() => getAllArticlesContentStats());
@@ -121,7 +121,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
   const handleRecalculate = async () => {
     setIsRecalculating(true);
     const result = await recalculateStatisticsApi();
-    
+
     // Refresh global & articles
     const [globalRes, articlesRes] = await Promise.all([
       fetchGlobalStatisticsApi(),
@@ -195,7 +195,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
   return (
     <div className="space-y-6">
-      
+
       {/* 1. Header Banner & Live API Status */}
       <div className={`p-5 rounded-lg border transition-colors ${
         isDarkMode ? 'bg-[#151617] border-[#3a3d42]' : 'bg-white border-[#c8ccd1]'
@@ -212,12 +212,12 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 响应延迟 {apiLatency}ms
               </span>
             </div>
-            
+
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#202122] dark:text-white flex items-center gap-2">
               <BarChart3 className="w-7 h-7 text-[#3366cc]" />
               <span>全域内容统计与学术深度量化报告</span>
             </h1>
-            
+
             <p className="text-xs sm:text-sm text-[#54595d] dark:text-[#a2a9b1]">
               本维基所有自动化数据均通过原生 <strong className="font-mono text-[#3366cc]">REST API 服务</strong>返回。涵盖全站量化指标、单篇详实度、质量梯队分布及图谱拓扑结构。
             </p>
@@ -229,8 +229,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
               onClick={handleRecalculate}
               disabled={isRecalculating}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium cursor-pointer transition-colors ${
-                isDarkMode 
-                  ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]' 
+                isDarkMode
+                  ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]'
                   : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122] hover:bg-[#eaecf0]'
               } ${isRecalculating ? 'opacity-60 cursor-not-allowed' : ''}`}
               title="通过 POST /api/statistics/recalculate 重新计算并刷新"
@@ -274,7 +274,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
       {/* 2. Top KPI Metrics 6-Card Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        
+
         {/* Total Articles */}
         <div className={`p-4 rounded-lg border transition-colors ${
           isDarkMode ? 'bg-[#151617] border-[#3a3d42]' : 'bg-white border-[#c8ccd1]'
@@ -434,7 +434,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
       {activeTab === 'overview' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            
+
             {/* Left Column (7 cols): Quality Ladder & Criteria */}
             <div className={`lg:col-span-7 p-5 rounded-lg border space-y-4 transition-colors ${
               isDarkMode ? 'bg-[#151617] border-[#3a3d42]' : 'bg-white border-[#c8ccd1]'
@@ -503,7 +503,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                       </div>
 
                       <div className="w-full h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
-                        <div 
+                        <div
                           className={`h-full rounded-full transition-all duration-500 ${item.color}`}
                           style={{ width: `${Math.max(percent, 4)}%` }}
                         />
@@ -538,15 +538,15 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 {globalStats.categoryBreakdown.map(cat => {
                   const wordPercent = Math.round((cat.wordCount / globalStats.totalWords) * 100);
                   return (
-                    <div 
-                      key={cat.key} 
+                    <div
+                      key={cat.key}
                       className="p-3 rounded border border-black/5 dark:border-white/5 hover:border-[#3366cc]/40 transition-colors"
                     >
                       <div className="flex items-center justify-between text-xs mb-1.5">
                         <div className="flex items-center gap-2 font-medium text-[#202122] dark:text-white">
-                          <span 
-                            className="w-2.5 h-2.5 rounded-full shrink-0" 
-                            style={{ backgroundColor: cat.color }} 
+                          <span
+                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                            style={{ backgroundColor: cat.color }}
                           />
                           <span>{cat.name}</span>
                         </div>
@@ -556,11 +556,11 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                       </div>
 
                       <div className="w-full h-1.5 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden mb-1">
-                        <div 
+                        <div
                           className="h-full rounded-full transition-all duration-500"
-                          style={{ 
+                          style={{
                             width: `${Math.max(wordPercent, 3)}%`,
-                            backgroundColor: cat.color 
+                            backgroundColor: cat.color
                           }}
                         />
                       </div>
@@ -618,7 +618,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
         <div className={`p-5 rounded-lg border space-y-4 transition-colors ${
           isDarkMode ? 'bg-[#151617] border-[#3a3d42]' : 'bg-white border-[#c8ccd1]'
         }`}>
-          
+
           {/* Controls: Search & Filters */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             {/* Search Input */}
@@ -630,8 +630,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder="搜索条目名称或领域 (API 动态过滤)..."
                 className={`w-full pl-9 pr-3 py-1.5 text-xs rounded border transition-colors outline-none ${
-                  isDarkMode 
-                    ? 'bg-[#202122] border-[#54595d] text-white focus:border-[#6699ff]' 
+                  isDarkMode
+                    ? 'bg-[#202122] border-[#54595d] text-white focus:border-[#6699ff]'
                     : 'bg-white border-[#c8ccd1] text-[#202122] focus:border-[#3366cc]'
                 }`}
               />
@@ -643,8 +643,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
                 className={`px-2.5 py-1.5 text-xs rounded border transition-colors outline-none cursor-pointer ${
-                  isDarkMode 
-                    ? 'bg-[#202122] border-[#54595d] text-white' 
+                  isDarkMode
+                    ? 'bg-[#202122] border-[#54595d] text-white'
                     : 'bg-white border-[#c8ccd1] text-[#202122]'
                 }`}
               >
@@ -658,8 +658,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 value={gradeFilter}
                 onChange={(e) => setGradeFilter(e.target.value)}
                 className={`px-2.5 py-1.5 text-xs rounded border transition-colors outline-none cursor-pointer ${
-                  isDarkMode 
-                    ? 'bg-[#202122] border-[#54595d] text-white' 
+                  isDarkMode
+                    ? 'bg-[#202122] border-[#54595d] text-white'
                     : 'bg-white border-[#c8ccd1] text-[#202122]'
                 }`}
               >
@@ -700,7 +700,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                   isDarkMode ? 'bg-[#202122] border-[#3a3d42]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
                 }`}>
                   <th className="py-2.5 px-3 font-semibold text-[#54595d] dark:text-[#a2a9b1]">
-                    <button 
+                    <button
                       onClick={() => toggleSort('title')}
                       className="flex items-center gap-1 hover:text-[#3366cc] cursor-pointer"
                     >
@@ -712,7 +712,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                     分类领域
                   </th>
                   <th className="py-2.5 px-3 font-semibold text-[#54595d] dark:text-[#a2a9b1]">
-                    <button 
+                    <button
                       onClick={() => toggleSort('quality')}
                       className="flex items-center gap-1 hover:text-[#3366cc] cursor-pointer"
                     >
@@ -721,7 +721,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                     </button>
                   </th>
                   <th className="py-2.5 px-3 font-semibold text-[#54595d] dark:text-[#a2a9b1] text-right">
-                    <button 
+                    <button
                       onClick={() => toggleSort('wordCount')}
                       className="flex items-center gap-1 hover:text-[#3366cc] ml-auto cursor-pointer"
                     >
@@ -730,7 +730,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                     </button>
                   </th>
                   <th className="py-2.5 px-3 font-semibold text-[#54595d] dark:text-[#a2a9b1] text-right">
-                    <button 
+                    <button
                       onClick={() => toggleSort('readingMinutes')}
                       className="flex items-center gap-1 hover:text-[#3366cc] ml-auto cursor-pointer"
                     >
@@ -742,7 +742,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                     章节 / 段落
                   </th>
                   <th className="py-2.5 px-3 font-semibold text-[#54595d] dark:text-[#a2a9b1] text-right">
-                    <button 
+                    <button
                       onClick={() => toggleSort('referenceCount')}
                       className="flex items-center gap-1 hover:text-[#3366cc] ml-auto cursor-pointer"
                     >
@@ -762,8 +762,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 {articlesList.map(article => {
                   const isTampon = article.id === 'tampon';
                   return (
-                    <tr 
-                      key={article.id} 
+                    <tr
+                      key={article.id}
                       className={`hover:bg-[#3366cc]/5 transition-colors ${
                         isTampon ? 'font-medium' : ''
                       }`}
@@ -801,8 +801,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                       {/* Quality Grade */}
                       <td className="py-2.5 px-3">
                         <span className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] ${
-                          article.qualityGrade === 'FA' 
-                            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400' 
+                          article.qualityGrade === 'FA'
+                            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
                             : article.qualityGrade === 'GA'
                             ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                             : article.qualityGrade === 'A'
@@ -870,7 +870,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
         <div className={`p-5 rounded-lg border space-y-5 transition-colors ${
           isDarkMode ? 'bg-[#151617] border-[#3a3d42]' : 'bg-white border-[#c8ccd1]'
         }`}>
-          
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-black/5 dark:border-white/5 pb-3">
             <div>
               <h3 className="font-serif font-bold text-base text-[#202122] dark:text-white flex items-center gap-2">
@@ -978,8 +978,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
             {/* Code Response Terminal Box */}
             <div className={`p-4 rounded-lg font-mono text-xs overflow-x-auto max-h-96 border transition-colors ${
-              isDarkMode 
-                ? 'bg-[#0f1011] border-[#3a3d42] text-[#34d399]' 
+              isDarkMode
+                ? 'bg-[#0f1011] border-[#3a3d42] text-[#34d399]'
                 : 'bg-[#1e1e1e] border-black text-[#86efac]'
             }`}>
               <pre className="whitespace-pre-wrap leading-relaxed">
@@ -1034,7 +1034,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
             {/* Export Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
+
               {/* JSON Export */}
               <div className="p-4 rounded border border-black/10 dark:border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
@@ -1066,8 +1066,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                   <button
                     onClick={handleCopyJSON}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium cursor-pointer transition-colors ${
-                      isDarkMode 
-                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]' 
+                      isDarkMode
+                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]'
                         : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122] hover:bg-[#eaecf0]'
                     }`}
                   >
@@ -1107,8 +1107,8 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                   <button
                     onClick={handleCopyCSV}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium cursor-pointer transition-colors ${
-                      isDarkMode 
-                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]' 
+                      isDarkMode
+                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]'
                         : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122] hover:bg-[#eaecf0]'
                     }`}
                   >

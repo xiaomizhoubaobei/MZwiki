@@ -2,13 +2,13 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { 
-  getGlobalContentStatistics, 
-  getAllArticlesContentStats, 
-  getFeaturedTamponStats, 
-  getWikiEntryStats, 
-  generateStatisticsJSON, 
-  generateStatisticsCSV 
+import {
+  getGlobalContentStatistics,
+  getAllArticlesContentStats,
+  getFeaturedTamponStats,
+  getWikiEntryStats,
+  generateStatisticsJSON,
+  generateStatisticsCSV
 } from './src/utils/contentStatisticsAutomation.ts';
 import { calculateReadingMetrics } from './src/utils/headerAutomation.ts';
 import { GRAPH_NODES, GRAPH_EDGES } from './src/data/knowledgeGraphData.ts';
@@ -69,8 +69,8 @@ async function startServer() {
       // Filter by search query
       if (q && q.trim()) {
         const queryLower = q.trim().toLowerCase();
-        articles = articles.filter(a => 
-          a.title.toLowerCase().includes(queryLower) || 
+        articles = articles.filter(a =>
+          a.title.toLowerCase().includes(queryLower) ||
           a.categoryLabel.toLowerCase().includes(queryLower)
         );
       }
@@ -132,7 +132,7 @@ async function startServer() {
   app.get('/api/statistics/article/:id', (req, res) => {
     try {
       const idOrTitle = decodeURIComponent(req.params.id);
-      
+
       if (idOrTitle === 'tampon' || idOrTitle === '卫生棉条') {
         return res.json({
           status: 'success',

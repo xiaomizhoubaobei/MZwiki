@@ -31,8 +31,8 @@ const DEFAULT_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87
 export function applyPageSEO(meta: PageSEOMetadata): void {
   if (typeof document === 'undefined') return;
 
-  const fullTitle = meta.title.includes(SITE_NAME) 
-    ? meta.title 
+  const fullTitle = meta.title.includes(SITE_NAME)
+    ? meta.title
     : `${meta.title} - ${BRAND_SUFFIX}`;
 
   // 1. Title
@@ -50,8 +50,8 @@ export function applyPageSEO(meta: PageSEOMetadata): void {
   };
 
   // 2. Standard Meta Description
-  const trimmedDesc = meta.description.length > 160 
-    ? `${meta.description.slice(0, 157)}...` 
+  const trimmedDesc = meta.description.length > 160
+    ? `${meta.description.slice(0, 157)}...`
     : meta.description;
   setMetaTag('name', 'description', trimmedDesc);
 
@@ -62,8 +62,8 @@ export function applyPageSEO(meta: PageSEOMetadata): void {
   setMetaTag('property', 'og:site_name', SITE_NAME);
 
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mz-wiki.app';
-  const canonicalUrl = meta.canonicalPath 
-    ? `${origin}${meta.canonicalPath}` 
+  const canonicalUrl = meta.canonicalPath
+    ? `${origin}${meta.canonicalPath}`
     : (typeof window !== 'undefined' ? window.location.href : origin);
 
   setMetaTag('property', 'og:url', canonicalUrl);

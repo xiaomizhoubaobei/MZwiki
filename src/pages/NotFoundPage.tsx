@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  FileQuestion, 
-  Search, 
-  Home, 
-  ArrowLeft, 
-  Layers, 
+import {
+  FileQuestion,
+  Search,
+  Home,
+  ArrowLeft,
+  Layers,
   FileText,
   HelpCircle,
   FolderTree
@@ -44,11 +44,11 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
     <div className={`space-y-6 font-sans leading-relaxed text-sm ${
       isDarkMode ? 'text-[#eaecf0]' : 'text-[#202122]'
     }`}>
-      
+
       {/* 1. Wikipedia Standard Notice Banner: 条目不存在 / 404 */}
       <div className={`p-4 sm:p-5 rounded border border-l-4 transition-colors ${
-        isDarkMode 
-          ? 'bg-[#27292d] border-[#54595d] border-l-[#e67300]' 
+        isDarkMode
+          ? 'bg-[#27292d] border-[#54595d] border-l-[#e67300]'
           : 'bg-[#fffaf0] border-[#f0c36d] border-l-[#d33]'
       }`}>
         <div className="flex items-start gap-3.5">
@@ -70,7 +70,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
       <div className={`p-5 rounded border transition-colors space-y-5 ${
         isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-white border-[#c8ccd1]'
       }`}>
-        
+
         {/* Search tool inside 404 */}
         <div>
           <h2 className="font-serif font-bold text-sm text-[#202122] dark:text-white mb-2 flex items-center gap-1.5">
@@ -79,8 +79,8 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
           </h2>
           <form onSubmit={handleSearchSubmit} className="flex gap-2 max-w-xl">
             <div className={`flex-1 flex items-center h-9 px-3 rounded border transition-all ${
-              isDarkMode 
-                ? 'border-[#54595d] bg-[#1a1b1c]' 
+              isDarkMode
+                ? 'border-[#54595d] bg-[#1a1b1c]'
                 : 'border-[#a2a9b1] bg-[#f8f9fa]'
             }`}>
               <Search className="w-4 h-4 text-[#72777d] shrink-0 mr-2" />
@@ -117,7 +117,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
               <strong>浏览分类索引</strong>：访问分类目录，按学科或主题分类查找相关条目。
             </li>
             <li>
-              <strong>返回维基首页</strong>：回到 
+              <strong>返回维基首页</strong>：回到
               <button
                 type="button"
                 onClick={() => onNavigateHome()}
@@ -140,13 +140,13 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
             <Home className="w-3.5 h-3.5" />
             <span>返回维基首页</span>
           </button>
-          
+
           <button
             type="button"
             onClick={onNavigateCategory}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded border text-xs font-medium cursor-pointer transition-colors ${
-              isDarkMode 
-                ? 'border-[#54595d] bg-[#27292d] hover:bg-[#32363c] text-white' 
+              isDarkMode
+                ? 'border-[#54595d] bg-[#27292d] hover:bg-[#32363c] text-white'
                 : 'border-[#c8ccd1] bg-[#f8f9fa] hover:bg-[#f1f2f3] text-[#202122]'
             }`}
           >
@@ -176,7 +176,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
             关于在 MZ维基 创建与查找条目
           </h3>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="p-3 rounded bg-white dark:bg-[#202122] border border-black/5 dark:border-white/5">
             <div className="font-semibold text-[#202122] dark:text-white flex items-center gap-1.5 mb-1">

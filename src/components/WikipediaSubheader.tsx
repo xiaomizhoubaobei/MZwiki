@@ -47,12 +47,12 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
 }) => {
   return (
     <div className={`border-b transition-colors ${
-      isDarkMode 
-        ? 'bg-[#202122] border-[#54595d]' 
+      isDarkMode
+        ? 'bg-[#202122] border-[#54595d]'
         : 'bg-white border-[#a2a9b1]'
     }`}>
       <div className="max-w-[1720px] mx-auto px-4">
-        
+
         {/* Automated Breadcrumb Navigation */}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="pt-3 pb-1 flex items-center gap-1.5 text-[11px] text-[#72777d] flex-wrap">
@@ -100,11 +100,11 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
                     <>来自 <strong className="text-[#202122] dark:text-white font-medium">MZ维基</strong>，自由的百科全书</>
                   )}
                 </span>
-                
+
                 <span className="text-[#a2a9b1] dark:text-[#54595d]">·</span>
 
                 {/* Estimated Reading Time Badge */}
-                <span 
+                <span
                   className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-500/10 text-[#3366cc] dark:text-[#6699ff] font-medium"
                   title="依据条目字数与中文平均阅读速率计算"
                 >
@@ -115,7 +115,7 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
                 <span className="text-[#a2a9b1] dark:text-[#54595d]">·</span>
 
                 {/* Word Count Badge */}
-                <span 
+                <span
                   className="inline-flex items-center gap-1 text-[#72777d] dark:text-[#9aa0a6]"
                   title="正文总字数"
                 >

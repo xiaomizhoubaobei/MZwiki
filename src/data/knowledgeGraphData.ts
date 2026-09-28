@@ -1,4 +1,4 @@
-export type GraphCategory = 
+export type GraphCategory =
   | 'core'       // 核心条目
   | 'product'    // 生理用品
   | 'medical'    // 医学与病理

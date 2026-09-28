@@ -14,10 +14,10 @@ export const Infobox: React.FC<InfoboxProps> = ({
   const [highlightPart, setHighlightPart] = useState<number | null>(null);
 
   return (
-    <aside 
+    <aside
       className={`float-none lg:float-right w-full lg:w-76 mb-6 lg:ml-6 rounded border text-xs overflow-hidden transition-colors ${
-        isDarkMode 
-          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]'
           : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
       }`}
       aria-label="条目基本信息框"
@@ -167,8 +167,8 @@ export const Infobox: React.FC<InfoboxProps> = ({
                   onMouseEnter={() => setHighlightPart(item.id)}
                   onMouseLeave={() => setHighlightPart(null)}
                   className={`text-left p-1 rounded transition-colors ${
-                    highlightPart === item.id 
-                      ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold' 
+                    highlightPart === item.id
+                      ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold'
                       : 'text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122]'
                   }`}
                 >
@@ -236,8 +236,8 @@ export const Infobox: React.FC<InfoboxProps> = ({
                 onMouseEnter={() => setHighlightPart(1)}
                 onMouseLeave={() => setHighlightPart(null)}
                 className={`text-left p-1 rounded transition-colors ${
-                  highlightPart === 1 
-                    ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold' 
+                  highlightPart === 1
+                    ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold'
                     : 'text-[#54595d] dark:text-[#a2a9b1]'
                 }`}
               >
@@ -247,8 +247,8 @@ export const Infobox: React.FC<InfoboxProps> = ({
                 onMouseEnter={() => setHighlightPart(2)}
                 onMouseLeave={() => setHighlightPart(null)}
                 className={`text-left p-1 rounded transition-colors ${
-                  highlightPart === 2 
-                    ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold' 
+                  highlightPart === 2
+                    ? 'bg-[#3366cc]/15 text-[#3366cc] font-bold'
                     : 'text-[#54595d] dark:text-[#a2a9b1]'
                 }`}
               >
@@ -282,8 +282,8 @@ export const Infobox: React.FC<InfoboxProps> = ({
           <span className="w-24 font-bold text-[#54595d] dark:text-[#a2a9b1] shrink-0">现代发明人</span>
           <div className="flex-1 text-[#202122] dark:text-white space-y-1">
             <div>
-              <button 
-                onClick={() => onOpenWikiLink('厄尔·哈斯')} 
+              <button
+                onClick={() => onOpenWikiLink('厄尔·哈斯')}
                 className="text-[#3366cc] hover:underline font-semibold"
               >
                 厄尔·哈斯
@@ -299,7 +299,7 @@ export const Infobox: React.FC<InfoboxProps> = ({
           <span className="w-24 font-bold text-[#54595d] dark:text-[#a2a9b1] shrink-0">主要材质</span>
           <span className="flex-1 text-[#202122] dark:text-white">
             脱脂棉、
-            <button 
+            <button
               onClick={() => onOpenWikiLink('粘胶纤维')}
               className="text-[#3366cc] hover:underline"
             >
@@ -326,7 +326,7 @@ export const Infobox: React.FC<InfoboxProps> = ({
         <div className="p-2 flex">
           <span className="w-24 font-bold text-[#54595d] dark:text-[#a2a9b1] shrink-0">罕见并发症</span>
           <span className="flex-1">
-            <button 
+            <button
               onClick={() => onOpenWikiLink('中毒性休克综合征')}
               className="text-[#ba0000] hover:underline font-bold"
             >

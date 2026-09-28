@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  HelpCircle, 
-  Award, 
-  ArrowRight, 
+import {
+  HelpCircle,
+  Award,
+  ArrowRight,
   CheckCircle2,
   ShieldCheck,
   FileText,
@@ -25,8 +25,8 @@ import {
 import { ABSORBENCY_GRADES } from '../data/articleData';
 import { WikipediaImageThumb, WikiImageData } from '../components/WikipediaImageThumb';
 import { WikipediaMediaViewer } from '../components/WikipediaMediaViewer';
-import { 
-  getGlobalContentStatistics, 
+import {
+  getGlobalContentStatistics,
   getFeaturedTamponStats,
   GlobalContentStatistics
 } from '../utils/contentStatisticsAutomation';
@@ -135,11 +135,11 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="space-y-6 font-sans">
-      
+
       {/* 1. Wikipedia Welcome Header Banner (Vector 2022 Classic Style) */}
       <div className={`p-4 sm:p-5 rounded border transition-colors ${
-        isDarkMode 
-          ? 'bg-[#1e2329] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#1e2329] border-[#54595d] text-[#eaecf0]'
           : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -274,10 +274,10 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* 3. Main Portal Two-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* Left Column (7 cols on lg): Featured Article + Did You Know + History Today */}
         <div className="lg:col-span-7 space-y-6">
-          
+
           {/* Section: 今日典范条目 (Featured Article) */}
           <div className={`rounded border overflow-hidden transition-colors ${
             isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-white border-[#c8ccd1]'
@@ -347,7 +347,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               {/* Key Features Callout Box inside Lead */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
-                <div 
+                <div
                   onClick={() => onNavigateToArticle('usage-guide')}
                   className="p-2.5 rounded border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] hover:border-[#3366cc]/40 transition-colors cursor-pointer group"
                 >
@@ -360,7 +360,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => onNavigateToArticle('safety-and-tss')}
                   className="p-2.5 rounded border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] hover:border-[#3366cc]/40 transition-colors cursor-pointer group"
                 >
@@ -373,7 +373,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => onNavigateToArticle('common-myths')}
                   className="p-2.5 rounded border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] hover:border-[#3366cc]/40 transition-colors cursor-pointer group"
                 >
@@ -391,23 +391,23 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs text-[#54595d] dark:text-[#a2a9b1]">
                 <div className="flex items-center gap-3">
                   <span className="text-[11px] text-[#72777d]">章节直达：</span>
-                  <a 
-                    href="/wiki/卫生棉条#history" 
-                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('history'); }} 
+                  <a
+                    href="/wiki/卫生棉条#history"
+                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('history'); }}
                     className="text-[#3366cc] hover:underline cursor-pointer"
                   >
                     发明历史
                   </a>
-                  <a 
-                    href="/wiki/卫生棉条#structure-and-types" 
-                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('structure-and-types'); }} 
+                  <a
+                    href="/wiki/卫生棉条#structure-and-types"
+                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('structure-and-types'); }}
                     className="text-[#3366cc] hover:underline cursor-pointer"
                   >
                     结构形态
                   </a>
-                  <a 
-                    href="/wiki/卫生棉条#references" 
-                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('references'); }} 
+                  <a
+                    href="/wiki/卫生棉条#references"
+                    onClick={(e) => { e.preventDefault(); onNavigateToArticle('references'); }}
                     className="text-[#3366cc] hover:underline cursor-pointer"
                   >
                     参考文献
@@ -447,11 +447,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               {FAQS.map((faq, idx) => {
                 const isOpen = openFaqIndex === idx;
                 return (
-                  <div 
+                  <div
                     key={idx}
                     className={`rounded border transition-colors ${
-                      isOpen 
-                        ? 'border-[#3366cc]/40 bg-[#3366cc]/[0.03]' 
+                      isOpen
+                        ? 'border-[#3366cc]/40 bg-[#3366cc]/[0.03]'
                         : 'border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01]'
                     }`}
                   >
@@ -562,8 +562,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                     className="p-2 rounded border border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer flex items-center justify-between"
                   >
                     <div className="flex items-center gap-2">
-                      <span 
-                        className="w-2.5 h-2.5 rounded-full shrink-0" 
+                      <span
+                        className="w-2.5 h-2.5 rounded-full shrink-0"
                         style={{ backgroundColor: grade.colorCode }}
                       />
                       <div>
@@ -608,7 +608,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <span className="text-[11px] text-[#72777d]">Knowledge Portals</span>
             </div>
-            
+
             <div className="p-3.5 space-y-2.5 text-xs">
               {PORTAL_ENTRIES.map((entry, idx) => (
                 <div
@@ -650,7 +650,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             <div className="p-3.5 space-y-2.5 text-xs">
-              <div 
+              <div
                 onClick={() => onNavigateToArticle('common-myths')}
                 className="p-2.5 rounded bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-[#3366cc]/40 transition-colors cursor-pointer"
               >
@@ -663,7 +663,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              <div 
+              <div
                 onClick={() => onNavigateToArticle('usage-guide')}
                 className="p-2.5 rounded bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-[#3366cc]/40 transition-colors cursor-pointer"
               >
@@ -676,7 +676,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </p>
               </div>
 
-              <div 
+              <div
                 onClick={() => onNavigateToArticle('safety-and-tss')}
                 className="p-2.5 rounded bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-[#3366cc]/40 transition-colors cursor-pointer"
               >
@@ -704,7 +704,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 NEW
               </span>
             </div>
-            
+
             <p className="text-[#54595d] dark:text-[#bdc1c6] leading-relaxed">
               探索涵盖卫生棉条、中毒性休克综合征、阴道菌群、厄尔·哈斯等真实百科条目的多维实体关联拓扑网络，支持力导向、同心环与关系矩阵交互。
             </p>
@@ -731,7 +731,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 58 标签
               </span>
             </div>
-            
+
             <p className="text-[#54595d] dark:text-[#bdc1c6] leading-relaxed">
               跨越学科与分类体系，通过微生态、急症病理、人体解剖、专利品牌等多维实体标签，瞬间聚合全域高相关条目。
             </p>
@@ -753,7 +753,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <CheckCircle2 className="w-4 h-4 text-[#3366cc]" />
               <span>MZ维基 方针与自由倡导</span>
             </div>
-            
+
             <p className="text-[#54595d] dark:text-[#bdc1c6] leading-relaxed">
               维基百科秉持中立的观点（NPOV）、可供查证（V）与非原创研究（NOR）三大核心原则，共同维护客观、开放与准确的自由知识共享体系。
             </p>
@@ -772,7 +772,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             <div className="pt-1 flex flex-col gap-2">
-              <a 
+              <a
                 href="/wiki/Wikipedia:全域行为准则"
                 onClick={(e) => {
                   e.preventDefault();
@@ -783,7 +783,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <FileText className="w-3.5 h-3.5" />
                 <span>全域行为准则 »</span>
               </a>
-              <a 
+              <a
                 href="/wiki/Wikipedia:免责声明"
                 onClick={(e) => {
                   e.preventDefault();
@@ -794,7 +794,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>医学免责声明 »</span>
               </a>
-              <a 
+              <a
                 href="/wiki/Wikipedia:隐私政策"
                 onClick={(e) => {
                   e.preventDefault();

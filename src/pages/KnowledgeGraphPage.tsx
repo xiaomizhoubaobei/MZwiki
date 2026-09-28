@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  GitBranch, 
-  BookOpen, 
-  Layers, 
-  ExternalLink, 
-  ShieldAlert, 
-  Clock, 
-  History, 
-  Activity, 
+import {
+  GitBranch,
+  BookOpen,
+  Layers,
+  ExternalLink,
+  ShieldAlert,
+  Clock,
+  History,
+  Activity,
   Sparkles,
   Info,
   HelpCircle,
@@ -100,7 +100,7 @@ export const KnowledgeGraphPage: React.FC<KnowledgeGraphPageProps> = ({
 
   return (
     <div className="space-y-6">
-      
+
       {/* 1. Wikipedia Special Page Header Ribbon */}
       <div className={`p-4 sm:p-5 rounded border transition-colors ${
         isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'

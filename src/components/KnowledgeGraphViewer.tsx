@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { 
-  ZoomIn, 
-  ZoomOut, 
-  RotateCcw, 
-  Maximize2, 
-  Minimize2, 
-  Search, 
-  Info, 
-  ExternalLink, 
-  Layers, 
-  Play, 
-  Pause, 
-  Share2, 
-  BookOpen, 
+import {
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Maximize2,
+  Minimize2,
+  Search,
+  Info,
+  ExternalLink,
+  Layers,
+  Play,
+  Pause,
+  Share2,
+  BookOpen,
   X,
   Compass,
   ArrowRight,
@@ -23,18 +23,18 @@ import {
   GitBranch,
   Tag
 } from 'lucide-react';
-import { 
-  GraphNode, 
-  GraphEdge, 
-  GraphCategory, 
-  GRAPH_NODES, 
-  GRAPH_EDGES, 
-  GRAPH_CATEGORIES 
+import {
+  GraphNode,
+  GraphEdge,
+  GraphCategory,
+  GRAPH_NODES,
+  GRAPH_EDGES,
+  GRAPH_CATEGORIES
 } from '../data/knowledgeGraphData';
-import { 
-  generateAutomatedTopology, 
-  AutomatedGraphEdge, 
-  AutomatedGraphNode 
+import {
+  generateAutomatedTopology,
+  AutomatedGraphEdge,
+  AutomatedGraphNode
 } from '../utils/graphTopologyAutomation';
 import { getPopularTags } from '../data/tagsData';
 import { EntityImagePreview } from './EntityImagePreview';
@@ -299,7 +299,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
   const filteredNodes = useMemo(() => {
     return nodesRef.current.filter(node => {
       const matchCat = selectedCategoryId === 'all' || node.category === selectedCategoryId;
-      const matchQuery = !searchQuery.trim() || 
+      const matchQuery = !searchQuery.trim() ||
         node.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (node.pinyin && node.pinyin.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (node.tags && node.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
@@ -436,11 +436,11 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`relative flex flex-col rounded-lg border transition-all ${
-        isDarkMode 
-          ? 'bg-[#18191a] border-[#54595d] text-[#eaecf0]' 
+        isDarkMode
+          ? 'bg-[#18191a] border-[#54595d] text-[#eaecf0]'
           : 'bg-[#fcfcfd] border-[#c8ccd1] text-[#202122]'
       } ${
         isFullscreen ? 'fixed inset-0 z-50 rounded-none border-none' : 'w-full min-h-[680px]'
@@ -486,8 +486,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`w-full pl-8 pr-7 py-1.5 rounded text-xs border focus:outline-none focus:ring-1 focus:ring-[#3366cc] transition-colors ${
-              isDarkMode 
-                ? 'bg-[#151617] border-[#54595d] text-[#eaecf0] placeholder-[#72777d]' 
+              isDarkMode
+                ? 'bg-[#151617] border-[#54595d] text-[#eaecf0] placeholder-[#72777d]'
                 : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122] placeholder-[#a2a9b1]'
             }`}
           />
@@ -561,8 +561,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
             <button
               onClick={() => setIsPhysicsActive(!isPhysicsActive)}
               className={`p-1.5 rounded border transition-colors cursor-pointer ${
-                isPhysicsActive 
-                  ? 'text-[#3366cc] border-[#3366cc]/30 bg-[#3366cc]/5' 
+                isPhysicsActive
+                  ? 'text-[#3366cc] border-[#3366cc]/30 bg-[#3366cc]/5'
                   : 'text-[#72777d] border-black/10 dark:border-white/10'
               }`}
               title={isPhysicsActive ? '暂停力导向物理推演' : '恢复物理碰撞推演'}
@@ -575,8 +575,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
           <button
             onClick={handleToggleFullscreen}
             className={`p-1.5 rounded border transition-colors cursor-pointer ${
-              isFullscreen 
-                ? 'bg-[#3366cc] text-white border-[#3366cc]' 
+              isFullscreen
+                ? 'bg-[#3366cc] text-white border-[#3366cc]'
                 : 'text-[#72777d] hover:text-[#202122] dark:hover:text-white border-black/10 dark:border-white/10'
             }`}
             title={isFullscreen ? '退出全屏' : '全屏探索模式'}
@@ -609,8 +609,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                       : 'border-[#c8ccd1] text-[#54595d] hover:bg-black/5'
                 }`}
               >
-                <span 
-                  className="w-2 h-2 rounded-full shrink-0" 
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: isSelected ? '#ffffff' : (isDarkMode ? cat.darkColor : cat.color) }}
                 />
                 <span>{cat.label}</span>
@@ -702,7 +702,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
       <div className="relative flex-1 w-full min-h-[560px] overflow-hidden flex">
         {layoutMode !== 'list' ? (
           /* SVG Force/Concentric Interactive Canvas */
-          <div 
+          <div
             className="canvas-bg relative flex-1 h-full w-full cursor-grab active:cursor-grabbing select-none"
             onMouseDown={handleCanvasMouseDown}
             onMouseMove={handleCanvasMouseMove}
@@ -710,7 +710,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
             onWheel={handleWheel}
           >
             {/* Background Grid Pattern */}
-            <svg 
+            <svg
               ref={svgRef}
               className="w-full h-full"
               viewBox="0 0 1000 650"
@@ -718,44 +718,44 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
             >
               <defs>
                 <pattern id="graph-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path 
-                    d="M 40 0 L 0 0 0 40" 
-                    fill="none" 
-                    stroke={isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 
-                    strokeWidth="1" 
+                  <path
+                    d="M 40 0 L 0 0 0 40"
+                    fill="none"
+                    stroke={isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'}
+                    strokeWidth="1"
                   />
                 </pattern>
-                
+
                 {/* Arrow markers for directed edges */}
-                <marker 
-                  id="arrow-primary" 
-                  viewBox="0 -5 10 10" 
-                  refX="22" 
-                  refY="0" 
-                  markerWidth="6" 
-                  markerHeight="6" 
+                <marker
+                  id="arrow-primary"
+                  viewBox="0 -5 10 10"
+                  refX="22"
+                  refY="0"
+                  markerWidth="6"
+                  markerHeight="6"
                   orient="auto"
                 >
                   <path d="M0,-4L10,0L0,4" fill={isDarkMode ? '#6699ff' : '#3366cc'} opacity="0.6" />
                 </marker>
-                <marker 
-                  id="arrow-medical" 
-                  viewBox="0 -5 10 10" 
-                  refX="22" 
-                  refY="0" 
-                  markerWidth="6" 
-                  markerHeight="6" 
+                <marker
+                  id="arrow-medical"
+                  viewBox="0 -5 10 10"
+                  refX="22"
+                  refY="0"
+                  markerWidth="6"
+                  markerHeight="6"
                   orient="auto"
                 >
                   <path d="M0,-4L10,0L0,4" fill={isDarkMode ? '#f87171' : '#dc2626'} opacity="0.6" />
                 </marker>
-                <marker 
-                  id="arrow-dimmed" 
-                  viewBox="0 -5 10 10" 
-                  refX="22" 
-                  refY="0" 
-                  markerWidth="6" 
-                  markerHeight="6" 
+                <marker
+                  id="arrow-dimmed"
+                  viewBox="0 -5 10 10"
+                  refX="22"
+                  refY="0"
+                  markerWidth="6"
+                  markerHeight="6"
                   orient="auto"
                 >
                   <path d="M0,-4L10,0L0,4" fill={isDarkMode ? '#54595d' : '#c8ccd1'} opacity="0.25" />
@@ -767,7 +767,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
 
               {/* Main Transformed Group (Pan & Zoom) */}
               <g transform={`translate(${transform.x}, ${transform.y}) scale(${transform.k})`}>
-                
+
                 {/* 1. EDGES / RELATION LINES */}
                 <g className="edges-layer">
                   {activeEdges.map(edge => {
@@ -795,7 +795,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                     const midY = (sourceNode.y + targetNode.y) / 2;
 
                     return (
-                      <g 
+                      <g
                         key={edge.id}
                         onMouseEnter={() => setHoveredEdgeId(edge.id)}
                         onMouseLeave={() => setHoveredEdgeId(null)}
@@ -997,8 +997,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
               <button
                 onClick={() => setShowLabels(!showLabels)}
                 className={`p-1.5 rounded transition-colors cursor-pointer text-[11px] flex items-center gap-1 ${
-                  showLabels 
-                    ? 'text-[#3366cc] font-medium' 
+                  showLabels
+                    ? 'text-[#3366cc] font-medium'
                     : 'text-[#72777d] hover:text-[#202122] dark:hover:text-white'
                 }`}
                 title="显示或隐藏节点文字标签"
@@ -1046,8 +1046,8 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
-                          <span 
-                            className="w-2.5 h-2.5 rounded-full shrink-0" 
+                          <span
+                            className="w-2.5 h-2.5 rounded-full shrink-0"
                             style={{ backgroundColor: isDarkMode ? catColor.darkColor : catColor.color }}
                           />
                           <span className="font-bold text-sm text-[#202122] dark:text-white">
@@ -1063,9 +1063,9 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                       </div>
 
                       {node.imageUrl && (
-                        <img 
-                          src={node.imageUrl} 
-                          alt={node.name} 
+                        <img
+                          src={node.imageUrl}
+                          alt={node.name}
                           className="w-10 h-10 object-cover rounded border border-black/10 dark:border-white/10 shrink-0"
                         />
                       )}
@@ -1080,7 +1080,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                         const otherId = e.source === node.id ? e.target : e.source;
                         const other = nodeLookup.get(otherId);
                         return (
-                          <span 
+                          <span
                             key={e.id}
                             className="text-[10px] px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-[#54595d] dark:text-[#a2a9b1]"
                           >
@@ -1111,13 +1111,13 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-xs text-[#3366cc] dark:text-[#6699ff] font-semibold">
-                    <span 
-                      className="w-2 h-2 rounded-full" 
-                      style={{ 
-                        backgroundColor: isDarkMode 
-                          ? categoryColorMap[selectedNode.category]?.darkColor 
-                          : categoryColorMap[selectedNode.category]?.color 
-                      }} 
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor: isDarkMode
+                          ? categoryColorMap[selectedNode.category]?.darkColor
+                          : categoryColorMap[selectedNode.category]?.color
+                      }}
                     />
                     <span>{selectedNode.categoryLabel}</span>
                   </div>
@@ -1175,7 +1175,7 @@ export const KnowledgeGraphViewer: React.FC<KnowledgeGraphViewerProps> = ({
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedNode.tags.map((tag, idx) => (
-                      <button 
+                      <button
                         key={idx}
                         onClick={() => {
                           setSelectedTagFilter(tag === selectedTagFilter ? null : tag);

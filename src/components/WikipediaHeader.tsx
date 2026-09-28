@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  Menu, 
-  Search, 
-  X, 
-  SlidersHorizontal, 
+import {
+  Menu,
+  Search,
+  X,
+  SlidersHorizontal,
   ChevronRight,
   Sparkles,
   ListFilter,
@@ -122,19 +122,19 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
 
   return (
     <header className={`sticky top-0 z-40 border-b transition-colors ${
-      isDarkMode 
-        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]' 
+      isDarkMode
+        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]'
         : 'bg-white border-[#c8ccd1] text-[#202122]'
     }`}>
       <div className="max-w-[1720px] mx-auto px-4 h-14 flex items-center justify-between gap-4">
-        
+
         {/* Left Side: Navigation Dropdown & Wikipedia Logo */}
         <div ref={menuContainerRef} className="flex items-center gap-3 shrink-0 relative">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`p-2 rounded transition-colors focus:outline-none cursor-pointer ${
-              isMenuOpen 
-                ? 'bg-black/10 dark:bg-white/20 text-[#3366cc]' 
+              isMenuOpen
+                ? 'bg-black/10 dark:bg-white/20 text-[#3366cc]'
                 : 'hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1]'
             }`}
             aria-label="主菜单"
@@ -326,8 +326,8 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
             </div>
           )}
 
-          <a 
-            href="/wiki/Wikipedia:首页" 
+          <a
+            href="/wiki/Wikipedia:首页"
             onClick={(e) => {
               e.preventDefault();
               if (onNavigateHome) {
@@ -344,7 +344,7 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
                 MZ
               </span>
             </div>
-            
+
             {/* Wordmark */}
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
@@ -363,8 +363,8 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
             <button
               onClick={onToggleSidebar}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-colors text-xs font-medium cursor-pointer ${
-                isSidebarOpen 
-                  ? 'bg-[#3366cc]/10 text-[#3366cc]' 
+                isSidebarOpen
+                  ? 'bg-[#3366cc]/10 text-[#3366cc]'
                   : 'hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1]'
               }`}
               title={isSidebarOpen ? '收起左侧目录栏' : '展开左侧目录栏'}
@@ -378,10 +378,10 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
         {/* Center: Search Bar with Autocomplete Dropdown */}
         <div ref={searchContainerRef} className="flex-1 max-w-xl relative">
           <div className={`relative flex items-center h-9 rounded border transition-all ${
-            isSearchFocused 
-              ? 'border-[#3366cc] ring-1 ring-[#3366cc] bg-white dark:bg-[#202122]' 
-              : isDarkMode 
-                ? 'border-[#54595d] bg-[#1a1b1c] hover:border-[#a2a9b1]' 
+            isSearchFocused
+              ? 'border-[#3366cc] ring-1 ring-[#3366cc] bg-white dark:bg-[#202122]'
+              : isDarkMode
+                ? 'border-[#54595d] bg-[#1a1b1c] hover:border-[#a2a9b1]'
                 : 'border-[#a2a9b1] bg-[#f8f9fa] hover:border-[#72777d]'
           }`}>
             <Search className="w-4 h-4 ml-3 text-[#72777d] shrink-0 pointer-events-none" />

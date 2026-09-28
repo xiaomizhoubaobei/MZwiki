@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  Info, 
-  ExternalLink, 
-  Droplets, 
+import {
+  Info,
+  ExternalLink,
+  Droplets,
   Clock,
   BookOpen,
   GitBranch,
   Tag
 } from 'lucide-react';
-import { 
-  ABSORBENCY_GRADES, 
-  REFERENCES_DATA, 
+import {
+  ABSORBENCY_GRADES,
+  REFERENCES_DATA,
   CATEGORIES_LIST,
   ReferenceItem,
   getWikiLinkTargetInfo
@@ -165,8 +165,8 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     }`}>
       {/* Hatnote (维基百科消歧义提示) */}
       <div className={`p-2.5 rounded border text-xs flex items-start gap-2.5 not-italic italic ${
-        isDarkMode 
-          ? 'bg-[#27292d] border-[#3a3d42] text-[#bdc1c6]' 
+        isDarkMode
+          ? 'bg-[#27292d] border-[#3a3d42] text-[#bdc1c6]'
           : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#54595d]'
       }`}>
         <Info className="w-4 h-4 text-[#3366cc] shrink-0 mt-0.5 not-italic" />
@@ -624,8 +624,8 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
                 onMouseEnter={(e) => onOpenWikiLink(item.term, e)}
                 title={target.inArticleSectionId ? `点击跳转至本文章节：${target.inArticleSectionTitle}` : `点击访问条目：${item.term}`}
                 className={`p-2.5 rounded border text-left transition-colors flex items-start gap-2 cursor-pointer ${
-                  isDarkMode 
-                    ? 'bg-[#27292d] border-[#3a3d42] hover:border-[#3366cc]' 
+                  isDarkMode
+                    ? 'bg-[#27292d] border-[#3a3d42] hover:border-[#3366cc]'
                     : 'bg-[#f8f9fa] border-[#eaecf0] hover:border-[#3366cc]'
                 }`}
               >
@@ -653,8 +653,8 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
         </h2>
         <div className="text-xs leading-relaxed columns-1 md:columns-2 gap-6 space-y-2">
           {REFERENCES_DATA.map((ref) => (
-            <div 
-              key={ref.id} 
+            <div
+              key={ref.id}
               id={`cite_note-${ref.id}`}
               className="break-inside-avoid text-[#54595d] dark:text-[#a2a9b1] pl-5 relative"
             >
@@ -695,10 +695,10 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
         </h2>
         <ul className="list-disc pl-6 space-y-2 text-xs text-[#3366cc]">
           <li>
-            <a 
-              href="https://www.fda.gov/consumers/consumer-updates/facts-tampons-and-how-use-them-safely" 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href="https://www.fda.gov/consumers/consumer-updates/facts-tampons-and-how-use-them-safely"
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline inline-flex items-center gap-1"
             >
               <span>美国食品药品监督管理局（U.S. FDA）：卫生棉条的安全使用与规范说明</span>
@@ -706,10 +706,10 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
             </a>
           </li>
           <li>
-            <a 
-              href="https://commons.wikimedia.org/wiki/Category:Tampons" 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href="https://commons.wikimedia.org/wiki/Category:Tampons"
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline inline-flex items-center gap-1"
             >
               <span>维基共享资源上的相关多媒体与解剖图解：Tampons</span>
@@ -717,10 +717,10 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
             </a>
           </li>
           <li>
-            <a 
-              href="https://www.acog.org/womens-health/faqs/your-first-period" 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href="https://www.acog.org/womens-health/faqs/your-first-period"
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline inline-flex items-center gap-1"
             >
               <span>美国妇产科学会（ACOG）：初潮与青春期经期护理常见问答</span>

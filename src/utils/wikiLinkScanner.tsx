@@ -85,7 +85,7 @@ export function scanAndRenderWikiText(
   if (!text) return [];
 
   // Intermediate token interface
-  type Token = 
+  type Token =
     | { type: 'text'; text: string }
     | { type: 'wikilink'; term: string; label: string; key: string }
     | { type: 'ref'; id: number; key: string };
@@ -199,7 +199,7 @@ export function scanAndRenderWikiText(
 
     // Build a single composite regex for all dictionary terms
     // Terms are already sorted by length descending
-    const escapedTerms = dictionary.map(d => 
+    const escapedTerms = dictionary.map(d =>
       d.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     );
     const entityRegex = new RegExp(`(${escapedTerms.join('|')})`, 'g');

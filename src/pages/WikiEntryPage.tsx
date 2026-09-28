@@ -1,15 +1,15 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { 
-  BookOpen, 
-  ExternalLink, 
-  GitBranch, 
-  Tag as TagIcon, 
-  ArrowLeft, 
-  Bookmark, 
-  Share2, 
-  Check, 
-  Sparkles, 
-  Info, 
+import {
+  BookOpen,
+  ExternalLink,
+  GitBranch,
+  Tag as TagIcon,
+  ArrowLeft,
+  Bookmark,
+  Share2,
+  Check,
+  Sparkles,
+  Info,
   Layers,
   ChevronRight,
   Award
@@ -82,16 +82,16 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
         isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
       }`}>
         <div className="flex items-center gap-1.5 flex-wrap text-[#54595d] dark:text-[#a2a9b1]">
-          <button 
-            onClick={() => onNavigateToArticle()} 
+          <button
+            onClick={() => onNavigateToArticle()}
             className="text-[#3366cc] dark:text-[#6699ff] hover:underline flex items-center gap-1 cursor-pointer font-medium"
           >
             <ArrowLeft className="w-3 h-3" />
             <span>典范条目: 卫生棉条</span>
           </button>
           <span>/</span>
-          <button 
-            onClick={() => onNavigateCategory()} 
+          <button
+            onClick={() => onNavigateCategory()}
             className="hover:underline cursor-pointer"
           >
             {entry.categoryLabel}
@@ -170,10 +170,10 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
 
       {/* 3. Main Encyclopedic Body & Infobox Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* Left Column: Article Sections & References (8 cols) */}
         <div className="lg:col-span-8 space-y-6">
-          
+
           {/* Lead Summary Paragraph */}
           <div className={`p-4 rounded border text-sm sm:text-base leading-relaxed text-justify transition-colors ${
             isDarkMode ? 'bg-[#18191a] border-[#3a3d42] text-[#eaecf0]' : 'bg-[#fcfdfd] border-[#e5e7eb] text-[#202122]'
@@ -258,7 +258,7 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             <ol className="list-decimal pl-5 space-y-2 text-xs text-[#54595d] dark:text-[#a2a9b1]">
               {entry.academicReferences.map((ref, idx) => (
                 <li key={idx} className="leading-relaxed">
-                  <span className="text-[#202122] dark:text-white font-medium">"{ref.title}"</span>. 
+                  <span className="text-[#202122] dark:text-white font-medium">"{ref.title}"</span>.
                   <span className="italic ml-1">{ref.journal}</span> ({ref.year}).
                   {ref.doiOrUrl && (
                     <span className="ml-1.5 text-[#3366cc] dark:text-[#6699ff] font-mono">
@@ -340,7 +340,7 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
 
         {/* Right Column: Wikipedia Standard Infobox (4 cols) */}
         <div className="lg:col-span-4 space-y-4">
-          
+
           {/* Infobox Container */}
           <div className={`rounded border overflow-hidden text-xs transition-colors shadow-xs ${
             isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#fdfdfd] border-[#a2a9b1]'

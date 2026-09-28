@@ -23,8 +23,8 @@ export const EntityImagePreview: React.FC<EntityImagePreviewProps> = ({ node, is
 
   return (
     <div className={`w-full h-40 rounded overflow-hidden border transition-colors relative flex items-center justify-center select-none ${
-      isDarkMode 
-        ? 'bg-[#151617] border-[#3a3d42]' 
+      isDarkMode
+        ? 'bg-[#151617] border-[#3a3d42]'
         : 'bg-[#f8f9fa] border-[#c8ccd1]'
     }`}>
       {/* 1. Try proxied image */}

@@ -1,9 +1,9 @@
-import { 
-  GraphNode, 
-  GraphEdge, 
-  GRAPH_NODES, 
-  GRAPH_EDGES, 
-  GraphCategory 
+import {
+  GraphNode,
+  GraphEdge,
+  GRAPH_NODES,
+  GRAPH_EDGES,
+  GraphCategory
 } from '../data/knowledgeGraphData';
 import { WIKI_ENTRIES } from '../data/wikiEntriesData';
 
@@ -115,7 +115,7 @@ export function generateAutomatedTopology(options: {
 
         if (shared.length >= minSharedTags) {
           existingEdgeSet.add(pairKey);
-          
+
           let edgeType: GraphEdge['type'] = 'primary';
           if (nodeA.category === 'medical' || nodeB.category === 'medical') {
             edgeType = 'medical';

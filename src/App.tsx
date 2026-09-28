@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ARTICLE_SECTIONS, 
-  SectionDef, 
-  ReferenceItem 
+import {
+  ARTICLE_SECTIONS,
+  SectionDef,
+  ReferenceItem
 } from './data/articleData';
 import { WikipediaHeader } from './components/WikipediaHeader';
 import { WikipediaSubheader } from './components/WikipediaSubheader';
@@ -12,10 +12,10 @@ import { WikipediaFooter } from './components/WikipediaFooter';
 import { AppearanceModal } from './components/AppearanceModal';
 import { WikiLinkPreview } from './components/WikiLinkPreview';
 import { ReferencePreview } from './components/ReferencePreview';
-import { 
-  PRIVACY_SECTIONS, 
-  DISCLAIMER_SECTIONS, 
-  CONDUCT_SECTIONS 
+import {
+  PRIVACY_SECTIONS,
+  DISCLAIMER_SECTIONS,
+  CONDUCT_SECTIONS
 } from './data/policyData';
 import { CATEGORY_SECTIONS } from './data/categoryData';
 import { PrivacyPage } from './pages/PrivacyPage';
@@ -31,10 +31,10 @@ import { ContentStatisticsPage } from './pages/ContentStatisticsPage';
 import { WikiEntry, getWikiEntryByTitle, WIKI_ENTRIES } from './data/wikiEntriesData';
 import { AppPage, getWikiPath, parseWikiLocation } from './utils/wikiRoutes';
 import { applyPageSEO } from './utils/seoAutomation';
-import { 
-  getAutomatedBreadcrumbs, 
-  getWikiEntryMetrics, 
-  getFeaturedArticleMetrics 
+import {
+  getAutomatedBreadcrumbs,
+  getWikiEntryMetrics,
+  getFeaturedArticleMetrics
 } from './utils/headerAutomation';
 import { ListFilter } from 'lucide-react';
 
@@ -72,8 +72,8 @@ export default function App() {
   // Popover state
   const [wikiLinkHover, setWikiLinkHover] = useState<{
     term: string;
-    position: { 
-      x: number; 
+    position: {
+      x: number;
       y: number;
       rect?: {
         left: number;
@@ -240,7 +240,7 @@ export default function App() {
   }, [currentPage, currentWikiEntry, missingPath]);
 
   // Determine current active section list for TOC and Scrollspy
-  const currentSections: SectionDef[] = 
+  const currentSections: SectionDef[] =
     currentPage === 'category' || currentPage === '404' || currentPage === 'graph' || currentPage === 'tags' || currentPage === 'stats' || currentPage === 'entry' ? [] :
     currentPage === 'privacy' ? PRIVACY_SECTIONS :
     currentPage === 'disclaimer' ? DISCLAIMER_SECTIONS :
@@ -369,10 +369,10 @@ export default function App() {
     const rect = target?.getBoundingClientRect?.();
     const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const y = rect ? rect.bottom : 200;
-    setWikiLinkHover({ 
-      term, 
-      position: { 
-        x, 
+    setWikiLinkHover({
+      term,
+      position: {
+        x,
         y,
         rect: rect ? {
           left: rect.left,
@@ -382,7 +382,7 @@ export default function App() {
           width: rect.width,
           height: rect.height
         } : undefined
-      } 
+      }
     });
   };
 
@@ -513,7 +513,7 @@ export default function App() {
           </main>
         ) : (
           <div className="flex gap-6 lg:gap-8 items-start relative">
-            
+
             {/* Left Column: Side Table of Contents (Vector 2022) - Not displayed on category, graph, tags, stats, entry or 404 page */}
             {currentPage !== 'category' && currentPage !== '404' && currentPage !== 'graph' && currentPage !== 'tags' && currentPage !== 'stats' && currentPage !== 'entry' && (
               isSidebarOpen ? (
@@ -531,14 +531,14 @@ export default function App() {
 
                   {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge) */}
                   <div className="sm:hidden fixed inset-0 z-50 flex">
-                    <div 
+                    <div
                       className="fixed inset-0 bg-black/40 backdrop-blur-xs"
                       onClick={() => setIsSidebarOpen(false)}
                     />
                     <aside className="relative z-10 w-72 max-w-[82vw] h-full shadow-2xl p-3 bg-white dark:bg-[#1e2022] overflow-y-auto">
                       <div className="flex justify-between items-center pb-2 mb-2 border-b border-black/10 dark:border-white/10">
                         <span className="font-bold text-xs">侧边目录</span>
-                        <button 
+                        <button
                           onClick={() => setIsSidebarOpen(false)}
                           className="text-xs text-[#3366cc] font-medium cursor-pointer"
                         >
@@ -564,8 +564,8 @@ export default function App() {
                   <button
                     onClick={() => setIsSidebarOpen(true)}
                     className={`flex items-center gap-1.5 px-2.5 py-2 rounded-r-md border border-l-0 shadow-sm text-xs font-medium cursor-pointer transition-colors ${
-                      isDarkMode 
-                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]' 
+                      isDarkMode
+                        ? 'bg-[#202122] border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]'
                         : 'bg-white border-[#c8ccd1] text-[#202122] hover:bg-[#f8f9fa]'
                     }`}
                     title="展开左侧目录栏"

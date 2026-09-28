@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-  AlertTriangle, 
-  Stethoscope, 
-  PhoneCall, 
-  Scale, 
+import {
+  AlertTriangle,
+  Stethoscope,
+  PhoneCall,
+  Scale,
   HeartPulse,
   Clock,
   ShieldAlert
@@ -21,7 +21,7 @@ export const DisclaimerPage: React.FC<PolicyPageProps> = ({
 }) => {
   return (
     <article className={`space-y-8 font-sans ${contentWidth === 'standard' ? 'max-w-4xl' : 'max-w-full'}`}>
-      
+
       {/* Namespace Breadcrumb */}
       <div className="flex items-center gap-1.5 text-xs pb-3 border-b border-black/10 dark:border-white/10 text-[#54595d] dark:text-[#a2a9b1] flex-wrap">
         <span className="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[11px] font-mono text-[#72777d]">

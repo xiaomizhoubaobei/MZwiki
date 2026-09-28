@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Tag as TagIcon, 
-  Search, 
-  Sparkles, 
-  BookOpen, 
-  GitBranch, 
-  ExternalLink, 
-  Layers, 
-  Filter, 
+import {
+  Tag as TagIcon,
+  Search,
+  Sparkles,
+  BookOpen,
+  GitBranch,
+  ExternalLink,
+  Layers,
+  Filter,
   ArrowRight,
   ShieldAlert,
   Activity,
@@ -18,12 +18,12 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
-import { 
-  getAllTags, 
-  getTagsByCategories, 
-  TAG_CATEGORIES, 
+import {
+  getAllTags,
+  getTagsByCategories,
+  TAG_CATEGORIES,
   TagDetail,
-  TagCategoryMeta 
+  TagCategoryMeta
 } from '../data/tagsData';
 import { GraphNode } from '../data/knowledgeGraphData';
 import { EntityImagePreview } from '../components/EntityImagePreview';
@@ -56,8 +56,8 @@ export const TagsPage: React.FC<TagsPageProps> = ({
   // Filter tags by query and category
   const filteredTags = useMemo(() => {
     return allTags.filter(tag => {
-      const matchSearch = 
-        !searchQuery.trim() || 
+      const matchSearch =
+        !searchQuery.trim() ||
         tag.name.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
         tag.description.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
         tag.nodes.some(n => n.name.toLowerCase().includes(searchQuery.toLowerCase().trim()));
@@ -166,8 +166,8 @@ export const TagsPage: React.FC<TagsPageProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`w-full pl-9 pr-8 py-2 rounded text-xs border focus:outline-none focus:ring-1 focus:ring-[#3366cc] transition-colors ${
-              isDarkMode 
-                ? 'bg-[#151617] border-[#54595d] text-[#eaecf0] placeholder-[#72777d]' 
+              isDarkMode
+                ? 'bg-[#151617] border-[#54595d] text-[#eaecf0] placeholder-[#72777d]'
                 : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122] placeholder-[#a2a9b1]'
             }`}
           />
@@ -222,7 +222,7 @@ export const TagsPage: React.FC<TagsPageProps> = ({
 
       {/* 3. Main Split View: Tag Matrix (Left) + Active Tag Inspector (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Left Column: Categorized Tag Cloud & Badges (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           {categorizedTags
@@ -233,7 +233,7 @@ export const TagsPage: React.FC<TagsPageProps> = ({
               if (visibleTags.length === 0) return null;
 
               return (
-                <div 
+                <div
                   key={group.category.key}
                   className={`p-4 rounded border transition-colors ${
                     isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-white border-[#c8ccd1]'
@@ -357,8 +357,8 @@ export const TagsPage: React.FC<TagsPageProps> = ({
 
               {/* Direct Encyclopedic Entry Mapping Banner */}
               <div className={`p-3 rounded border flex items-center justify-between gap-2.5 transition-colors ${
-                isDarkMode 
-                  ? 'bg-blue-950/20 border-blue-900/40 text-[#eaecf0]' 
+                isDarkMode
+                  ? 'bg-blue-950/20 border-blue-900/40 text-[#eaecf0]'
                   : 'bg-blue-50/60 border-blue-200 text-[#202122]'
               }`}>
                 <div className="space-y-0.5 min-w-0">
@@ -419,7 +419,7 @@ export const TagsPage: React.FC<TagsPageProps> = ({
 
                 <div className="space-y-3">
                   {activeTagDetail.nodes.map(node => (
-                    <div 
+                    <div
                       key={node.id}
                       className={`p-3 rounded border transition-all ${
                         isDarkMode ? 'bg-[#151617] border-[#3a3d42] hover:border-[#6699ff]/50' : 'bg-white border-[#e5e7eb] hover:border-[#3366cc]/50'
@@ -441,7 +441,7 @@ export const TagsPage: React.FC<TagsPageProps> = ({
                               {node.categoryLabel}
                             </span>
                           </div>
-                          
+
                           <p className="text-[11px] text-[#72777d] line-clamp-2 leading-relaxed">
                             {node.summary}
                           </p>
