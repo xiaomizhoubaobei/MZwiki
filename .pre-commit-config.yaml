@@ -40,11 +40,15 @@ repos:
         exclude: ^tsconfig.*\.json$
 
   # ---------- TypeScript 类型检查（本地，复用项目工具链）----------
+  # 注意：entry 走 scripts/precommit-lint.sh 而非直接写 `pnpm lint`。
+  # 原因：CI / 开发容器常只装了 node + npm（无 pnpm），直接调用会报
+  # `Executable \`pnpm\` not found` 导致提交被拦截；包装脚本会用 corepack
+  # 自动提供 pnpm，并在依赖缺失时先安装，确保钩子在任何 Node 环境下可用。
   - repo: local
     hooks:
       - id: tsc-typecheck
         name: tsc 类型检查（等价 pnpm lint）
-        entry: pnpm lint
+        entry: bash scripts/precommit-lint.sh
         language: system
         files: \.(ts|tsx)$
         pass_filenames: false
