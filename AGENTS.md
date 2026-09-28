@@ -39,9 +39,29 @@
   1. 安装：`pip install pre-commit`
   2. 安装钩子（首次）：`pre-commit install`
   3. 全量检查：`pre-commit run --all-files`（日常 `git commit` 会自动触发）
-- 钩子集合：通用文本卫生（行尾空白 / 文件末尾换行 / 行尾符 / 大小写冲突 / 合并冲突 / 大文件 / 私钥检测 / 禁直推 `main`）、配置合法性（YAML / JSON），以及本地 `tsc --noEmit` 类型检查（等价 `pnpm lint`）。
-- 类型检查钩子（`tsc-typecheck`）的 `entry` 为 `bash scripts/precommit-lint.sh`，**不要**改回直接写 `pnpm lint`。原因：CI / 开发容器常常只有 node 而无 pnpm（部分环境连 corepack 也没挂到 PATH），直接调用会报 `Executable `pnpm` not found` 或 `未找到 pnpm，也未找到 corepack` 拦截提交。包装脚本**首选用 `node` 直跑项目内 tsc**（`node node_modules/typescript/bin/tsc --noEmit`，只需 node，绕开 `.bin` shell shim，也不依赖 pnpm / corepack）；仅当依赖缺失时才依次用 pnpm / corepack / npm 补装——**单个包管理器安装失败会自动降级到下一个**（`--frozen-lockfile` 失败也会退回普通安装），安装后**轮询等待 tsc 就绪**（最多 6 秒）再执行，保证钩子在任何 Node 环境下自愈。其回归测试见 `tests/precommit-lint.test.sh`（9 项断言，覆盖依赖就位 / 仅 node / 无 node / 缺依赖自动安装 / pnpm 失败降级 npm）。
-- 本仓库的质量门禁核心是 **类型检查**：`pnpm lint`（`tsc --noEmit`）必须零错误（详见 10.7）。
+- 钩子集合：通用文本卫生（行尾空白 / 文件末尾换行 / 行尾符 / 大小写冲突 / 合并冲突 / 大文件 / 私钥检测 / 禁直推 `main`）与配置合法性（YAML / JSON）。
+- **类型检查已不在钩子内**：`tsc --noEmit`（等价 `pnpm lint`）**不再由 `.pre-commit-config.yaml` 自动执行**，改为提交者必须自己跑通的**人工强制门禁**（见下一条），不要把类型检查重新加回钩子。
+
+#### 1.4.1 类型检查（提交 / 推送的硬性门禁）【强制】
+
+> **🔒 强制要求（最高优先级）**：**任何一次 `git commit` 与 `git push` 之前，都必须先运行类型检查，且必须零错误通过。** 不通过就**不许提交、不许推送**。适用于所有改动类型（`feat`/`fix`/`docs`/`chore`/`refactor`/`style`…），**不因「只改文档 / 只改配置」而豁免**——因为 `tsc --noEmit` 覆盖全仓库类型图谱，任何文件的改动都可能引入类型错误。
+
+- **唯一命令**：`pnpm lint`（即 `tsc --noEmit`），必须在仓库根目录执行、退出码为 `0`。
+- **依赖缺失时**：先 `pnpm install`（或 `corepack pnpm install`）再跑；不要因为「环境没装 pnpm」就跳过检查，跳过等同违规。
+- **标准流程**（顺序不可颠倒）：
+
+  ```bash
+  pnpm install            # 首次 / 依赖缺失时
+  pnpm lint               # 类型检查，必须零错误（exit 0）
+  bash install_gpg_keys.sh  # 提交前必备（见 1.5）
+  git commit -S -m "fix(scope): 中文描述"
+  pnpm lint               # 推送前再确认一次（防止后续追加提交漏检）
+  git push origin <branch>
+  ```
+
+- **推送前自检清单**（缺一不可）：`pnpm lint` 退出码为 `0`；`git status` 无未预期改动；GPG 签名环境已接管（见 1.5.2）。
+- **异常时如实上报**：类型检查报错必须**修完错误再提交**，**严禁**用 `// @ts-ignore`、`as any`、改 `tsconfig.json` 放宽 `strict` 等手段把错误「压掉」；确属误报需在 PR 说明并交由用户判断。
+- **为什么从钩子挪到人工**：钩子为了在任意 Node 环境下自愈，会自动装依赖、轮询等待，链路过重且易在慢速镜像下误拦截提交；类型检查本质是「提交者必须自己确认通过」的质量门禁，放在提交/推送前置的人工步骤更直接、更可控。
 
 ### 1.5 GPG 签名
 项目开启了 commit 签名。
@@ -88,7 +108,7 @@ bash install_gpg_keys.sh
 
 ### 2.1 语言与类型
 - 核心代码库使用 **TypeScript** 编写（React 19 + Vite 6，`tsconfig.json` 已开启 `strict`）。
-- 组件 Props、函数入参/返回值、数据模型必须提供**显式类型**，提交前必须通过 `pnpm lint`（`tsc --noEmit`）。
+- 组件 Props、函数入参/返回值、数据模型必须提供**显式类型**；提交与推送前必须通过 `pnpm lint`（`tsc --noEmit`）且零错误（见 1.4.1）。
 - 禁止为图省事滥用 `any`；能用具体类型、联合类型或 `interface` / `type` 表达的地方必须明确类型（本项目以 `AppPage`、`WikiEntry` 等联合/接口类型为范例）。
 
 ### 2.2 命名与注释
@@ -770,7 +790,7 @@ window.history.pushState + popstate / hashchange  ── 前进后退与锚点�
 - **代理白名单不可放开**：`server.ts` 的 `ALLOWED_HOSTS` 仅允许维基媒体域名，新增代理务必先过白名单。
 - **图像走代理**：外链图片统一经 `src/utils/imageProxy.ts` 处理，避免直接裸链导致跨域 / 加载失败。
 - **SEO 动态化**：页面级 SEO 元数据统一走 `seoAutomation.applyPageSEO()`，不要在组件里手改 `document.head`。
-- **类型严格**：`tsconfig.json` 开启 `strict`，提交前 `npm run lint`（`tsc --noEmit`）必须零错误。
+- **类型严格**：`tsconfig.json` 开启 `strict`；提交与推送前必须跑 `pnpm lint`（`tsc --noEmit`）并零错误通过（见 1.4.1）。
 - **样式统一走 Tailwind v4**：原子类优先，避免散落的行内样式与自造 CSS 命名。
 
 ---
@@ -799,10 +819,11 @@ pnpm dev
 
 ### 10.7. 代码质量与提交规范
 
-- **类型检查**：提交前运行 `pnpm lint`（`tsc --noEmit`），确保无类型错误；`build` 亦会先跑 `tsc`。该检查已作为本地钩子写入 `.pre-commit-config.yaml`（`tsc-typecheck`），提交时经 `scripts/precommit-lint.sh` 自动执行（该脚本**优先用 node 直跑项目内 tsc**，不依赖 pnpm / corepack；依赖缺失时才依次用 pnpm / corepack / npm 补装，单个包管理器失败自动降级，安装后等待 tsc 就绪再执行）。
-- **pre-commit**：仓库配置了 `.pre-commit-config.yaml`，钩子覆盖文本卫生、配置合法性与类型检查；`git commit` 前需先 `pre-commit install` 完成钩子挂载（见 1.4）。
+- **类型检查**：`pnpm lint`（`tsc --noEmit`）是**提交与推送的硬性门禁**，必须零错误通过（见 1.4.1）；`build` 亦会先跑 `tsc`。该检查**已从 `.pre-commit-config.yaml` 钩子中移除**，改由提交者人工执行——不要再把它加回钩子，也不要以为 `pre-commit run` 通过就等于类型检查通过。
+- **pre-commit**：仓库配置了 `.pre-commit-config.yaml`，钩子仅覆盖文本卫生与配置合法性（不含类型检查）；`git commit` 前需先 `pre-commit install` 完成钩子挂载（见 1.4），类型检查须单独执行（见 1.4.1）。
 - **提交信息**：遵循第 1 章 Angular 规范，**中文描述**，如 `feat(router): 新增 Special:内容统计 页面路由`、`fix(seo): 修正 canonical 路径未编码的问题`。
 - **GPG 签名**：提交前必须先执行 `bash install_gpg_keys.sh`（见 1.5），本仓库已开启 commit 签名。
+- **提交/推送顺序**：`pnpm lint` 通过 → `bash install_gpg_keys.sh` → `git commit -S` → 推送前再跑一次 `pnpm lint` → `git push`（见 1.4.1）。
 - **分支与 PR**：从 `main` 拉出特性分支，完成后提交 PR，说明变更点与验证方式；面向 Issue / PR 的自动化模板见 `.github/`。
 
 ---
@@ -822,7 +843,7 @@ pnpm dev
 3. **复用派生工具**：统计 / SEO / 图谱指标统一走 `src/utils/*Automation.ts`，不要在组件里重算。
 4. **守住安全边界**：图片代理白名单（`server.ts` 的 `ALLOWED_HOSTS`）只增维基媒体域名，**绝不**放开为通配；不要把外链拉取逻辑写成开放代理。
 5. **保持 SPA 体感**：站内导航用 `pushState` + `popstate`/`hashchange`，禁止 `location.href` 跳转。
-6. **提交前自检**：先 `bash install_gpg_keys.sh`，再 `pnpm lint`，确认无类型错误后再提交。
+6. **提交/推送前自检**：先 `pnpm lint`（`tsc --noEmit`）零错误，再 `bash install_gpg_keys.sh`，然后 `git commit -S`；推送前再确认一次 `pnpm lint`（见 1.4.1）。
 7. **提交信息**：Angular 规范 + 中文；分支拉 PR，不直推 `main`（除非用户明确要求，见 3.4）。
 8. **双端同步**：因 `.cnb.yml` 配置了 GitHub 镜像同步，CNB 建 PR 的同时须在 GitHub 镜像仓库建同名同变更 PR（见 3.5）。
 9. **不要把密钥写进代码或文档**；任何凭证一律经密钥仓库注入。

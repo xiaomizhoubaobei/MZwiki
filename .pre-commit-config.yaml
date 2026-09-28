@@ -39,19 +39,7 @@ repos:
         # tsconfig 允许注释（JSONC），跳过
         exclude: ^tsconfig.*\.json$
 
-  # ---------- TypeScript 类型检查（本地，复用项目工具链）----------
-  # 注意：entry 走 scripts/precommit-lint.sh 而非直接写 `pnpm lint`。
-  # 原因：CI / 开发容器常只装了 node 而无 pnpm（甚至 corepack 也没挂到 PATH），
-  # 直接调用会报 `Executable \`pnpm\` not found` / `未找到 pnpm，也未找到 corepack`
-  # 导致提交被拦截。包装脚本优先用 node 直跑项目内 tsc（只需 node），
-  # 依赖缺失时再依次用 pnpm / corepack / npm 补装；单个包管理器失败会自动降级到
-  # 下一个，安装后轮询等待 tsc 就绪，确保钩子在任何 Node 环境下都能自愈。
-  # 回归测试见 tests/precommit-lint.test.sh。
-  - repo: local
-    hooks:
-      - id: tsc-typecheck
-        name: tsc 类型检查（等价 pnpm lint）
-        entry: bash scripts/precommit-lint.sh
-        language: system
-        files: \.(ts|tsx)$
-        pass_filenames: false
+  # 说明：类型检查（等价 `pnpm lint` = `tsc --noEmit`）已从钩子中移除，
+  # 改为提交/推送前的人工强制门禁（见 AGENTS.md 1.4 / 10.7）。
+  # 原因：钩子会自动装依赖并在慢速镜像下等待，链路过重、易误拦截；
+  # 类型检查属于「提交者必须自己确认通过」的硬性要求。
