@@ -44,7 +44,9 @@ repos:
   # 原因：CI / 开发容器常只装了 node 而无 pnpm（甚至 corepack 也没挂到 PATH），
   # 直接调用会报 `Executable \`pnpm\` not found` / `未找到 pnpm，也未找到 corepack`
   # 导致提交被拦截。包装脚本优先用 node 直跑项目内 tsc（只需 node），
-  # 依赖缺失时再依次用 pnpm / corepack / npm 补装，确保钩子在任何 Node 环境下可用。
+  # 依赖缺失时再依次用 pnpm / corepack / npm 补装；单个包管理器失败会自动降级到
+  # 下一个，安装后轮询等待 tsc 就绪，确保钩子在任何 Node 环境下都能自愈。
+  # 回归测试见 tests/precommit-lint.test.sh。
   - repo: local
     hooks:
       - id: tsc-typecheck
