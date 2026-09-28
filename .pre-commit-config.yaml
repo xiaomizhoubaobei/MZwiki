@@ -41,9 +41,10 @@ repos:
 
   # ---------- TypeScript 类型检查（本地，复用项目工具链）----------
   # 注意：entry 走 scripts/precommit-lint.sh 而非直接写 `pnpm lint`。
-  # 原因：CI / 开发容器常只装了 node + npm（无 pnpm），直接调用会报
-  # `Executable \`pnpm\` not found` 导致提交被拦截；包装脚本会用 corepack
-  # 自动提供 pnpm，并在依赖缺失时先安装，确保钩子在任何 Node 环境下可用。
+  # 原因：CI / 开发容器常只装了 node 而无 pnpm（甚至 corepack 也没挂到 PATH），
+  # 直接调用会报 `Executable \`pnpm\` not found` / `未找到 pnpm，也未找到 corepack`
+  # 导致提交被拦截。包装脚本优先用 node 直跑项目内 tsc（只需 node），
+  # 依赖缺失时再依次用 pnpm / corepack / npm 补装，确保钩子在任何 Node 环境下可用。
   - repo: local
     hooks:
       - id: tsc-typecheck

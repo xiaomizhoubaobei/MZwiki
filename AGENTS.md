@@ -40,7 +40,7 @@
   2. 安装钩子（首次）：`pre-commit install`
   3. 全量检查：`pre-commit run --all-files`（日常 `git commit` 会自动触发）
 - 钩子集合：通用文本卫生（行尾空白 / 文件末尾换行 / 行尾符 / 大小写冲突 / 合并冲突 / 大文件 / 私钥检测 / 禁直推 `main`）、配置合法性（YAML / JSON），以及本地 `tsc --noEmit` 类型检查（等价 `pnpm lint`）。
-- 类型检查钩子（`tsc-typecheck`）的 `entry` 为 `bash scripts/precommit-lint.sh`，**不要**改回直接写 `pnpm lint`。原因：CI / 开发容器常常只有 node + npm 而无 pnpm，直接调用会报 `Executable `pnpm` not found` 拦截提交；包装脚本会优先用已装的 pnpm，缺失时由 corepack 自动提供，并在 `node_modules` 缺失时先按 lockfile 安装依赖，保证钩子在任何 Node 环境下自愈。
+- 类型检查钩子（`tsc-typecheck`）的 `entry` 为 `bash scripts/precommit-lint.sh`，**不要**改回直接写 `pnpm lint`。原因：CI / 开发容器常常只有 node 而无 pnpm（部分环境连 corepack 也没挂到 PATH），直接调用会报 `Executable `pnpm` not found` 或 `未找到 pnpm，也未找到 corepack` 拦截提交。包装脚本**首选用 `node` 直跑项目内 tsc**（`node node_modules/typescript/bin/tsc --noEmit`，只需 node，绕开 `.bin` shell shim，也不依赖 pnpm / corepack），仅当依赖缺失时才依次用 pnpm / corepack / npm 补装，保证钩子在任何 Node 环境下自愈。其回归测试见 `tests/precommit-lint.test.sh`（只读、无需联网，6 项断言）。
 - 本仓库的质量门禁核心是 **类型检查**：`pnpm lint`（`tsc --noEmit`）必须零错误（详见 10.7）。
 
 ### 1.5 GPG 签名
@@ -799,7 +799,7 @@ pnpm dev
 
 ### 10.7. 代码质量与提交规范
 
-- **类型检查**：提交前运行 `pnpm lint`（`tsc --noEmit`），确保无类型错误；`build` 亦会先跑 `tsc`。该检查已作为本地钩子写入 `.pre-commit-config.yaml`（`tsc-typecheck`），提交时经 `scripts/precommit-lint.sh` 自动执行（该脚本会在缺失 pnpm 时用 corepack 兜底，并在无 `node_modules` 时先装依赖）。
+- **类型检查**：提交前运行 `pnpm lint`（`tsc --noEmit`），确保无类型错误；`build` 亦会先跑 `tsc`。该检查已作为本地钩子写入 `.pre-commit-config.yaml`（`tsc-typecheck`），提交时经 `scripts/precommit-lint.sh` 自动执行（该脚本**优先用 node 直跑项目内 tsc**，不依赖 pnpm / corepack；依赖缺失时才依次用 pnpm / corepack / npm 补装）。
 - **pre-commit**：仓库配置了 `.pre-commit-config.yaml`，钩子覆盖文本卫生、配置合法性与类型检查；`git commit` 前需先 `pre-commit install` 完成钩子挂载（见 1.4）。
 - **提交信息**：遵循第 1 章 Angular 规范，**中文描述**，如 `feat(router): 新增 Special:内容统计 页面路由`、`fix(seo): 修正 canonical 路径未编码的问题`。
 - **GPG 签名**：提交前必须先执行 `bash install_gpg_keys.sh`（见 1.5），本仓库已开启 commit 签名。
