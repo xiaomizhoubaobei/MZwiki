@@ -1,5 +1,7 @@
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
+// 复用 vite.config.ts 中统一定义的放行域名，避免两处维护出现偏差
+import { ALLOWED_HOSTS as VITE_ALLOWED_HOSTS } from './vite.config.ts';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
@@ -310,7 +312,9 @@ async function startServer() {
 
   if (!isProduction) {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      // middleware 模式下中间件由 Express 承载，Vite 仍会执行 Host 校验，
+      // 故需显式透传放行域名，否则自定义域名访问会被 403 拦截
+      server: { middlewareMode: true, allowedHosts: VITE_ALLOWED_HOSTS },
       appType: 'spa'
     });
     app.use(vite.middlewares);
