@@ -319,8 +319,11 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
+    // 生产模式：先托管构建产物，再对未命中的 GET 请求回退到 SPA 入口
     app.use(express.static(path.resolve(__dirname, 'dist')));
-    app.get('*', (_req, res) => {
+    // ⚠️ Express 5 基于 path-to-regexp v8，已移除裸 `*` 通配符语法（`app.get('*')`
+    // 会在启动时抛 PathError 并导致进程退出）；此处改用匿名参数捕获的命名通配符。
+    app.get('/*splat', (_req, res) => {
       res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
     });
   }

@@ -134,7 +134,19 @@ npm run lint
 ```bash
 npm run build
 ```
-构建生成的文件将存放于 `dist/` 目录下，可直接部署于任何现代 Web 托管平台。
+构建生成的文件将存放于 `dist/` 目录下。
+
+### 5. 生产环境启动（⚠️ 部署必读）
+本项目由 `server.ts` 单进程同时承载前端页面与统计 API，**必须显式以生产模式启动**，否则会退化为 Vite 开发服务器（浏览器将直接拿到源码文件，而非构建产物）：
+
+```bash
+npm run build          # 1. 产出 dist/ 构建产物
+npm run start:prod     # 2. 以 NODE_ENV=production 启动服务
+```
+
+- `npm run start:prod` 等价于 `NODE_ENV=production tsx server.ts`：托管 `dist/` 静态资源并对未知路径回退到 SPA 入口。
+- 部署平台若允许自定义启动命令，请使用 `npm run start:prod`（或自行注入 `NODE_ENV=production`）。
+- 生产模式下 `/src/*`、`/package.json` 等源码路径不再对外暴露，仅提供 `dist/` 产物与 API。
 
 ---
 
