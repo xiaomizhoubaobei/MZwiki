@@ -32,6 +32,7 @@ interface WikipediaHeaderProps {
   currentPage?: string;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
+  onPrint?: () => void;
 }
 
 export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
@@ -51,7 +52,8 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
   currentPageTitle = '卫生棉条',
   currentPage = 'home',
   onToggleSidebar,
-  isSidebarOpen = true
+  isSidebarOpen = true,
+  onPrint
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -121,7 +123,7 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
     : [];
 
   return (
-    <header className={`sticky top-0 z-40 border-b transition-colors ${
+    <header className={`sticky top-0 z-40 border-b transition-colors print:hidden no-print ${
       isDarkMode
         ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]'
         : 'bg-white border-[#c8ccd1] text-[#202122]'

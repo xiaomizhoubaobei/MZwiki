@@ -6,7 +6,8 @@ import {
   Clock,
   BookOpen,
   GitBranch,
-  Tag
+  Tag,
+  Printer
 } from 'lucide-react';
 import {
   ABSORBENCY_GRADES,
@@ -98,6 +99,7 @@ interface ArticleContentProps {
   onNavigateCategory?: () => void;
   onNavigateGraph?: () => void;
   onNavigateTags?: (tag?: string) => void;
+  onPrint?: () => void;
 }
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({
@@ -109,7 +111,8 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
   contentWidth,
   onNavigateCategory,
   onNavigateGraph,
-  onNavigateTags
+  onNavigateTags,
+  onPrint
 }) => {
   const [selectedAbsorbency, setSelectedAbsorbency] = useState<number>(1); // index for Regular
   const [activeMediaImageId, setActiveMediaImageId] = useState<string | null>(null);
@@ -590,9 +593,32 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       </section>
 
       {/* ============================================================== */}
+      {/* 打印条目：触发纯净文章打印视图（打印时自身隐藏）                */}
+      {/* ============================================================== */}
+      <div className={`p-3 rounded-lg border transition-colors my-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden no-print ${
+        isDarkMode ? 'bg-[#181a1d] border-[#3a3d42]' : 'bg-[#f0f4f9] border-[#c8ccd1]'
+      }`}>
+        <p className="text-xs text-[#54595d] dark:text-[#a2a9b1] leading-relaxed">
+          打印模式会自动隐藏侧边栏、搜索框与底部导航，仅输出纯净文章排版。
+        </p>
+        <button
+          onClick={() => (onPrint ? onPrint() : window.print())}
+          className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
+            isDarkMode
+              ? 'border-[#54595d] bg-[#22252a] text-[#eaecf0] hover:bg-[#2c2f36]'
+              : 'border-[#c8ccd1] bg-white text-[#202122] hover:bg-[#f8f9fa]'
+          }`}
+          title="打印本条目纯净版本（自动隐藏侧边栏、搜索框与底部导航）"
+        >
+          <Printer className="w-4 h-4 text-[#3366cc] dark:text-[#6699ff]" />
+          <span>打印条目</span>
+        </button>
+      </div>
+
+      {/* ============================================================== */}
       {/* SECTION 7: 相关条目 */}
       {/* ============================================================== */}
-      <section id="see-also" className="pt-2">
+      <section id="see-also" className="pt-2 print:hidden no-print">
         <h2 className="text-2xl font-serif font-bold text-[#202122] dark:text-[#eaecf0] border-b border-[#a2a9b1] dark:border-[#54595d] pb-1 mb-4">
           7 相关条目
         </h2>
@@ -733,7 +759,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       {/* ============================================================== */}
       {/* Article Tags Box (维基百科条目主题标签方块) */}
       {/* ============================================================== */}
-      <div className={`p-2.5 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors mb-3 ${
+      <div className={`p-2.5 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors mb-3 print:hidden no-print ${
         isDarkMode ? 'bg-[#27292d] border-[#54595d]' : 'bg-[#f8f9fa] border-[#a2a9b1]'
       }`}>
         <span className="font-bold text-[#54595d] dark:text-[#a2a9b1] shrink-0 flex items-center gap-1.5">
@@ -763,7 +789,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       {/* ============================================================== */}
       {/* Categories Box (维基百科页底分类方块) */}
       {/* ============================================================== */}
-      <div className={`p-2.5 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors ${
+      <div className={`p-2.5 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors print:hidden no-print ${
         isDarkMode ? 'bg-[#27292d] border-[#54595d]' : 'bg-[#f8f9fa] border-[#a2a9b1]'
       }`}>
         <span className="font-bold text-[#54595d] dark:text-[#a2a9b1] shrink-0">

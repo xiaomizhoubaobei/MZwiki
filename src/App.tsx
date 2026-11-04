@@ -584,6 +584,7 @@ export default function App() {
         currentPage={currentPage}
         onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
         isSidebarOpen={isSidebarOpen}
+        onPrint={handlePrintArticle}
       />
 
       {/* 2. Page Title Ribbon (Displayed on article & policy pages) */}
@@ -608,6 +609,7 @@ export default function App() {
           onNavigateCategory={() => handleNavigatePage('category')}
           onNavigateTags={() => handleNavigateTags()}
           onNavigateStats={() => handleNavigatePage('stats')}
+          onPrint={handlePrintArticle}
         />
       )}
 
@@ -634,7 +636,7 @@ export default function App() {
               isSidebarOpen ? (
                 <>
                   {/* Desktop & Tablet Sidebar (Always on the left side) */}
-                  <aside className="hidden sm:block w-56 md:w-60 lg:w-64 shrink-0 sticky top-20">
+                  <aside className="hidden sm:block w-56 md:w-60 lg:w-64 shrink-0 sticky top-20 print:hidden no-print">
                     <TableOfContents
                       activeSectionId={activeSectionId}
                       onSelectSection={handleNavigateSection}
@@ -644,8 +646,8 @@ export default function App() {
                     />
                   </aside>
 
-                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge) */}
-                  <div className="sm:hidden fixed inset-0 z-50 flex">
+                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge, 打印时隐藏) */}
+                  <div className="sm:hidden fixed inset-0 z-50 flex print:hidden no-print">
                     <div
                       className="fixed inset-0 bg-black/40 backdrop-blur-xs"
                       onClick={() => setIsSidebarOpen(false)}
@@ -675,7 +677,7 @@ export default function App() {
                 </>
               ) : (
                 /* Collapsed side button (Click to show side directory) */
-                <aside className="sticky top-20 shrink-0 z-30">
+                <aside className="sticky top-20 shrink-0 z-30 print:hidden no-print">
                   <button
                     onClick={() => setIsSidebarOpen(true)}
                     className={`flex items-center gap-1.5 px-2.5 py-2 rounded-r-md border border-l-0 shadow-sm text-xs font-medium cursor-pointer transition-colors ${
@@ -693,7 +695,7 @@ export default function App() {
             )}
 
             {/* Right Column: Independent Page Content (NO directory box inside text) */}
-            <main className="flex-1 min-w-0">
+            <main className="flex-1 min-w-0 print:w-full print:max-w-none">
 
               {currentPage === 'article' && (
                 <ArticleContent
@@ -707,6 +709,7 @@ export default function App() {
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onNavigateGraph={() => handleNavigatePage('graph')}
                   onNavigateTags={handleNavigateTags}
+                  onPrint={handlePrintArticle}
                 />
               )}
 
@@ -785,6 +788,7 @@ export default function App() {
                   onNavigateTags={handleNavigateTags}
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onOpenWikiLink={handleOpenWikiLink}
+                  onPrint={handlePrintArticle}
                 />
               )}
 
