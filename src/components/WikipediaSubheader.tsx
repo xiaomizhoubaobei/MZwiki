@@ -1,5 +1,17 @@
 import React from 'react';
-import { Clock, BookOpen, GitBranch, Layers, FileText, Tag, ChevronRight, BarChart3, Printer } from 'lucide-react';
+import {
+  Clock,
+  BookOpen,
+  GitBranch,
+  Layers,
+  FileText,
+  Tag,
+  ChevronRight,
+  BarChart3,
+  BookmarkCheck,
+  Activity,
+  Printer
+} from 'lucide-react';
 import { BreadcrumbItem } from '../utils/headerAutomation';
 
 interface WikipediaSubheaderProps {
@@ -18,11 +30,15 @@ interface WikipediaSubheaderProps {
   breadcrumbs?: BreadcrumbItem[];
   onNavigatePage?: (page: string) => void;
   onNavigateArticle?: () => void;
+  onNavigateSanitaryPad?: () => void;
   onNavigateGraph?: () => void;
   onNavigateCategory?: () => void;
   onNavigateTags?: () => void;
   onNavigateStats?: () => void;
+  onOpenCitation?: () => void;
+  onOpenHealthRadar?: () => void;
   onPrint?: () => void;
+  healthScore?: number;
 }
 
 export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
@@ -41,13 +57,16 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
   breadcrumbs,
   onNavigatePage,
   onNavigateArticle,
+  onNavigateSanitaryPad,
   onNavigateGraph,
   onNavigateCategory,
   onNavigateTags,
   onNavigateStats,
-  onPrint
+  onOpenCitation,
+  onOpenHealthRadar,
+  onPrint,
+  healthScore = 98
 }) => {
-  // 触发浏览器打印：优先走上层统一入口（会先收起浮层），否则直连 window.print
   const handleTriggerPrint = () => {
     if (onPrint) {
       onPrint();
@@ -66,7 +85,7 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
     }`}>
       <div className="max-w-[1720px] mx-auto px-4">
 
-        {/* Automated Breadcrumb Navigation */}
+        {/* Automated Breadcrumb Navigation (Hidden during print) */}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="pt-3 pb-1 flex items-center gap-1.5 text-[11px] text-[#72777d] flex-wrap print:hidden no-print">
             {breadcrumbs.map((b, idx) => (
@@ -108,13 +127,13 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
               <div className="flex items-center gap-2.5 text-xs text-[#54595d] dark:text-[#a2a9b1] flex-wrap">
                 <span>
                   {isPolicyPage ? (
-                    <>来自 <strong className="text-[#202122] dark:text-white font-medium">MZ维基</strong> 全域官方制度与指引</>
+                    <>来自 <strong className="text-[#202122] dark:text-white print:text-black font-medium">MZ维基</strong> 全域官方制度与指引</>
                   ) : (
-                    <>来自 <strong className="text-[#202122] dark:text-white font-medium">MZ维基</strong>，自由的百科全书</>
+                    <>来自 <strong className="text-[#202122] dark:text-white print:text-black font-medium">MZ维基</strong>，自由的百科全书</>
                   )}
                 </span>
 
-                <span className="text-[#a2a9b1] dark:text-[#54595d]">·</span>
+                <span className="text-[#a2a9b1] dark:text-[#54595d] print:hidden">·</span>
 
                 {/* Estimated Reading Time Badge */}
                 <span
@@ -132,9 +151,50 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
                   className="inline-flex items-center gap-1 text-[#72777d] dark:text-[#9aa0a6]"
                   title="正文总字数"
                 >
-                  <BookOpen className="w-3.5 h-3.5" />
+                  <BookOpen className="w-3.5 h-3.5 print:hidden" />
                   <span>全篇约 {wordCount.toLocaleString()} 字</span>
                 </span>
+
+                {/* Health Radar Trigger */}
+                {onOpenHealthRadar && (currentPage === 'article' || currentPage === 'sanitary-pad' || isEntryPage) && (
+                  <>
+                    <span className="text-[#a2a9b1] dark:text-[#54595d] print:hidden">·</span>
+                    <button
+                      onClick={onOpenHealthRadar}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-medium transition-colors cursor-pointer print:hidden no-print"
+                      title="查看本词条自动化质检与五维健康度雷达 (Health Radar)"
+                    >
+                      <Activity className="w-3.5 h-3.5" />
+                      <span>条目质检 {healthScore}分</span>
+                    </button>
+                  </>
+                )}
+
+                {/* Scholarly Citation Generator Trigger */}
+                {onOpenCitation && (currentPage === 'article' || currentPage === 'sanitary-pad' || isEntryPage) && (
+                  <>
+                    <span className="text-[#a2a9b1] dark:text-[#54595d] print:hidden">·</span>
+                    <button
+                      onClick={onOpenCitation}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-[#3366cc]/30 bg-[#3366cc]/5 hover:bg-[#3366cc]/15 text-[#3366cc] dark:text-[#6699ff] font-medium transition-colors cursor-pointer print:hidden no-print"
+                      title="自动生成 GB/T 7714、APA、MLA、BibTeX 等学术引用格式"
+                    >
+                      <BookmarkCheck className="w-3.5 h-3.5" />
+                      <span>引用此条目</span>
+                    </button>
+                  </>
+                )}
+
+                {/* Print Entry Button in Toolbar */}
+                <span className="text-[#a2a9b1] dark:text-[#54595d] print:hidden">·</span>
+                <button
+                  onClick={handleTriggerPrint}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-black/15 dark:border-white/15 bg-black/5 dark:bg-white/5 hover:bg-[#3366cc]/10 hover:border-[#3366cc]/40 hover:text-[#3366cc] dark:hover:text-[#6699ff] text-[#202122] dark:text-[#eaecf0] font-medium transition-colors cursor-pointer print:hidden no-print"
+                  title="触发浏览器打印对话框（自动隐藏侧边栏、搜索框与底部导航）"
+                >
+                  <Printer className="w-3.5 h-3.5 text-[#3366cc] dark:text-[#6699ff]" />
+                  <span>打印条目</span>
+                </button>
               </div>
             )}
 
@@ -163,8 +223,8 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
             )}
           </div>
 
-          {/* Quick Core View Tabs (Vector 2022 Tabs: 条目 | 统计 | 知识图谱 | 标签 | 分类) - 打印时隐藏 */}
-          <div className="flex items-center gap-1 text-xs self-start md:self-end print:hidden no-print">
+          {/* Quick Core View Tabs & Right-Side Print Tool (Hidden during print) */}
+          <div className="flex items-center gap-1 text-xs self-start md:self-end flex-wrap print:hidden no-print">
             {onNavigateArticle && (
               <button
                 onClick={onNavigateArticle}
@@ -175,7 +235,21 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>条目</span>
+                <span>卫生棉条</span>
+              </button>
+            )}
+
+            {onNavigateSanitaryPad && (
+              <button
+                onClick={onNavigateSanitaryPad}
+                className={`px-3 py-1.5 rounded-t border-b-2 font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
+                  currentPage === 'sanitary-pad'
+                    ? 'border-[#3366cc] text-[#3366cc] dark:text-[#6699ff] font-bold bg-[#3366cc]/5'
+                    : 'border-transparent text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>卫生棉 (卫生巾)</span>
               </button>
             )}
 
@@ -235,10 +309,10 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
               </button>
             )}
 
-            {/* 打印条目：触发纯净文章打印视图 */}
+            {/* Right-side Print Entry Action Button */}
             <button
               onClick={handleTriggerPrint}
-              className="ml-1 px-3 py-1.5 rounded border border-[#3366cc]/30 bg-[#3366cc]/10 hover:bg-[#3366cc] hover:text-white text-[#3366cc] dark:text-[#6699ff] font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
+              className="ml-1 px-3 py-1.5 rounded border border-[#3366cc]/30 bg-[#3366cc]/10 hover:bg-[#3366cc] hover:text-white text-[#3366cc] dark:text-[#6699ff] font-semibold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs"
               title="打印当前条目（自动隐藏侧边栏、搜索框与底部导航）"
             >
               <Printer className="w-3.5 h-3.5" />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight, ExternalLink, Download, Info, ShieldCheck, ZoomIn, ZoomOut } from 'lucide-react';
-import { WikiImageData } from './WikipediaImageThumb';
+import { WikiImageData, renderImageGraphic } from './WikipediaImageThumb';
 
 interface WikipediaMediaViewerProps {
   images: WikiImageData[];
@@ -285,13 +285,14 @@ function renderLargeGraphic(type: WikiImageData['type']) {
     case 'elements':
     case 'absorbency':
     case 'anatomy':
+    case 'pad-wings':
+    case 'pad-layers':
+    case 'pad-history-belt':
+    case 'pad-reusable':
     default:
       return (
-        <div className="p-8 text-center text-slate-800 bg-white min-h-[300px] flex items-center justify-center">
-          <div className="max-w-md space-y-2">
-            <h3 className="text-lg font-bold">维基媒体图像详情</h3>
-            <p className="text-sm text-slate-600">已完整加载该条目矢量图解，支持任意分辨率缩放与无损查看。</p>
-          </div>
+        <div className="w-full min-w-[320px] sm:min-w-[540px] bg-white p-2">
+          {renderImageGraphic(type)}
         </div>
       );
   }

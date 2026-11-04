@@ -270,6 +270,50 @@ export const STATS_API_ENDPOINTS = {
   GRAPH: '/api/statistics/graph',
   RECALCULATE: '/api/statistics/recalculate',
   METRICS: '/api/statistics/metrics',
+  HEALTH_BY_ID: (id: string) => `/api/statistics/health/${encodeURIComponent(id)}`,
+  HEALTH_GLOBAL: '/api/statistics/health',
+  CITATION_BY_ID: (id: string) => `/api/citation/${encodeURIComponent(id)}`,
   EXPORT_JSON: '/api/statistics/export/json',
   EXPORT_CSV: '/api/statistics/export/csv'
 } as const;
+
+/**
+ * Fetches automated article health radar report from REST API
+ */
+export async function fetchArticleHealthReportApi(idOrTitle: string) {
+  try {
+    const res = await fetch(`/api/statistics/health/${encodeURIComponent(idOrTitle)}`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      const json = await res.json();
+      return json.data;
+    }
+  } catch (err) {
+    console.warn('API /api/statistics/health/:id error:', err);
+  }
+  return null;
+}
+
+/**
+ * Fetches scholarly citations from REST API
+ */
+export async function fetchArticleCitationsApi(idOrTitle: string, format?: string) {
+  try {
+    const url = `/api/citation/${encodeURIComponent(idOrTitle)}${format ? `?format=${format}` : ''}`;
+    const res = await fetch(url, {
+      headers: { 'Accept': format ? 'text/plain' : 'application/json' }
+    });
+    if (res.ok) {
+      if (format) {
+        return await res.text();
+      }
+      const json = await res.json();
+      return json.citations;
+    }
+  } catch (err) {
+    console.warn('API /api/citation/:id error:', err);
+  }
+  return null;
+}
+

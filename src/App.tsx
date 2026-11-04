@@ -41,7 +41,7 @@ import {
   getFeaturedArticleMetrics,
   getSanitaryPadArticleMetrics
 } from './utils/headerAutomation';
-import { ListFilter, Printer, BookmarkCheck, Activity } from 'lucide-react';
+import { ListFilter, Printer, BookmarkCheck, Activity, SlidersHorizontal } from 'lucide-react';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
@@ -71,21 +71,26 @@ export default function App() {
     return getAutomatedBreadcrumbs(currentPage, currentWikiEntry);
   }, [currentPage, currentWikiEntry]);
 
-  // 学术引用与健康雷达弹窗的当前条目元信息
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [fontSize, setFontSize] = useState<'small' | 'standard' | 'large'>('standard');
+  const [contentWidth, setContentWidth] = useState<'standard' | 'wide'>('standard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+
+  // Scholarly Citation & Health Radar Modals State
   const [citationModalMeta, setCitationModalMeta] = useState<{
     id: string;
     title: string;
     enTitle?: string;
     revisionVersion?: string;
-    lastModifiedDate?: string;
+    lastModifiedDate?: string
   } | null>(null);
 
   const [healthRadarModalMeta, setHealthRadarModalMeta] = useState<{
     id: string;
-    title: string;
+    title: string
   } | null>(null);
 
-  // 打开学术引用弹窗：按当前页面推导条目标识与版本信息
+  // Open Citation Modal handler
   const handleOpenCitation = () => {
     if (currentPage === 'sanitary-pad') {
       setCitationModalMeta({
@@ -114,18 +119,27 @@ export default function App() {
     }
   };
 
-  // 打开健康雷达弹窗：按当前页面推导条目标识
+  // Open Health Radar Modal handler
   const handleOpenHealthRadar = () => {
     if (currentPage === 'sanitary-pad') {
-      setHealthRadarModalMeta({ id: 'sanitary-pad', title: '卫生棉（卫生巾）' });
+      setHealthRadarModalMeta({
+        id: 'sanitary-pad',
+        title: '卫生棉（卫生巾）'
+      });
     } else if (currentPage === 'entry' && currentWikiEntry) {
-      setHealthRadarModalMeta({ id: currentWikiEntry.id, title: currentWikiEntry.title });
+      setHealthRadarModalMeta({
+        id: currentWikiEntry.id,
+        title: currentWikiEntry.title
+      });
     } else {
-      setHealthRadarModalMeta({ id: 'tampon', title: '卫生棉条' });
+      setHealthRadarModalMeta({
+        id: 'tampon',
+        title: '卫生棉条'
+      });
     }
   };
 
-  // 触发浏览器打印：先收起所有浮层，保证打印视图干净
+  // Trigger Browser Print Dialog (Clean Article Print View)
   const handlePrintArticle = () => {
     setWikiLinkHover(null);
     setRefHover(null);
@@ -135,7 +149,7 @@ export default function App() {
     window.print();
   };
 
-  // 页头健康评分：体验条展示用
+  // Health Score for subheader
   const currentHealthScore = React.useMemo(() => {
     if (currentPage === 'sanitary-pad') return 96;
     if (currentPage === 'entry' && currentWikiEntry) {
@@ -144,11 +158,6 @@ export default function App() {
     }
     return 98;
   }, [currentPage, currentWikiEntry]);
-
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-  const [fontSize, setFontSize] = useState<'small' | 'standard' | 'large'>('standard');
-  const [contentWidth, setContentWidth] = useState<'standard' | 'wide'>('standard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
   const [isAppearanceOpen, setIsAppearanceOpen] = useState<boolean>(false);
 
@@ -446,10 +455,21 @@ export default function App() {
     if (clean === '卫生棉条' || clean === '衛生棉條' || clean === 'Tampon' || clean === '棉条') {
       handleNavigateArticle();
     } else if (
-      // 卫生棉（卫生巾）条目有一整套别名，统一收敛到 sanitary-pad 页面
-      ['卫生棉', '衛生棉', '卫生巾', '衛生巾', '姨妈巾', '大姨妈巾', '月经垫', '月經墊',
-       '生理棉', '生理巾', '生理垫', '卫生垫', 'sanitary napkin', 'sanitary pad', 'sanitary-pad']
-        .includes(clean.toLowerCase())
+      clean === '卫生棉' ||
+      clean === '衛生棉' ||
+      clean === '卫生巾' ||
+      clean === '衛生巾' ||
+      clean === '姨妈巾' ||
+      clean === '大姨妈巾' ||
+      clean === '月经垫' ||
+      clean === '月經墊' ||
+      clean === '生理棉' ||
+      clean === '生理巾' ||
+      clean === '生理垫' ||
+      clean === '卫生垫' ||
+      clean === 'Sanitary Napkin' ||
+      clean === 'Sanitary Pad' ||
+      clean === 'sanitary-pad'
     ) {
       handleNavigateSanitaryPad();
     } else if (clean === '女性生理用品' || clean.startsWith('Category:')) {
@@ -516,7 +536,7 @@ export default function App() {
     },
     'sanitary-pad': {
       title: '卫生棉（卫生巾）',
-      badge: '[ 体外经期卫生用品 · 典范条目 ]'
+      badge: '[ 经期个人卫生用品 · 典范条目 ]'
     },
     category: {
       title: '分类:女性生理用品',
@@ -570,6 +590,8 @@ export default function App() {
         onOpenPolicy={(tab) => handleNavigatePage(tab)}
         onNavigateHome={() => handleNavigatePage('home')}
         onNavigateArticle={(secId) => handleNavigateArticle(secId)}
+        onNavigateSanitaryPad={(secId) => handleNavigateSanitaryPad(secId)}
+        onNavigateWikiTerm={handleNavigateWikiTerm}
         onNavigateCategory={() => handleNavigatePage('category')}
         onNavigateGraph={() => handleNavigatePage('graph')}
         onNavigateTags={() => handleNavigateTags()}
@@ -605,11 +627,15 @@ export default function App() {
           isEntryPage={currentPage === 'entry'}
           currentPage={currentPage}
           onNavigateArticle={() => handleNavigateArticle()}
+          onNavigateSanitaryPad={() => handleNavigateSanitaryPad()}
           onNavigateGraph={() => handleNavigatePage('graph')}
           onNavigateCategory={() => handleNavigatePage('category')}
           onNavigateTags={() => handleNavigateTags()}
           onNavigateStats={() => handleNavigatePage('stats')}
+          onOpenCitation={handleOpenCitation}
+          onOpenHealthRadar={handleOpenHealthRadar}
           onPrint={handlePrintArticle}
+          healthScore={currentHealthScore}
         />
       )}
 
@@ -620,22 +646,28 @@ export default function App() {
             <HomePage
               isDarkMode={isDarkMode}
               onNavigateToArticle={(sectionId) => handleNavigateArticle(sectionId)}
+              onNavigateSanitaryPad={(sectionId) => handleNavigateSanitaryPad(sectionId)}
               onNavigatePolicy={(policy) => handleNavigatePage(policy)}
               onNavigateCategory={() => handleNavigatePage('category')}
               onNavigateGraph={() => handleNavigatePage('graph')}
               onNavigateTags={handleNavigateTags}
               onNavigateStats={() => handleNavigatePage('stats')}
-              onNavigateSanitaryPad={(sectionId) => handleNavigateSanitaryPad(sectionId)}
+              onNavigateWikiTerm={handleNavigateWikiTerm}
+              onOpenWikiLink={handleOpenWikiLink}
+              onNavigateApiEntry={(entry) => {
+                setCurrentWikiEntry(entry);
+                handleNavigatePage('entry', entry.title);
+              }}
             />
           </main>
         ) : (
           <div className="flex gap-6 lg:gap-8 items-start relative">
 
-            {/* Left Column: Side Table of Contents (Vector 2022) - Not displayed on category, graph, tags, stats, entry or 404 page */}
+            {/* Left Column: Side Table of Contents (Vector 2022) - Hidden during print */}
             {currentPage !== 'category' && currentPage !== '404' && currentPage !== 'graph' && currentPage !== 'tags' && currentPage !== 'stats' && currentPage !== 'entry' && (
               isSidebarOpen ? (
                 <>
-                  {/* Desktop & Tablet Sidebar (Always on the left side) */}
+                  {/* Desktop & Tablet Sidebar (Always on the left side, hidden in print) */}
                   <aside className="hidden sm:block w-56 md:w-60 lg:w-64 shrink-0 sticky top-20 print:hidden no-print">
                     <TableOfContents
                       activeSectionId={activeSectionId}
@@ -646,7 +678,7 @@ export default function App() {
                     />
                   </aside>
 
-                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge, 打印时隐藏) */}
+                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge, hidden in print) */}
                   <div className="sm:hidden fixed inset-0 z-50 flex print:hidden no-print">
                     <div
                       className="fixed inset-0 bg-black/40 backdrop-blur-xs"
@@ -676,7 +708,7 @@ export default function App() {
                   </div>
                 </>
               ) : (
-                /* Collapsed side button (Click to show side directory) */
+                /* Collapsed side button (Click to show side directory, hidden in print) */
                 <aside className="sticky top-20 shrink-0 z-30 print:hidden no-print">
                   <button
                     onClick={() => setIsSidebarOpen(true)}
@@ -694,7 +726,7 @@ export default function App() {
               )
             )}
 
-            {/* Right Column: Independent Page Content (NO directory box inside text) */}
+            {/* Center Column: Independent Page Content (100% width during print) */}
             <main className="flex-1 min-w-0 print:w-full print:max-w-none">
 
               {currentPage === 'article' && (
@@ -709,6 +741,8 @@ export default function App() {
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onNavigateGraph={() => handleNavigatePage('graph')}
                   onNavigateTags={handleNavigateTags}
+                  onOpenCitation={handleOpenCitation}
+                  onOpenHealthRadar={handleOpenHealthRadar}
                   onPrint={handlePrintArticle}
                 />
               )}
@@ -788,6 +822,8 @@ export default function App() {
                   onNavigateTags={handleNavigateTags}
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onOpenWikiLink={handleOpenWikiLink}
+                  onOpenCitation={handleOpenCitation}
+                  onOpenHealthRadar={handleOpenHealthRadar}
                   onPrint={handlePrintArticle}
                 />
               )}
@@ -837,7 +873,7 @@ export default function App() {
               )}
             </main>
 
-            {/* 右侧页面工具栏：打印 / 引用 / 质检入口，打印时整块隐藏 */}
+            {/* Right Column: Wikipedia Vector 2022 Page Tools Sidebar (Displayed on formal articles, hidden during print) */}
             {(currentPage === 'article' || currentPage === 'sanitary-pad' || currentPage === 'privacy' || currentPage === 'disclaimer' || currentPage === 'conduct') && (
               <aside className="hidden xl:block w-52 shrink-0 sticky top-20 print:hidden no-print">
                 <div className={`p-3.5 rounded border text-xs space-y-3 transition-colors ${
@@ -845,11 +881,12 @@ export default function App() {
                     ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]'
                     : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
                 }`}>
-                  <div className="pb-1.5 border-b border-black/10 dark:border-white/10 font-bold flex items-center justify-between">
+                  <div className="pb-1.5 border-b border-black/10 dark:border-white/10 font-bold text-[#202122] dark:text-white flex items-center justify-between">
                     <span>页面工具</span>
                     <span className="text-[10px] font-mono font-normal text-[#72777d]">Tools</span>
                   </div>
 
+                  {/* Print / Export Section */}
                   <div className="space-y-1.5">
                     <div className="text-[10px] font-bold text-[#72777d] uppercase tracking-wider">
                       打印 / 导出
@@ -857,7 +894,7 @@ export default function App() {
                     <button
                       onClick={handlePrintArticle}
                       className="w-full text-left px-2.5 py-2 rounded bg-[#3366cc] hover:bg-[#2a4b8d] text-white font-semibold transition-colors cursor-pointer flex items-center gap-2 shadow-2xs"
-                      title="触发浏览器打印对话框，打印时自动隐藏侧边栏、搜索框和底部导航"
+                      title="触发浏览器的打印对话框，打印时自动隐藏侧边栏、搜索框和底部导航"
                     >
                       <Printer className="w-3.5 h-3.5 shrink-0" />
                       <span>打印条目</span>
@@ -867,6 +904,7 @@ export default function App() {
                     </p>
                   </div>
 
+                  {/* Article Quality & Citation Tools */}
                   {(currentPage === 'article' || currentPage === 'sanitary-pad') && (
                     <div className="pt-2 border-t border-black/10 dark:border-white/10 space-y-1.5">
                       <div className="text-[10px] font-bold text-[#72777d] uppercase tracking-wider">
@@ -889,12 +927,14 @@ export default function App() {
                     </div>
                   )}
 
+                  {/* Appearance Quick Link */}
                   <div className="pt-2 border-t border-black/10 dark:border-white/10">
                     <button
                       onClick={() => setIsAppearanceOpen(true)}
-                      className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] transition-colors cursor-pointer flex items-center gap-2"
+                      className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white transition-colors cursor-pointer flex items-center gap-2"
                     >
-                      外观设置
+                      <SlidersHorizontal className="w-3.5 h-3.5 text-[#3366cc] shrink-0" />
+                      <span>外观与字号设置</span>
                     </button>
                   </div>
                 </div>
@@ -946,7 +986,7 @@ export default function App() {
         onChangeContentWidth={setContentWidth}
       />
 
-      {/* 学术引用弹窗 */}
+      {/* Scholarly Citation Modal */}
       {citationModalMeta && (
         <ScholarlyCitationModal
           isOpen={!!citationModalMeta}
@@ -956,7 +996,7 @@ export default function App() {
         />
       )}
 
-      {/* 条目质检雷达弹窗 */}
+      {/* Article Health Radar Modal */}
       {healthRadarModalMeta && (
         <ArticleHealthRadarModal
           isOpen={!!healthRadarModalMeta}

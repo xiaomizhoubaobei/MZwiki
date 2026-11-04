@@ -13,6 +13,8 @@ import {
   Layers,
   ChevronRight,
   Award,
+  BookmarkCheck,
+  Activity,
   Printer
 } from 'lucide-react';
 import { WikiEntry } from '../data/wikiEntriesData';
@@ -31,6 +33,8 @@ interface WikiEntryPageProps {
   onNavigateTags: (tag?: string) => void;
   onNavigateCategory: () => void;
   onOpenWikiLink?: (term: string, event: React.MouseEvent) => void;
+  onOpenCitation?: () => void;
+  onOpenHealthRadar?: () => void;
   onPrint?: () => void;
 }
 
@@ -43,6 +47,8 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
   onNavigateTags,
   onNavigateCategory,
   onOpenWikiLink,
+  onOpenCitation,
+  onOpenHealthRadar,
   onPrint
 }) => {
   const [copied, setCopied] = useState(false);
@@ -80,7 +86,7 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 1. Wikipedia Breadcrumb Navigation Header（打印时隐藏） */}
+      {/* 1. Wikipedia Breadcrumb Navigation Header (Hidden during print) */}
       <div className={`p-4 rounded border transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs print:hidden no-print ${
         isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
       }`}>
@@ -105,11 +111,31 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          {onOpenHealthRadar && (
+            <button
+              onClick={onOpenHealthRadar}
+              className="px-2.5 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium transition-colors cursor-pointer flex items-center gap-1"
+              title="查看本词条自动化健康度与五维雷达诊断"
+            >
+              <Activity className="w-3.5 h-3.5" />
+              <span>质检雷达</span>
+            </button>
+          )}
+          {onOpenCitation && (
+            <button
+              onClick={onOpenCitation}
+              className="px-2.5 py-1 rounded bg-[#3366cc]/10 hover:bg-[#3366cc]/20 text-[#3366cc] dark:text-[#6699ff] text-xs font-medium transition-colors cursor-pointer flex items-center gap-1"
+              title="自动生成国标 GB/T 7714、APA、BibTeX 学术著录"
+            >
+              <BookmarkCheck className="w-3.5 h-3.5" />
+              <span>引用</span>
+            </button>
+          )}
           <button
             onClick={() => (onPrint ? onPrint() : window.print())}
             className="px-2.5 py-1 rounded border border-black/15 dark:border-white/15 hover:bg-[#3366cc]/10 hover:text-[#3366cc] dark:hover:text-[#6699ff] text-xs font-medium text-[#202122] dark:text-[#eaecf0] transition-colors cursor-pointer flex items-center gap-1"
-            title="打印本词条纯净版（自动隐藏侧边栏、搜索框与底部导航）"
+            title="打印本条目纯净版（自动隐藏侧边栏、搜索框与底部导航）"
           >
             <Printer className="w-3.5 h-3.5 text-[#3366cc] dark:text-[#6699ff]" />
             <span>打印条目</span>
@@ -158,10 +184,22 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
         isDarkMode ? 'bg-[#18191a] border-[#3a3d42]' : 'bg-[#f8f9fa] border-[#e5e7eb]'
       }`}>
         <div className="flex items-center gap-3 flex-wrap text-[#54595d] dark:text-[#a2a9b1]">
-          <span className="flex items-center gap-1 font-semibold text-[#059669] dark:text-[#34d399]">
-            <Award className="w-3.5 h-3.5" />
-            <span>{entryStats.qualityLabel}</span>
-          </span>
+          {onOpenHealthRadar ? (
+            <button
+              onClick={onOpenHealthRadar}
+              className="flex items-center gap-1 font-semibold text-[#059669] dark:text-[#34d399] hover:underline cursor-pointer"
+              title="点击查看条目自动化质检与五维健康雷达评估"
+            >
+              <Award className="w-3.5 h-3.5" />
+              <span>{entryStats.qualityLabel}</span>
+              <ChevronRight className="w-3 h-3" />
+            </button>
+          ) : (
+            <span className="flex items-center gap-1 font-semibold text-[#059669] dark:text-[#34d399]">
+              <Award className="w-3.5 h-3.5" />
+              <span>{entryStats.qualityLabel}</span>
+            </span>
+          )}
           <span className="opacity-40">·</span>
           <span>正文约 <strong className="font-semibold text-[#202122] dark:text-white">{entryStats.metrics.wordCount.toLocaleString()}</strong> 字</span>
           <span className="opacity-40">·</span>
@@ -201,9 +239,9 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             </p>
           </div>
 
-          {/* Quick Section Anchor Card (TOC) */}
+          {/* Quick Section Anchor Card (TOC - Hidden during print) */}
           {entry.contentSections.length > 0 && (
-            <div className={`p-3.5 rounded border text-xs transition-colors ${
+            <div className={`p-3.5 rounded border text-xs transition-colors print:hidden no-print ${
               isDarkMode ? 'bg-[#202122] border-[#3a3d42]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
             }`}>
               <div className="font-bold text-[#202122] dark:text-white mb-2 flex items-center gap-1.5">
@@ -281,9 +319,9 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             </ol>
           </section>
 
-          {/* Related Terms Box */}
+          {/* Related Terms Box (Hidden during print) */}
           {entry.relatedTerms.length > 0 && (
-            <div className={`p-4 rounded border text-xs space-y-2 transition-colors ${
+            <div className={`p-4 rounded border text-xs space-y-2 transition-colors print:hidden no-print ${
               isDarkMode ? 'bg-[#202122] border-[#3a3d42]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
             }`}>
               <div className="font-bold text-[#202122] dark:text-white flex items-center gap-1.5">
@@ -305,8 +343,8 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             </div>
           )}
 
-          {/* Bottom Article Tags */}
-          <div className={`p-3 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors ${
+          {/* Bottom Article Tags (Hidden during print) */}
+          <div className={`p-3 rounded border text-xs flex items-center gap-2 flex-wrap transition-colors print:hidden no-print ${
             isDarkMode ? 'bg-[#1a1c1e] border-[#3a3d42]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
           }`}>
             <span className="font-bold text-[#72777d] flex items-center gap-1">
@@ -325,9 +363,9 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             ))}
           </div>
 
-          {/* Link back to Main Featured Article Section */}
+          {/* Link back to Main Featured Article Section (Hidden during print) */}
           {entry.inArticleSectionId && (
-            <div className={`p-4 rounded border text-xs flex items-center justify-between gap-3 ${
+            <div className={`p-4 rounded border text-xs flex items-center justify-between gap-3 print:hidden no-print ${
               isDarkMode ? 'bg-[#1b2430] border-[#334b6b]' : 'bg-[#f0f6ff] border-[#c2dbff]'
             }`}>
               <div className="space-y-0.5">
@@ -396,7 +434,7 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             </table>
           </div>
 
-          {/* Quick Actions Panel（打印时隐藏） */}
+          {/* Quick Actions Panel (Hidden during print) */}
           <div className={`p-4 rounded border text-xs space-y-2.5 transition-colors print:hidden no-print ${
             isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
           }`}>
@@ -411,10 +449,11 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
               >
                 <span className="flex items-center gap-1.5">
                   <Printer className="w-3.5 h-3.5" />
-                  <span>打印词条（纯净文章视图）</span>
+                  <span>打印条目（纯净文章视图）</span>
                 </span>
                 <ChevronRight className="w-3.5 h-3.5 opacity-60" />
               </button>
+
               <button
                 onClick={() => onNavigateGraph(undefined, matchingNode.id)}
                 className="w-full text-left px-3 py-2 rounded bg-black/5 dark:bg-white/5 hover:bg-[#3366cc]/10 hover:text-[#3366cc] dark:hover:text-[#6699ff] text-[#202122] dark:text-[#eaecf0] cursor-pointer transition-colors flex items-center justify-between"

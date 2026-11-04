@@ -41,6 +41,8 @@ import {
   fetchGraphTopologyStatisticsApi,
   STATS_API_ENDPOINTS
 } from '../services/statisticsApi';
+import { ArticleHealthRadarModal } from '../components/ArticleHealthRadarModal';
+import { ScholarlyCitationModal } from '../components/ScholarlyCitationModal';
 
 interface ContentStatisticsPageProps {
   isDarkMode: boolean;
@@ -85,6 +87,10 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
   const [apiTestResponse, setApiTestResponse] = useState<string>('');
   const [isTestingApi, setIsTestingApi] = useState<boolean>(false);
   const [apiStatusCode, setApiStatusCode] = useState<number>(200);
+
+  // Health Radar & Citation Modals State
+  const [healthModalArticle, setHealthModalArticle] = useState<{ id: string; title: string } | null>(null);
+  const [citationModalArticle, setCitationModalArticle] = useState<{ id: string; title: string; revisionVersion?: string; lastModifiedDate?: string } | null>(null);
 
   // Fetch from API on mount & when filter changes
   useEffect(() => {
@@ -842,18 +848,41 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
                       {/* Action */}
                       <td className="py-2.5 px-3 text-center">
-                        <button
-                          onClick={() => {
-                            if (isTampon) {
-                              onNavigateToArticle();
-                            } else {
-                              onNavigateWikiTerm(article.title);
-                            }
-                          }}
-                          className="px-2 py-1 rounded bg-[#3366cc]/10 hover:bg-[#3366cc]/20 text-[#3366cc] text-[11px] font-medium cursor-pointer transition-colors"
-                        >
-                          阅读条目
-                        </button>
+                        <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                          <button
+                            onClick={() => {
+                              if (isTampon) {
+                                onNavigateToArticle();
+                              } else {
+                                onNavigateWikiTerm(article.title);
+                              }
+                            }}
+                            className="px-2 py-1 rounded bg-[#3366cc]/10 hover:bg-[#3366cc]/20 text-[#3366cc] text-[11px] font-medium cursor-pointer transition-colors"
+                          >
+                            阅读
+                          </button>
+
+                          <button
+                            onClick={() => setHealthModalArticle({ id: article.id, title: article.title })}
+                            className="px-2 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-medium cursor-pointer transition-colors"
+                            title="查看五维质检雷达"
+                          >
+                            质检
+                          </button>
+
+                          <button
+                            onClick={() => setCitationModalArticle({
+                              id: article.id,
+                              title: article.title,
+                              revisionVersion: article.revisionVersion,
+                              lastModifiedDate: article.lastModified?.slice(0, 10)
+                            })}
+                            className="px-2 py-1 rounded border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[11px] font-medium cursor-pointer transition-colors"
+                            title="自动生成学术引用"
+                          >
+                            引用
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -890,7 +919,7 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
           </div>
 
           {/* Endpoint Selector Tabs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {[
               {
                 method: 'GET',
@@ -903,6 +932,18 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
                 path: '/api/statistics/articles?grade=FA',
                 label: '条目筛选与排序',
                 desc: '支持 q, category, grade, sort'
+              },
+              {
+                method: 'GET',
+                path: '/api/statistics/health/tampon',
+                label: '五维质检雷达诊断',
+                desc: '详实度、学术密度、来源请求诊断'
+              },
+              {
+                method: 'GET',
+                path: '/api/citation/tampon',
+                label: '学术引用自动生成',
+                desc: 'GB/T 7714、APA、MLA、BibTeX'
               },
               {
                 method: 'GET',
@@ -1135,6 +1176,27 @@ export const ContentStatisticsPage: React.FC<ContentStatisticsPageProps> = ({
 
           </div>
         </div>
+      )}
+
+      {/* Article Health Radar Modal */}
+      {healthModalArticle && (
+        <ArticleHealthRadarModal
+          isOpen={!!healthModalArticle}
+          onClose={() => setHealthModalArticle(null)}
+          isDarkMode={isDarkMode}
+          articleId={healthModalArticle.id}
+          articleTitle={healthModalArticle.title}
+        />
+      )}
+
+      {/* Scholarly Citation Modal */}
+      {citationModalArticle && (
+        <ScholarlyCitationModal
+          isOpen={!!citationModalArticle}
+          onClose={() => setCitationModalArticle(null)}
+          isDarkMode={isDarkMode}
+          articleMeta={citationModalArticle}
+        />
       )}
 
     </div>

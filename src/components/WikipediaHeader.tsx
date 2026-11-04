@@ -10,9 +10,13 @@ import {
   GitBranch,
   Layers,
   Tag,
-  BarChart3
+  BarChart3,
+  Printer
 } from 'lucide-react';
 import { SectionDef, ARTICLE_SECTIONS } from '../data/articleData';
+import { SANITARY_PAD_SECTIONS } from '../data/sanitaryPadData';
+import { WIKI_ENTRIES } from '../data/wikiEntriesData';
+import { matchSanitaryPadQuery } from '../pages/HomePage';
 
 interface WikipediaHeaderProps {
   onOpenAppearance: () => void;
@@ -21,6 +25,8 @@ interface WikipediaHeaderProps {
   onOpenPolicy?: (tab: 'privacy' | 'disclaimer' | 'conduct') => void;
   onNavigateHome?: () => void;
   onNavigateArticle?: (sectionId?: string) => void;
+  onNavigateSanitaryPad?: (sectionId?: string) => void;
+  onNavigateWikiTerm?: (term: string) => void;
   onNavigateCategory?: () => void;
   onNavigateGraph?: () => void;
   onNavigateTags?: () => void;
@@ -42,6 +48,8 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
   onOpenPolicy,
   onNavigateHome,
   onNavigateArticle,
+  onNavigateSanitaryPad,
+  onNavigateWikiTerm,
   onNavigateCategory,
   onNavigateGraph,
   onNavigateTags,
@@ -57,8 +65,11 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState<number>(-1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const suggestionItemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const menuContainerRef = useRef<HTMLDivElement>(null);
 
   // Close search suggestions and menu dropdown on outside click
@@ -66,6 +77,7 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
     function handleClickOutside(e: MouseEvent) {
       if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
         setIsSearchFocused(false);
+        setActiveSuggestionIndex(-1);
       }
       if (menuContainerRef.current && !menuContainerRef.current.contains(e.target as Node)) {
         setIsMenuOpen(false);
@@ -80,47 +92,228 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        const input = searchContainerRef.current?.querySelector('input');
-        input?.focus();
+        searchInputRef.current?.focus();
+        setIsSearchFocused(true);
       }
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Policy pages list for search
-  const policySearchItems = [
-    { type: 'graph' as const, key: 'graph' as const, title: 'Special:知识图谱', desc: '卫生棉条与生理健康概念多维拓扑网络' },
-    { type: 'category' as const, key: 'category' as const, title: 'Category:女性生理用品', desc: '女性经期护理、体内与体外用品全部分类' },
-    { type: 'policy' as const, key: 'privacy' as const, title: 'MZ维基:隐私政策', desc: '官方核心隐私权与数据保护方针' },
-    { type: 'policy' as const, key: 'disclaimer' as const, title: 'MZ维基:免责声明', desc: '医学健康、TSS急症与法律免责声明' },
-    { type: 'policy' as const, key: 'conduct' as const, title: 'MZ维基:全域行为准则', desc: '普遍行为准则、反经期羞辱与文明公约' },
-    { type: 'article' as const, key: 'article' as const, title: '卫生棉条 (Tampon)', desc: '主要医学科普与经期健康百科条目' }
-  ];
+  // Helper to highlight matched query text in suggestion titles
+  const renderHighlightedText = (text: string, query: string) => {
+    const q = query.trim();
+    if (!q) return text;
+    const lowerText = text.toLowerCase();
+    const lowerQ = q.toLowerCase();
+    const matchIdx = lowerText.indexOf(lowerQ);
+    if (matchIdx === -1) return text;
 
-  // Flattened article sections for quick search inside this entry
-  const searchableSections = ARTICLE_SECTIONS.flatMap(sec => [
-    { id: sec.id, title: sec.title, number: sec.number },
-    ...(sec.subsections || []).map(sub => ({
-      id: sub.id,
-      title: sub.title,
-      number: sub.number
-    }))
-  ]);
+    const before = text.slice(0, matchIdx);
+    const match = text.slice(matchIdx, matchIdx + q.length);
+    const after = text.slice(matchIdx + q.length);
+    return (
+      <>
+        {before}
+        <mark className="bg-[#eaf3ff] dark:bg-[#2a4b8d]/60 text-[#3366cc] dark:text-[#8ab4f8] font-bold px-0.5 rounded-xs">
+          {match}
+        </mark>
+        {after}
+      </>
+    );
+  };
 
-  const filteredSections = searchQuery.trim()
-    ? searchableSections.filter(s =>
-        s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.number.includes(searchQuery)
-      )
-    : [];
+  // Instant search autocomplete suggestions dynamically built from WIKI_ENTRIES (+ core Tampon entry)
+  const wikiEntrySuggestions = React.useMemo(() => {
+    const raw = searchQuery.trim();
+    if (!raw) return [];
+    const q = raw.toLowerCase();
 
-  const filteredPolicies = searchQuery.trim()
-    ? policySearchItems.filter(p =>
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.desc.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
+    interface EntrySuggestionItem {
+      id: string;
+      title: string;
+      enTitle: string;
+      categoryLabel: string;
+      summary: string;
+      matchedHint?: string;
+      score: number;
+      onSelect: () => void;
+    }
+
+    const candidates: EntrySuggestionItem[] = [];
+
+    // 1. Dynamically match all entries from WIKI_ENTRIES
+    WIKI_ENTRIES.forEach((entry) => {
+      const titleLower = entry.title.toLowerCase();
+      const enLower = entry.enTitle.toLowerCase();
+      const isSanitaryPadEntry = entry.id === 'sanitary-pad';
+
+      const exactTitle = titleLower === q || enLower === q;
+      const startsWithTitle = titleLower.startsWith(q) || enLower.startsWith(q);
+      const includesTitle = titleLower.includes(q) || enLower.includes(q);
+      const matchedAlias = entry.aliases.find(
+        (alias) => alias.toLowerCase().includes(q) || q.includes(alias.toLowerCase())
+      );
+      const matchedTag = entry.tags.find(
+        (tag) => tag.toLowerCase().includes(q) || q.includes(tag.toLowerCase())
+      );
+      const fuzzyPadHit = isSanitaryPadEntry && matchSanitaryPadQuery(q);
+      const summaryHit = entry.summary.toLowerCase().includes(q);
+
+      if (exactTitle || startsWithTitle || includesTitle || matchedAlias || matchedTag || fuzzyPadHit || summaryHit) {
+        let score = 0;
+        if (exactTitle) score = 100;
+        else if (startsWithTitle) score = 90;
+        else if (fuzzyPadHit || matchedAlias) score = 85;
+        else if (includesTitle) score = 75;
+        else if (matchedTag) score = 60;
+        else score = 40;
+
+        let matchedHint: string | undefined;
+        if (matchedAlias && !includesTitle) {
+          matchedHint = `匹配别称：${matchedAlias}`;
+        } else if (fuzzyPadHit && !includesTitle) {
+          matchedHint = `匹配常用词：${raw} → 卫生棉（卫生巾）`;
+        } else if (matchedTag && !includesTitle) {
+          matchedHint = `关联标签：#${matchedTag}`;
+        }
+
+        candidates.push({
+          id: `wiki-entry-${entry.id}`,
+          title: isSanitaryPadEntry ? '卫生棉（卫生巾）' : entry.title,
+          enTitle: entry.enTitle,
+          categoryLabel: isSanitaryPadEntry ? '优良主条目 · 体外用品' : entry.categoryLabel,
+          summary: entry.summary,
+          matchedHint,
+          score,
+          onSelect: () => {
+            if (isSanitaryPadEntry) {
+              onNavigateSanitaryPad?.();
+            } else {
+              onNavigateWikiTerm?.(entry.title);
+            }
+          }
+        });
+      }
+    });
+
+    // 2. Also include the primary featured article "卫生棉条" if it matches the query
+    const tamponAliases = ['卫生棉条', '棉条', '卫生栓', '导管棉条', '指入式棉条', 'tampon'];
+    const tamponHit = tamponAliases.find(
+      (kw) => kw.toLowerCase().includes(q) || q.includes(kw.toLowerCase())
+    );
+    if (tamponHit) {
+      const exactTampon = q === '卫生棉条' || q === '棉条' || q === 'tampon';
+      candidates.push({
+        id: 'wiki-entry-tampon-main',
+        title: '卫生棉条',
+        enTitle: 'Tampon',
+        categoryLabel: '典范主条目 · 体内用品',
+        summary: '置入阴道中上段“后穹窿无感区”直接吸收经血的圆柱状体内女性生理用品，涵盖导管式与指入式构造、FDA吸收量标准与TSS预防。',
+        matchedHint: ! '卫生棉条'.includes(q) ? `匹配同义词：${tamponHit}` : undefined,
+        score: exactTampon ? 98 : 82,
+        onSelect: () => {
+          if (onNavigateArticle) onNavigateArticle();
+          else onNavigateSection('top');
+        }
+      });
+    }
+
+    return candidates.sort((a, b) => b.score - a.score).slice(0, 8);
+  }, [searchQuery, onNavigateSanitaryPad, onNavigateWikiTerm, onNavigateArticle, onNavigateSection]);
+
+  // Flattened article sections for quick search inside entries
+  const searchableSections = React.useMemo(
+    () => [
+      ...SANITARY_PAD_SECTIONS.flatMap((sec) => [
+        { id: sec.id, title: `[卫生棉/卫生巾] ${sec.title}`, number: sec.number, targetPage: 'sanitary-pad' as const },
+        ...(sec.subsections || []).map((sub) => ({
+          id: sub.id,
+          title: `[卫生棉/卫生巾] ${sub.title}`,
+          number: sub.number,
+          targetPage: 'sanitary-pad' as const
+        }))
+      ]),
+      ...ARTICLE_SECTIONS.flatMap((sec) => [
+        { id: sec.id, title: `[卫生棉条] ${sec.title}`, number: sec.number, targetPage: 'article' as const },
+        ...(sec.subsections || []).map((sub) => ({
+          id: sub.id,
+          title: `[卫生棉条] ${sub.title}`,
+          number: sub.number,
+          targetPage: 'article' as const
+        }))
+      ])
+    ],
+    []
+  );
+
+  const filteredSections = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return searchableSections
+      .filter((s) => s.title.toLowerCase().includes(q) || s.number.includes(q))
+      .slice(0, 5);
+  }, [searchQuery, searchableSections]);
+
+  // Unified flat list of keyboard-navigable suggestions (WIKI_ENTRIES first, then matching sections)
+  const navigableSuggestions = React.useMemo(() => {
+    const items: Array<{
+      key: string;
+      kind: 'entry' | 'section';
+      onSelect: () => void;
+    }> = [];
+
+    wikiEntrySuggestions.forEach((entry) => {
+      items.push({
+        key: entry.id,
+        kind: 'entry',
+        onSelect: entry.onSelect
+      });
+    });
+
+    filteredSections.forEach((sec) => {
+      items.push({
+        key: `sec-${sec.targetPage}-${sec.id}`,
+        kind: 'section',
+        onSelect: () => {
+          if (sec.targetPage === 'sanitary-pad') {
+            onNavigateSanitaryPad?.(sec.id);
+          } else if (onNavigateArticle) {
+            onNavigateArticle(sec.id);
+          } else {
+            onNavigateSection(sec.id);
+          }
+        }
+      });
+    });
+
+    return items;
+  }, [wikiEntrySuggestions, filteredSections, onNavigateSanitaryPad, onNavigateArticle, onNavigateSection]);
+
+  // Reset or clamp activeSuggestionIndex when searchQuery changes
+  useEffect(() => {
+    if (!searchQuery.trim() || navigableSuggestions.length === 0) {
+      setActiveSuggestionIndex(-1);
+    } else {
+      setActiveSuggestionIndex(0);
+    }
+  }, [searchQuery, navigableSuggestions.length]);
+
+  // Keep active suggestion scrolled into view during keyboard navigation
+  useEffect(() => {
+    if (activeSuggestionIndex >= 0 && suggestionItemRefs.current[activeSuggestionIndex]) {
+      suggestionItemRefs.current[activeSuggestionIndex]?.scrollIntoView({
+        block: 'nearest'
+      });
+    }
+  }, [activeSuggestionIndex]);
+
+  const executeSuggestionSelect = (action: () => void) => {
+    action();
+    setIsSearchFocused(false);
+    setSearchQuery('');
+    setActiveSuggestionIndex(-1);
+  };
 
   return (
     <header className={`sticky top-0 z-40 border-b transition-colors print:hidden no-print ${
@@ -193,6 +386,24 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
                 </li>
                 <li>
                   <a
+                    href="/wiki/卫生棉"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavigateSanitaryPad ? onNavigateSanitaryPad() : onNavigateSection('top');
+                      setIsMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-1.5 rounded flex items-center justify-between transition-colors cursor-pointer ${
+                      currentPage === 'sanitary-pad'
+                        ? 'bg-[#3366cc]/10 text-[#3366cc] font-semibold'
+                        : 'hover:bg-black/5 dark:hover:bg-white/10 text-[#202122] dark:text-[#eaecf0]'
+                    }`}
+                  >
+                    <span>🌸 典范条目：卫生棉 (卫生巾)</span>
+                    <span className="text-[10px] text-[#72777d]">/wiki/卫生棉</span>
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/wiki/Special:知识图谱"
                     onClick={(e) => {
                       e.preventDefault();
@@ -245,35 +456,34 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
                     <span className="text-[10px] text-[#72777d]">/wiki/Category</span>
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="/wiki/卫生棉条#usage-guide"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onNavigateArticle ? onNavigateArticle('usage-guide') : onNavigateSection('usage-guide');
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white transition-colors cursor-pointer flex items-center justify-between"
-                  >
-                    <span>📐 45度置入操作规范</span>
-                    <span className="text-[9px] text-[#72777d] font-mono">#usage-guide</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/wiki/卫生棉条#safety-and-tss"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onNavigateArticle ? onNavigateArticle('safety-and-tss') : onNavigateSection('safety-and-tss');
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white transition-colors cursor-pointer flex items-center justify-between"
-                  >
-                    <span>🛡️ TSS 急症安全防护</span>
-                    <span className="text-[9px] text-[#72777d] font-mono">#safety-and-tss</span>
-                  </a>
-                </li>
               </ul>
+
+              <div className="px-2 py-1 font-bold text-[10px] text-[#72777d] uppercase tracking-wider border-t border-black/5 dark:border-white/5 mt-2 mb-1 flex items-center justify-between">
+                <span>已收录词条列表（共 2 篇）</span>
+                <span className="font-mono text-[9px] text-[#3366cc]">支持持续新增</span>
+              </div>
+              <div className="space-y-0.5 pr-1">
+                <button
+                  onClick={() => {
+                    onNavigateArticle?.();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#3366cc] dark:text-[#6b9eff] font-medium transition-colors cursor-pointer flex items-center justify-between"
+                >
+                  <span className="truncate">1. 卫生棉条 (Tampon)</span>
+                  <span className="text-[9px] text-[#72777d] shrink-0">8章节</span>
+                </button>
+                <button
+                  onClick={() => {
+                    onNavigateSanitaryPad?.();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#3366cc] dark:text-[#6b9eff] font-medium transition-colors cursor-pointer flex items-center justify-between"
+                >
+                  <span className="truncate">2. 卫生棉 / 卫生巾</span>
+                  <span className="text-[9px] text-[#72777d] shrink-0">7章节</span>
+                </button>
+              </div>
 
               <div className="px-2 py-1 font-bold text-[10px] text-[#72777d] uppercase tracking-wider border-t border-black/5 dark:border-white/5 mt-2 mb-1">
                 全域方针与指引（独立页面）
@@ -305,6 +515,22 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
               </ul>
 
               <div className="pt-2 mt-1 border-t border-black/5 dark:border-white/5 px-2 flex flex-col gap-1">
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setTimeout(() => {
+                      if (onPrint) onPrint();
+                      else window.print();
+                    }, 50);
+                  }}
+                  className="w-full text-left px-2 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white flex items-center justify-between text-xs cursor-pointer transition-colors"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Printer className="w-3.5 h-3.5 text-[#3366cc]" />
+                    <span>打印条目</span>
+                  </span>
+                  <span className="text-[10px] text-[#72777d]">纯净版</span>
+                </button>
                 {onOpenAppearance && (
                   <button
                     onClick={() => {
@@ -377,7 +603,7 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
           )}
         </div>
 
-        {/* Center: Search Bar with Autocomplete Dropdown */}
+        {/* Center: Search Bar with Instant WIKI_ENTRIES Autocomplete & Keyboard Navigation */}
         <div ref={searchContainerRef} className="flex-1 max-w-xl relative">
           <div className={`relative flex items-center h-9 rounded border transition-all ${
             isSearchFocused
@@ -388,34 +614,85 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
           }`}>
             <Search className="w-4 h-4 ml-3 text-[#72777d] shrink-0 pointer-events-none" />
             <input
+              ref={searchInputRef}
               type="text"
+              role="combobox"
+              aria-expanded={isSearchFocused}
+              aria-autocomplete="list"
+              aria-controls="wiki-header-search-listbox"
+              aria-activedescendant={
+                activeSuggestionIndex >= 0 && navigableSuggestions[activeSuggestionIndex]
+                  ? `header-suggestion-${navigableSuggestions[activeSuggestionIndex].key}`
+                  : undefined
+              }
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (!isSearchFocused) setIsSearchFocused(true);
+              }}
               onFocus={() => setIsSearchFocused(true)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchQuery.trim()) {
-                  if (filteredPolicies.length > 0) {
-                    const firstPolicy = filteredPolicies[0];
-                    if (firstPolicy.type === 'category') onNavigateCategory?.();
-                    else if (firstPolicy.type === 'graph') onNavigateGraph?.();
-                    else if (firstPolicy.type === 'article') onNavigateHome?.();
-                    else onOpenPolicy?.(firstPolicy.key as 'privacy' | 'disclaimer' | 'conduct');
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  if (!isSearchFocused) {
+                    setIsSearchFocused(true);
+                  }
+                  if (navigableSuggestions.length > 0) {
+                    setActiveSuggestionIndex((prev) =>
+                      prev < navigableSuggestions.length - 1 ? prev + 1 : 0
+                    );
+                  }
+                } else if (e.key === 'ArrowUp') {
+                  e.preventDefault();
+                  if (!isSearchFocused) {
+                    setIsSearchFocused(true);
+                  }
+                  if (navigableSuggestions.length > 0) {
+                    setActiveSuggestionIndex((prev) =>
+                      prev > 0 ? prev - 1 : navigableSuggestions.length - 1
+                    );
+                  }
+                } else if (e.key === 'Escape') {
+                  e.preventDefault();
+                  setIsSearchFocused(false);
+                  setActiveSuggestionIndex(-1);
+                } else if (e.key === 'Enter' && searchQuery.trim()) {
+                  e.preventDefault();
+                  if (
+                    activeSuggestionIndex >= 0 &&
+                    activeSuggestionIndex < navigableSuggestions.length
+                  ) {
+                    executeSuggestionSelect(navigableSuggestions[activeSuggestionIndex].onSelect);
+                  } else if (matchSanitaryPadQuery(searchQuery.trim())) {
+                    executeSuggestionSelect(() => onNavigateSanitaryPad?.());
+                  } else if (wikiEntrySuggestions.length > 0) {
+                    executeSuggestionSelect(wikiEntrySuggestions[0].onSelect);
                   } else if (filteredSections.length > 0) {
                     const firstSec = filteredSections[0];
-                    if (onNavigateArticle) onNavigateArticle(firstSec.id);
-                    else onNavigateSection(firstSec.id);
+                    executeSuggestionSelect(() => {
+                      if (firstSec.targetPage === 'sanitary-pad') onNavigateSanitaryPad?.(firstSec.id);
+                      else if (onNavigateArticle) onNavigateArticle(firstSec.id);
+                      else onNavigateSection(firstSec.id);
+                    });
+                  } else if (onNavigateWikiTerm) {
+                    executeSuggestionSelect(() => onNavigateWikiTerm(searchQuery.trim()));
                   } else {
-                    onNavigateNotFound?.(searchQuery.trim());
+                    executeSuggestionSelect(() => onNavigateNotFound?.(searchQuery.trim()));
                   }
-                  setIsSearchFocused(false);
                 }
               }}
-              placeholder="搜索 MZ维基 条目与章节..."
+              placeholder="搜索 MZ维基 词条与章节（如：卫生巾、月经杯、阴道冠、TSS...）"
               className="w-full bg-transparent px-2.5 text-xs outline-none text-[#202122] dark:text-[#eaecf0] placeholder:text-[#72777d]"
             />
             {searchQuery ? (
               <button
-                onClick={() => setSearchQuery('')}
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveSuggestionIndex(-1);
+                  searchInputRef.current?.focus();
+                }}
+                aria-label="清空搜索框"
                 className="p-1 mr-1 text-[#72777d] hover:text-[#202122] dark:hover:text-white cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
@@ -429,127 +706,250 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
 
           {/* Search Autocomplete Suggestions Dropdown */}
           {isSearchFocused && (
-            <div className={`absolute left-0 right-0 mt-1 rounded-md shadow-xl border overflow-hidden text-xs z-50 animate-in fade-in zoom-in-95 duration-100 ${
-              isDarkMode ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' : 'bg-white border-[#c8ccd1] text-[#202122]'
-            }`}>
+            <div
+              id="wiki-header-search-listbox"
+              role="listbox"
+              className={`absolute left-0 right-0 mt-1 rounded-md shadow-xl border overflow-hidden text-xs z-50 animate-in fade-in zoom-in-95 duration-100 ${
+                isDarkMode ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' : 'bg-white border-[#c8ccd1] text-[#202122]'
+              }`}
+            >
               {searchQuery.trim() ? (
                 <div>
-                  {filteredPolicies.length > 0 && (
+                  {/* 1. Instant WIKI_ENTRIES Title Suggestions */}
+                  {wikiEntrySuggestions.length > 0 && (
                     <div className="border-b border-black/5 dark:border-white/5">
-                      <div className="px-3 py-1.5 text-[10px] font-bold text-[#72777d] uppercase tracking-wider bg-black/5 dark:border-white/5">
-                        MZ维基独立页面
+                      <div className="px-3 py-1.5 text-[10px] font-bold text-[#72777d] uppercase tracking-wider bg-black/5 dark:bg-white/5 flex items-center justify-between">
+                        <span>WIKI_ENTRIES 词条即时联想建议 ({wikiEntrySuggestions.length})</span>
+                        <span className="font-mono text-[9px] text-[#3366cc] dark:text-[#6b9eff]">
+                          ↑↓ 键盘导航 · Enter 跳转
+                        </span>
                       </div>
-                      <ul className="divide-y divide-black/5 dark:divide-white/5">
-                        {filteredPolicies.map(item => (
-                          <li key={item.key}>
-                            <button
-                              onClick={() => {
-                                if (item.type === 'category') {
-                                  onNavigateCategory?.();
-                                } else if (item.type === 'graph') {
-                                  onNavigateGraph?.();
-                                } else if (item.type === 'article') {
-                                  onNavigateHome?.();
-                                } else {
-                                  onOpenPolicy?.(item.key as 'privacy' | 'disclaimer' | 'conduct');
-                                }
-                                setIsSearchFocused(false);
-                                setSearchQuery('');
-                              }}
-                              className="w-full px-3 py-2 text-left hover:bg-[#3366cc]/10 flex items-center justify-between group transition-colors cursor-pointer"
-                            >
-                              <div>
-                                <div className="font-semibold group-hover:text-[#3366cc] text-[#202122] dark:text-white">
-                                  {item.title}
+                      <ul className="max-h-64 overflow-y-auto divide-y divide-black/5 dark:divide-white/5">
+                        {wikiEntrySuggestions.map((item, idx) => {
+                          const isSelected = activeSuggestionIndex === idx;
+                          return (
+                            <li key={item.id} role="option" aria-selected={isSelected}>
+                              <button
+                                ref={(el) => {
+                                  suggestionItemRefs.current[idx] = el;
+                                }}
+                                id={`header-suggestion-${item.id}`}
+                                type="button"
+                                onMouseEnter={() => setActiveSuggestionIndex(idx)}
+                                onClick={() => executeSuggestionSelect(item.onSelect)}
+                                className={`w-full px-3 py-2 text-left flex items-center justify-between group transition-colors cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-[#3366cc]/15 dark:bg-[#3366cc]/25'
+                                    : 'hover:bg-[#3366cc]/10'
+                                }`}
+                              >
+                                <div className="min-w-0 pr-2">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span
+                                      className={`font-semibold text-xs ${
+                                        isSelected
+                                          ? 'text-[#3366cc] dark:text-[#6b9eff]'
+                                          : 'text-[#202122] dark:text-white group-hover:text-[#3366cc]'
+                                      }`}
+                                    >
+                                      {renderHighlightedText(item.title, searchQuery)}
+                                    </span>
+                                    <span className="text-[10px] text-[#72777d] font-serif italic truncate">
+                                      {renderHighlightedText(item.enTitle, searchQuery)}
+                                    </span>
+                                    <span className="px-1.5 py-0.2 text-[10px] rounded-xs bg-black/5 dark:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] font-mono">
+                                      {item.categoryLabel}
+                                    </span>
+                                  </div>
+
+                                  {item.matchedHint && (
+                                    <div className="text-[10px] text-[#006400] dark:text-[#5cd68d] mt-0.5">
+                                      ↳ {item.matchedHint}
+                                    </div>
+                                  )}
+
+                                  <div className="text-[10px] text-[#72777d] line-clamp-1 mt-0.5">
+                                    {item.summary}
+                                  </div>
                                 </div>
-                                <div className="text-[10px] text-[#72777d]">{item.desc}</div>
-                              </div>
-                              <ChevronRight className="w-3.5 h-3.5 text-[#72777d]" />
-                            </button>
-                          </li>
-                        ))}
+                                <ChevronRight
+                                  className={`w-3.5 h-3.5 shrink-0 transition-transform ${
+                                    isSelected
+                                      ? 'text-[#3366cc] dark:text-[#6b9eff] translate-x-0.5'
+                                      : 'text-[#72777d]'
+                                  }`}
+                                />
+                              </button>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}
 
-                  <div className="px-3 py-2 text-[11px] font-medium text-[#72777d] border-b border-black/5 dark:border-white/5">
-                    条目内章节检索结果
-                  </div>
-                  {filteredSections.length > 0 ? (
-                    <ul className="max-h-60 overflow-y-auto divide-y divide-black/5 dark:divide-white/5">
-                      {filteredSections.map(sec => (
-                        <li key={sec.id}>
-                          <button
-                            onClick={() => {
-                              if (onNavigateArticle) {
-                                onNavigateArticle(sec.id);
-                              } else {
-                                onNavigateSection(sec.id);
-                              }
-                              setIsSearchFocused(false);
-                              setSearchQuery('');
-                            }}
-                            className="w-full px-3 py-2 text-left hover:bg-[#3366cc]/10 flex items-center justify-between group transition-colors cursor-pointer"
-                          >
-                            <span className="flex items-center gap-2">
-                              <span className="text-[#3366cc] font-mono text-[11px] font-semibold">{sec.number}</span>
-                              <span className="group-hover:text-[#3366cc] font-medium">{sec.title}</span>
-                            </span>
-                            <ChevronRight className="w-3.5 h-3.5 text-[#72777d] group-hover:translate-x-0.5 transition-transform" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : filteredPolicies.length === 0 ? (
+                  {/* 2. Matching Article Sections */}
+                  {filteredSections.length > 0 && (
+                    <div>
+                      <div className="px-3 py-1.5 text-[10px] font-bold text-[#72777d] uppercase tracking-wider bg-black/5 dark:bg-white/5">
+                        条目内章节检索结果 ({filteredSections.length})
+                      </div>
+                      <ul className="max-h-48 overflow-y-auto divide-y divide-black/5 dark:divide-white/5">
+                        {filteredSections.map((sec, sIdx) => {
+                          const globalIdx = wikiEntrySuggestions.length + sIdx;
+                          const isSelected = activeSuggestionIndex === globalIdx;
+                          return (
+                            <li
+                              key={`${sec.targetPage}-${sec.id}`}
+                              role="option"
+                              aria-selected={isSelected}
+                            >
+                              <button
+                                ref={(el) => {
+                                  suggestionItemRefs.current[globalIdx] = el;
+                                }}
+                                id={`header-suggestion-sec-${sec.targetPage}-${sec.id}`}
+                                type="button"
+                                onMouseEnter={() => setActiveSuggestionIndex(globalIdx)}
+                                onClick={() =>
+                                  executeSuggestionSelect(() => {
+                                    if (sec.targetPage === 'sanitary-pad') {
+                                      onNavigateSanitaryPad?.(sec.id);
+                                    } else if (onNavigateArticle) {
+                                      onNavigateArticle(sec.id);
+                                    } else {
+                                      onNavigateSection(sec.id);
+                                    }
+                                  })
+                                }
+                                className={`w-full px-3 py-2 text-left flex items-center justify-between group transition-colors cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-[#3366cc]/15 dark:bg-[#3366cc]/25'
+                                    : 'hover:bg-[#3366cc]/10'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2 min-w-0">
+                                  <span className="text-[#3366cc] font-mono text-[11px] font-semibold shrink-0">
+                                    {sec.number}
+                                  </span>
+                                  <span
+                                    className={`font-medium truncate ${
+                                      isSelected
+                                        ? 'text-[#3366cc] dark:text-[#6b9eff]'
+                                        : 'group-hover:text-[#3366cc]'
+                                    }`}
+                                  >
+                                    {renderHighlightedText(sec.title, searchQuery)}
+                                  </span>
+                                </span>
+                                <ChevronRight
+                                  className={`w-3.5 h-3.5 shrink-0 transition-transform ${
+                                    isSelected
+                                      ? 'text-[#3366cc] dark:text-[#6b9eff] translate-x-0.5'
+                                      : 'text-[#72777d] group-hover:translate-x-0.5'
+                                  }`}
+                                />
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* 3. Empty State when no WIKI_ENTRIES or Sections match */}
+                  {wikiEntrySuggestions.length === 0 && filteredSections.length === 0 && (
                     <div className="p-4 text-center text-[#72777d]">
                       <p>未在当前条目或知识库中找到「{searchQuery}」</p>
                       <button
-                        onClick={() => {
-                          onNavigateNotFound?.(searchQuery.trim());
-                          setIsSearchFocused(false);
-                          setSearchQuery('');
-                        }}
+                        type="button"
+                        onClick={() =>
+                          executeSuggestionSelect(() => onNavigateNotFound?.(searchQuery.trim()))
+                        }
                         className="mt-2 text-xs text-[#3366cc] dark:text-[#6699ff] hover:underline font-medium cursor-pointer"
                       >
                         前往并查看「{searchQuery}」条目状态 →
                       </button>
                     </div>
-                  ) : null}
+                  )}
+
+                  {/* Keyboard Navigation Hint Footer */}
+                  {(wikiEntrySuggestions.length > 0 || filteredSections.length > 0) && (
+                    <div className="px-3 py-1.5 bg-[#f8f9fa] dark:bg-[#1e2022] border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[10px] text-[#72777d]">
+                      <span>
+                        共匹配 {wikiEntrySuggestions.length} 个词条建议
+                        {filteredSections.length > 0 ? ` · ${filteredSections.length} 个章节` : ''}
+                      </span>
+                      <span className="font-mono">
+                        ↑↓ 选择 · Enter 确认 · Esc 关闭
+                      </span>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="p-3">
-                  <div className="text-[11px] font-semibold text-[#72777d] mb-2 uppercase tracking-wider">
-                    推荐快速跳转
+                  <div className="text-[11px] font-semibold text-[#72777d] mb-2 uppercase tracking-wider flex items-center justify-between">
+                    <span>已收录正式词条（共 2 篇 · 输入关键词实时联想全库词条）</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onNavigateCategory?.();
+                        setIsSearchFocused(false);
+                      }}
+                      className="text-[#3366cc] hover:underline font-normal cursor-pointer"
+                    >
+                      分类目录 →
+                    </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {[
-                      { id: 'history', label: '1 历史与现代发明' },
-                      { id: 'structure-and-types', label: '2 导管型与指入式结构' },
-                      { id: 'usage-guide', label: '3 核心45度置入步骤' },
-                      { id: 'safety-and-tss', label: '4 TSS安全防护与时限' },
-                      { id: 'common-myths', label: '5 阴道冠与生理迷思' },
-                      { id: 'references', label: '8 参考文献 (15篇)' }
-                    ].map(item => (
+                  <div className="mb-2.5 grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onNavigateArticle?.();
+                        setIsSearchFocused(false);
+                      }}
+                      className="px-2.5 py-1.5 text-left rounded bg-[#3366cc]/10 hover:bg-[#3366cc]/20 text-[#3366cc] dark:text-[#6699ff] font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">词条 #1：卫生棉条 (Tampon)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onNavigateSanitaryPad?.();
+                        setIsSearchFocused(false);
+                      }}
+                      className="px-2.5 py-1.5 text-left rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-[#059669] dark:text-[#34d399] font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">词条 #2：卫生棉（卫生巾）</span>
+                    </button>
+                  </div>
+
+                  {/* Quick WIKI_ENTRIES chips when input is empty */}
+                  <div className="text-[10px] font-semibold text-[#72777d] mb-1.5">
+                    热门 WIKI_ENTRIES 词条速查：
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mb-2.5">
+                    {WIKI_ENTRIES.slice(0, 8).map((entry) => (
                       <button
-                        key={item.id}
+                        key={entry.id}
+                        type="button"
                         onClick={() => {
-                          if (onNavigateArticle) {
-                            onNavigateArticle(item.id);
+                          if (entry.id === 'sanitary-pad') {
+                            onNavigateSanitaryPad?.();
                           } else {
-                            onNavigateHome?.();
-                            onNavigateSection(item.id);
+                            onNavigateWikiTerm?.(entry.title);
                           }
                           setIsSearchFocused(false);
                         }}
-                        className="px-2.5 py-1.5 text-left rounded hover:bg-[#3366cc]/10 text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        className="px-2 py-1 rounded border border-black/10 dark:border-white/10 hover:border-[#3366cc] hover:text-[#3366cc] dark:hover:text-[#6b9eff] text-[11px] transition-colors cursor-pointer"
                       >
-                        <Sparkles className="w-3 h-3 text-[#3366cc] shrink-0" />
-                        <span className="truncate">{item.label}</span>
+                        {entry.id === 'sanitary-pad' ? '卫生棉（卫生巾）' : entry.title}
                       </button>
                     ))}
                   </div>
 
-                  <div className="mt-2.5 pt-2 border-t border-black/5 dark:border-white/5 flex items-center gap-2 flex-wrap text-xs">
+                  <div className="mt-2 pt-2 border-t border-black/5 dark:border-white/5 flex items-center gap-2 flex-wrap text-xs">
                     <span className="text-[10px] text-[#72777d]">制度方针独立页面：</span>
                     {[
                       { key: 'privacy' as const, label: '隐私政策' },
@@ -558,6 +958,7 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
                     ].map(p => (
                       <button
                         key={p.key}
+                        type="button"
                         onClick={() => {
                           onOpenPolicy?.(p.key);
                           setIsSearchFocused(false);
@@ -574,8 +975,21 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
           )}
         </div>
 
-        {/* Right Side: Quick Knowledge Graph, Category, Appearance Controls */}
+        {/* Right Side: Quick Sanitary Pad Entry, Knowledge Graph, Category, Appearance Controls */}
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          <button
+            onClick={() => onNavigateSanitaryPad?.()}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-colors text-xs font-medium cursor-pointer ${
+              currentPage === 'sanitary-pad'
+                ? 'bg-emerald-500/15 text-[#059669] dark:text-[#34d399] font-semibold ring-1 ring-emerald-500/40'
+                : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-[#059669] dark:text-[#34d399]'
+            }`}
+            title="阅读《卫生巾 / 卫生棉》典范条目"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#059669] dark:text-[#34d399]" />
+            <span>卫生巾</span>
+          </button>
+
           <button
             onClick={() => onNavigateGraph?.()}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-colors text-xs font-medium cursor-pointer ${
@@ -626,6 +1040,18 @@ export const WikipediaHeader: React.FC<WikipediaHeaderProps> = ({
           >
             <BarChart3 className="w-3.5 h-3.5 text-[#3366cc] dark:text-[#6699ff]" />
             <span className="hidden md:inline">统计</span>
+          </button>
+
+          <button
+            onClick={() => {
+              if (onPrint) onPrint();
+              else window.print();
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-colors text-xs font-medium hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] hover:text-[#202122] dark:hover:text-white cursor-pointer"
+            title="打印条目（自动隐藏侧边栏、搜索框与底部导航）"
+          >
+            <Printer className="w-3.5 h-3.5 text-[#3366cc] dark:text-[#6699ff]" />
+            <span className="hidden lg:inline">打印条目</span>
           </button>
 
           <button

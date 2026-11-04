@@ -7,6 +7,9 @@ import {
   BookOpen,
   GitBranch,
   Tag,
+  BookmarkCheck,
+  Activity,
+  ShieldCheck,
   Printer
 } from 'lucide-react';
 import {
@@ -99,6 +102,8 @@ interface ArticleContentProps {
   onNavigateCategory?: () => void;
   onNavigateGraph?: () => void;
   onNavigateTags?: (tag?: string) => void;
+  onOpenCitation?: () => void;
+  onOpenHealthRadar?: () => void;
   onPrint?: () => void;
 }
 
@@ -112,6 +117,8 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
   onNavigateCategory,
   onNavigateGraph,
   onNavigateTags,
+  onOpenCitation,
+  onOpenHealthRadar,
   onPrint
 }) => {
   const [selectedAbsorbency, setSelectedAbsorbency] = useState<number>(1); // index for Regular
@@ -669,6 +676,72 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
           })}
         </div>
       </section>
+
+      {/* ============================================================== */}
+      {/* Scholarly Citation & Health Radar Utility Banner               */}
+      {/* ============================================================== */}
+      <div className={`p-4 rounded-xl border transition-colors my-6 flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden no-print ${
+        isDarkMode
+          ? 'bg-[#181a1d] border-[#3a3d42]'
+          : 'bg-[#f0f4f9] border-[#c8ccd1]'
+      }`}>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-xs px-2 py-0.5 rounded font-mono font-bold bg-[#3366cc]/10 text-[#3366cc]">
+              MZ Wiki 维基质检与著录规范
+            </span>
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>100% 权威临床实证</span>
+            </span>
+          </div>
+          <div className="font-serif font-bold text-sm text-[#202122] dark:text-white">
+            学术研究引用与条目健康度量化透视
+          </div>
+          <p className="text-xs text-[#54595d] dark:text-[#a2a9b1]">
+            本词条已被评定为 <strong>典范条目 (Featured Class, 98分)</strong>，提供符合中国国标 GB/T 7714-2015、APA、MLA 及 BibTeX 格式的标准引用代码。
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
+          {onOpenHealthRadar && (
+            <button
+              onClick={onOpenHealthRadar}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold cursor-pointer transition-colors shadow-xs ${
+                isDarkMode
+                  ? 'border-[#54595d] bg-[#22252a] text-[#eaecf0] hover:bg-[#2c2f36]'
+                  : 'border-[#c8ccd1] bg-white text-[#202122] hover:bg-[#f8f9fa]'
+              }`}
+            >
+              <Activity className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>条目质检雷达 (98分)</span>
+            </button>
+          )}
+
+          {onOpenCitation && (
+            <button
+              onClick={onOpenCitation}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#3366cc] hover:bg-[#2a4b8d] text-white text-xs font-semibold cursor-pointer transition-colors shadow-xs"
+            >
+              <BookmarkCheck className="w-4 h-4" />
+              <span>引用此条目</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => (onPrint ? onPrint() : window.print())}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold cursor-pointer transition-colors shadow-xs ${
+              isDarkMode
+                ? 'border-[#54595d] bg-[#22252a] text-[#eaecf0] hover:bg-[#2c2f36]'
+                : 'border-[#c8ccd1] bg-white text-[#202122] hover:bg-[#f8f9fa]'
+            }`}
+            title="打印本条目纯净版本（自动隐藏侧边栏、搜索框与底部导航）"
+          >
+            <Printer className="w-4 h-4 text-[#3366cc] dark:text-[#6699ff]" />
+            <span>打印条目</span>
+          </button>
+        </div>
+      </div>
 
       {/* ============================================================== */}
       {/* SECTION 8: 参考资料 */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { GitBranch } from 'lucide-react';
+import { WIKI_ENTRIES } from '../data/wikiEntriesData';
 
 interface CategoryPageProps {
   isDarkMode: boolean;
@@ -420,6 +421,35 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* 3.5 Dynamic All-Articles Index (全站已收录正式词条列表) */}
+      <div className="border-t border-[#a2a9b1] dark:border-[#54595d] pt-3">
+        <h2 className="font-serif text-lg font-bold text-[#202122] dark:text-white mb-2">
+          全站已收录正式词条（共 2 篇）
+        </h2>
+        <div className="p-3 border border-[#c8ccd1] dark:border-[#3a3e47] bg-[#f8f9fa] dark:bg-[#1e2024] text-xs">
+          <ul className="list-disc list-inside space-y-1.5">
+            <li>
+              <button
+                onClick={() => onNavigateToArticle()}
+                onMouseEnter={(e) => handleLinkHover('卫生棉条', e)}
+                className="text-[#3366cc] dark:text-[#6699ff] font-bold hover:underline cursor-pointer"
+              >
+                1. ★ 卫生棉条（Tampon）
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={(e) => handleLinkClick('卫生巾', e)}
+                onMouseEnter={(e) => handleLinkHover('卫生棉', e)}
+                className="text-[#3366cc] dark:text-[#6699ff] font-bold hover:underline cursor-pointer"
+              >
+                2. ⊕ 卫生棉（卫生巾 / Sanitary Napkin）
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
 
