@@ -316,4 +316,3 @@ export async function fetchArticleCitationsApi(idOrTitle: string, format?: strin
   }
   return null;
 }
-
