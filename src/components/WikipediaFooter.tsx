@@ -20,7 +20,7 @@ export const WikipediaFooter: React.FC<WikipediaFooterProps> = ({ isDarkMode, on
   }, []);
 
   return (
-    <footer className={`mt-16 pt-6 pb-10 border-t text-[11px] leading-relaxed transition-colors ${
+    <footer className={`mt-16 pt-6 pb-10 border-t text-[11px] leading-relaxed transition-colors print:hidden no-print ${
       isDarkMode
         ? 'border-[#54595d] bg-[#1a1b1c] text-[#a2a9b1]'
         : 'border-[#c8ccd1] bg-[#f8f9fa] text-[#72777d]'

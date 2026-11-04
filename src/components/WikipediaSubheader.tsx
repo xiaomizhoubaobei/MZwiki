@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, BookOpen, GitBranch, Layers, FileText, Tag, ChevronRight, BarChart3 } from 'lucide-react';
+import { Clock, BookOpen, GitBranch, Layers, FileText, Tag, ChevronRight, BarChart3, Printer } from 'lucide-react';
 import { BreadcrumbItem } from '../utils/headerAutomation';
 
 interface WikipediaSubheaderProps {
@@ -22,6 +22,7 @@ interface WikipediaSubheaderProps {
   onNavigateCategory?: () => void;
   onNavigateTags?: () => void;
   onNavigateStats?: () => void;
+  onPrint?: () => void;
 }
 
 export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
@@ -43,10 +44,22 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
   onNavigateGraph,
   onNavigateCategory,
   onNavigateTags,
-  onNavigateStats
+  onNavigateStats,
+  onPrint
 }) => {
+  // 触发浏览器打印：优先走上层统一入口（会先收起浮层），否则直连 window.print
+  const handleTriggerPrint = () => {
+    if (onPrint) {
+      onPrint();
+    } else {
+      window.print();
+    }
+  };
+
   return (
     <div className={`border-b transition-colors ${
+      isEntryPage ? 'print:hidden no-print' : ''
+    } ${
       isDarkMode
         ? 'bg-[#202122] border-[#54595d]'
         : 'bg-white border-[#a2a9b1]'
@@ -55,7 +68,7 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
 
         {/* Automated Breadcrumb Navigation */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="pt-3 pb-1 flex items-center gap-1.5 text-[11px] text-[#72777d] flex-wrap">
+          <nav aria-label="Breadcrumb" className="pt-3 pb-1 flex items-center gap-1.5 text-[11px] text-[#72777d] flex-wrap print:hidden no-print">
             {breadcrumbs.map((b, idx) => (
               <React.Fragment key={idx}>
                 {idx > 0 && <ChevronRight className="w-3 h-3 opacity-40 shrink-0" />}
@@ -80,7 +93,7 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
         <div className="pt-3 pb-4 flex flex-col md:flex-row md:items-baseline justify-between gap-4 border-b border-black/10 dark:border-white/10">
           <div className="flex flex-col gap-1.5">
             <div className="flex items-baseline gap-3 flex-wrap">
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#202122] dark:text-[#eaecf0] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#202122] dark:text-[#eaecf0] print:text-black tracking-tight">
                 {title}
               </h1>
               {badge && (
@@ -105,7 +118,7 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
 
                 {/* Estimated Reading Time Badge */}
                 <span
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-500/10 text-[#3366cc] dark:text-[#6699ff] font-medium"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-500/10 text-[#3366cc] dark:text-[#6699ff] font-medium print:hidden"
                   title="依据条目字数与中文平均阅读速率计算"
                 >
                   <Clock className="w-3.5 h-3.5" />
@@ -150,8 +163,8 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
             )}
           </div>
 
-          {/* Quick Core View Tabs (Vector 2022 Tabs: 条目 | 统计 | 知识图谱 | 标签 | 分类) */}
-          <div className="flex items-center gap-1 text-xs self-start md:self-end">
+          {/* Quick Core View Tabs (Vector 2022 Tabs: 条目 | 统计 | 知识图谱 | 标签 | 分类) - 打印时隐藏 */}
+          <div className="flex items-center gap-1 text-xs self-start md:self-end print:hidden no-print">
             {onNavigateArticle && (
               <button
                 onClick={onNavigateArticle}
@@ -221,6 +234,16 @@ export const WikipediaSubheader: React.FC<WikipediaSubheaderProps> = ({
                 <span>分类</span>
               </button>
             )}
+
+            {/* 打印条目：触发纯净文章打印视图 */}
+            <button
+              onClick={handleTriggerPrint}
+              className="ml-1 px-3 py-1.5 rounded border border-[#3366cc]/30 bg-[#3366cc]/10 hover:bg-[#3366cc] hover:text-white text-[#3366cc] dark:text-[#6699ff] font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
+              title="打印当前条目（自动隐藏侧边栏、搜索框与底部导航）"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>打印条目</span>
+            </button>
           </div>
 
         </div>

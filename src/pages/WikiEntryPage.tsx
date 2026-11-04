@@ -12,7 +12,8 @@ import {
   Info,
   Layers,
   ChevronRight,
-  Award
+  Award,
+  Printer
 } from 'lucide-react';
 import { WikiEntry } from '../data/wikiEntriesData';
 import { EntityImagePreview } from '../components/EntityImagePreview';
@@ -30,6 +31,7 @@ interface WikiEntryPageProps {
   onNavigateTags: (tag?: string) => void;
   onNavigateCategory: () => void;
   onOpenWikiLink?: (term: string, event: React.MouseEvent) => void;
+  onPrint?: () => void;
 }
 
 export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
@@ -40,7 +42,8 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
   onNavigateGraph,
   onNavigateTags,
   onNavigateCategory,
-  onOpenWikiLink
+  onOpenWikiLink,
+  onPrint
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -77,8 +80,8 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 1. Wikipedia Breadcrumb Navigation Header */}
-      <div className={`p-4 rounded border transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
+      {/* 1. Wikipedia Breadcrumb Navigation Header（打印时隐藏） */}
+      <div className={`p-4 rounded border transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs print:hidden no-print ${
         isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
       }`}>
         <div className="flex items-center gap-1.5 flex-wrap text-[#54595d] dark:text-[#a2a9b1]">
@@ -103,6 +106,14 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => (onPrint ? onPrint() : window.print())}
+            className="px-2.5 py-1 rounded border border-black/15 dark:border-white/15 hover:bg-[#3366cc]/10 hover:text-[#3366cc] dark:hover:text-[#6699ff] text-xs font-medium text-[#202122] dark:text-[#eaecf0] transition-colors cursor-pointer flex items-center gap-1"
+            title="打印本词条纯净版（自动隐藏侧边栏、搜索框与底部导航）"
+          >
+            <Printer className="w-3.5 h-3.5 text-[#3366cc] dark:text-[#6699ff]" />
+            <span>打印条目</span>
+          </button>
           <button
             onClick={() => onNavigateGraph(undefined, matchingNode.id)}
             className="px-2.5 py-1 rounded bg-[#3366cc] hover:bg-[#2a4b8d] text-white text-xs font-medium transition-colors cursor-pointer flex items-center gap-1 shadow-xs"
@@ -385,14 +396,25 @@ export const WikiEntryPage: React.FC<WikiEntryPageProps> = ({
             </table>
           </div>
 
-          {/* Quick Actions Panel */}
-          <div className={`p-4 rounded border text-xs space-y-2.5 transition-colors ${
+          {/* Quick Actions Panel（打印时隐藏） */}
+          <div className={`p-4 rounded border text-xs space-y-2.5 transition-colors print:hidden no-print ${
             isDarkMode ? 'bg-[#202122] border-[#54595d]' : 'bg-[#f8f9fa] border-[#c8ccd1]'
           }`}>
             <span className="font-bold text-[#72777d] uppercase tracking-wider text-[10px]">
-              知识导航交互
+              知识导航与工具
             </span>
             <div className="space-y-1.5">
+              <button
+                onClick={() => (onPrint ? onPrint() : window.print())}
+                className="w-full text-left px-3 py-2 rounded bg-[#3366cc]/10 hover:bg-[#3366cc]/20 text-[#3366cc] dark:text-[#6699ff] font-semibold cursor-pointer transition-colors flex items-center justify-between"
+                title="触发浏览器打印对话框，自动隐藏侧边栏、搜索框和底部导航"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>打印词条（纯净文章视图）</span>
+                </span>
+                <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+              </button>
               <button
                 onClick={() => onNavigateGraph(undefined, matchingNode.id)}
                 className="w-full text-left px-3 py-2 rounded bg-black/5 dark:bg-white/5 hover:bg-[#3366cc]/10 hover:text-[#3366cc] dark:hover:text-[#6699ff] text-[#202122] dark:text-[#eaecf0] cursor-pointer transition-colors flex items-center justify-between"
