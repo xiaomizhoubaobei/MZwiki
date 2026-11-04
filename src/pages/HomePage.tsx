@@ -55,6 +55,7 @@ interface HomePageProps {
   onNavigateGraph?: () => void;
   onNavigateTags?: () => void;
   onNavigateStats?: () => void;
+  onNavigateSanitaryPad?: (sectionId?: string) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -64,7 +65,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigateCategory,
   onNavigateGraph,
   onNavigateTags,
-  onNavigateStats
+  onNavigateStats,
+  onNavigateSanitaryPad
 }) => {
   const [selectedMedia, setSelectedMedia] = useState<WikiImageData | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -289,9 +291,20 @@ export const HomePage: React.FC<HomePageProps> = ({
                   今日典范条目
                 </h2>
               </div>
-              <span className="text-[11px] font-mono text-[#72777d]">
-                本期精选 · 特色评级 ★★★★★
-              </span>
+              <div className="flex items-center gap-3">
+                {onNavigateSanitaryPad && (
+                  <button
+                    onClick={() => onNavigateSanitaryPad()}
+                    className="text-[11px] font-medium text-[#3366cc] dark:text-[#6699ff] hover:underline cursor-pointer"
+                    title="查阅姊妹典范条目《卫生棉（卫生巾）》"
+                  >
+                    🌸 姊妹条目：卫生棉（卫生巾）→
+                  </button>
+                )}
+                <span className="text-[11px] font-mono text-[#72777d]">
+                  本期精选 · 特色评级 ★★★★★
+                </span>
+              </div>
             </div>
 
             <div className="p-4 sm:p-5 space-y-4">

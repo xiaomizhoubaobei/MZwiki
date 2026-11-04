@@ -28,15 +28,20 @@ import { KnowledgeGraphPage } from './pages/KnowledgeGraphPage';
 import { TagsPage } from './pages/TagsPage';
 import { WikiEntryPage } from './pages/WikiEntryPage';
 import { ContentStatisticsPage } from './pages/ContentStatisticsPage';
+import { SanitaryPadPage } from './pages/SanitaryPadPage';
+import { SANITARY_PAD_SECTIONS } from './data/sanitaryPadData';
+import { ScholarlyCitationModal } from './components/ScholarlyCitationModal';
+import { ArticleHealthRadarModal } from './components/ArticleHealthRadarModal';
 import { WikiEntry, getWikiEntryByTitle, WIKI_ENTRIES } from './data/wikiEntriesData';
 import { AppPage, getWikiPath, parseWikiLocation } from './utils/wikiRoutes';
 import { applyPageSEO } from './utils/seoAutomation';
 import {
   getAutomatedBreadcrumbs,
   getWikiEntryMetrics,
-  getFeaturedArticleMetrics
+  getFeaturedArticleMetrics,
+  getSanitaryPadArticleMetrics
 } from './utils/headerAutomation';
-import { ListFilter } from 'lucide-react';
+import { ListFilter, Printer, BookmarkCheck, Activity } from 'lucide-react';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
@@ -49,6 +54,10 @@ export default function App() {
 
   // Automated Dynamic Reading Metrics (Words & Minutes)
   const readingStats = React.useMemo(() => {
+    if (currentPage === 'sanitary-pad') {
+      const metrics = getSanitaryPadArticleMetrics();
+      return { minutes: metrics.readingMinutes, wordCount: metrics.wordCount };
+    }
     if (currentPage === 'entry' && currentWikiEntry) {
       const metrics = getWikiEntryMetrics(currentWikiEntry);
       return { minutes: metrics.readingMinutes, wordCount: metrics.wordCount };
@@ -60,6 +69,80 @@ export default function App() {
   // Automated Dynamic Breadcrumbs
   const automatedBreadcrumbs = React.useMemo(() => {
     return getAutomatedBreadcrumbs(currentPage, currentWikiEntry);
+  }, [currentPage, currentWikiEntry]);
+
+  // 学术引用与健康雷达弹窗的当前条目元信息
+  const [citationModalMeta, setCitationModalMeta] = useState<{
+    id: string;
+    title: string;
+    enTitle?: string;
+    revisionVersion?: string;
+    lastModifiedDate?: string;
+  } | null>(null);
+
+  const [healthRadarModalMeta, setHealthRadarModalMeta] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
+
+  // 打开学术引用弹窗：按当前页面推导条目标识与版本信息
+  const handleOpenCitation = () => {
+    if (currentPage === 'sanitary-pad') {
+      setCitationModalMeta({
+        id: 'sanitary-pad',
+        title: '卫生棉（卫生巾）',
+        enTitle: 'Sanitary Napkin',
+        lastModifiedDate: '2026-11-03',
+        revisionVersion: 'r1105620'
+      });
+    } else if (currentPage === 'entry' && currentWikiEntry) {
+      setCitationModalMeta({
+        id: currentWikiEntry.id,
+        title: currentWikiEntry.title,
+        enTitle: currentWikiEntry.enTitle,
+        lastModifiedDate: '2026-09-24',
+        revisionVersion: `r${Math.abs(currentWikiEntry.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 100000))}`
+      });
+    } else {
+      setCitationModalMeta({
+        id: 'tampon',
+        title: '卫生棉条',
+        enTitle: 'Tampon',
+        lastModifiedDate: '2026-09-25',
+        revisionVersion: 'r1094821'
+      });
+    }
+  };
+
+  // 打开健康雷达弹窗：按当前页面推导条目标识
+  const handleOpenHealthRadar = () => {
+    if (currentPage === 'sanitary-pad') {
+      setHealthRadarModalMeta({ id: 'sanitary-pad', title: '卫生棉（卫生巾）' });
+    } else if (currentPage === 'entry' && currentWikiEntry) {
+      setHealthRadarModalMeta({ id: currentWikiEntry.id, title: currentWikiEntry.title });
+    } else {
+      setHealthRadarModalMeta({ id: 'tampon', title: '卫生棉条' });
+    }
+  };
+
+  // 触发浏览器打印：先收起所有浮层，保证打印视图干净
+  const handlePrintArticle = () => {
+    setWikiLinkHover(null);
+    setRefHover(null);
+    setIsAppearanceOpen(false);
+    setCitationModalMeta(null);
+    setHealthRadarModalMeta(null);
+    window.print();
+  };
+
+  // 页头健康评分：体验条展示用
+  const currentHealthScore = React.useMemo(() => {
+    if (currentPage === 'sanitary-pad') return 96;
+    if (currentPage === 'entry' && currentWikiEntry) {
+      if (currentWikiEntry.academicReferences && currentWikiEntry.academicReferences.length >= 2) return 86;
+      return 72;
+    }
+    return 98;
   }, [currentPage, currentWikiEntry]);
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -224,6 +307,17 @@ export default function App() {
           ogType: 'website'
         });
         break;
+      case 'sanitary-pad':
+        applyPageSEO({
+          title: '卫生棉（卫生巾）',
+          description: '卫生棉（亦称卫生巾、生理棉）是一种贴附于内裤内侧、具有高吸水性的体外女性生理用品。本条目涵盖其历史演变、五层结构工程、规格分类、布卫生巾、安全规范及环境与社会议题。',
+          canonicalPath: '/wiki/卫生棉',
+          ogType: 'article',
+          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Sanitary_napkin_with_wings.svg/640px-Sanitary_napkin_with_wings.svg.png',
+          schemaType: 'MedicalWebPage',
+          tags: ['卫生棉', '卫生巾', '女性生理用品', '高分子吸水树脂', '布卫生巾', '月经贫困']
+        });
+        break;
       case 'article':
       default:
         applyPageSEO({
@@ -245,6 +339,7 @@ export default function App() {
     currentPage === 'privacy' ? PRIVACY_SECTIONS :
     currentPage === 'disclaimer' ? DISCLAIMER_SECTIONS :
     currentPage === 'conduct' ? CONDUCT_SECTIONS :
+    currentPage === 'sanitary-pad' ? SANITARY_PAD_SECTIONS :
     ARTICLE_SECTIONS;
 
   // Scrollspy for active section in TOC
@@ -321,6 +416,10 @@ export default function App() {
     handleNavigatePage('article', sectionId);
   };
 
+  const handleNavigateSanitaryPad = (sectionId?: string) => {
+    handleNavigatePage('sanitary-pad', sectionId);
+  };
+
   const handleNavigateTags = (tag?: string) => {
     setSelectedTagForTagsPage(tag);
     handleNavigatePage('tags');
@@ -346,11 +445,22 @@ export default function App() {
     const clean = term.replace(/[（(].*?[）)]/g, '').trim();
     if (clean === '卫生棉条' || clean === '衛生棉條' || clean === 'Tampon' || clean === '棉条') {
       handleNavigateArticle();
+    } else if (
+      // 卫生棉（卫生巾）条目有一整套别名，统一收敛到 sanitary-pad 页面
+      ['卫生棉', '衛生棉', '卫生巾', '衛生巾', '姨妈巾', '大姨妈巾', '月经垫', '月經墊',
+       '生理棉', '生理巾', '生理垫', '卫生垫', 'sanitary napkin', 'sanitary pad', 'sanitary-pad']
+        .includes(clean.toLowerCase())
+    ) {
+      handleNavigateSanitaryPad();
     } else if (clean === '女性生理用品' || clean.startsWith('Category:')) {
       handleNavigatePage('category');
     } else {
       const entry = getWikiEntryByTitle(clean);
       if (entry) {
+        if (entry.id === 'sanitary-pad') {
+          handleNavigateSanitaryPad();
+          return;
+        }
         setCurrentWikiEntry(entry);
         handleNavigatePage('entry', entry.title);
       } else {
@@ -403,6 +513,10 @@ export default function App() {
     article: {
       title: '卫生棉条',
       badge: '[ 经期个人卫生用品 · 今日典范条目 ]'
+    },
+    'sanitary-pad': {
+      title: '卫生棉（卫生巾）',
+      badge: '[ 体外经期卫生用品 · 典范条目 ]'
     },
     category: {
       title: '分类:女性生理用品',
@@ -470,6 +584,7 @@ export default function App() {
         currentPage={currentPage}
         onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
         isSidebarOpen={isSidebarOpen}
+        onPrint={handlePrintArticle}
       />
 
       {/* 2. Page Title Ribbon (Displayed on article & policy pages) */}
@@ -482,7 +597,7 @@ export default function App() {
           badge={pageMetaConfig.badge}
           breadcrumbs={automatedBreadcrumbs}
           onNavigatePage={(pageKey) => handleNavigatePage(pageKey as any)}
-          isPolicyPage={currentPage !== 'article' && currentPage !== 'category' && currentPage !== 'graph' && currentPage !== 'tags' && currentPage !== 'entry'}
+          isPolicyPage={currentPage !== 'article' && currentPage !== 'sanitary-pad' && currentPage !== 'category' && currentPage !== 'graph' && currentPage !== 'tags' && currentPage !== 'entry'}
           isCategoryPage={currentPage === 'category'}
           isGraphPage={currentPage === 'graph'}
           isTagsPage={currentPage === 'tags'}
@@ -494,6 +609,7 @@ export default function App() {
           onNavigateCategory={() => handleNavigatePage('category')}
           onNavigateTags={() => handleNavigateTags()}
           onNavigateStats={() => handleNavigatePage('stats')}
+          onPrint={handlePrintArticle}
         />
       )}
 
@@ -509,6 +625,7 @@ export default function App() {
               onNavigateGraph={() => handleNavigatePage('graph')}
               onNavigateTags={handleNavigateTags}
               onNavigateStats={() => handleNavigatePage('stats')}
+              onNavigateSanitaryPad={(sectionId) => handleNavigateSanitaryPad(sectionId)}
             />
           </main>
         ) : (
@@ -519,7 +636,7 @@ export default function App() {
               isSidebarOpen ? (
                 <>
                   {/* Desktop & Tablet Sidebar (Always on the left side) */}
-                  <aside className="hidden sm:block w-56 md:w-60 lg:w-64 shrink-0 sticky top-20">
+                  <aside className="hidden sm:block w-56 md:w-60 lg:w-64 shrink-0 sticky top-20 print:hidden no-print">
                     <TableOfContents
                       activeSectionId={activeSectionId}
                       onSelectSection={handleNavigateSection}
@@ -529,8 +646,8 @@ export default function App() {
                     />
                   </aside>
 
-                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge) */}
-                  <div className="sm:hidden fixed inset-0 z-50 flex">
+                  {/* Mobile (<640px) Side Overlay (Docks strictly to the left edge, 打印时隐藏) */}
+                  <div className="sm:hidden fixed inset-0 z-50 flex print:hidden no-print">
                     <div
                       className="fixed inset-0 bg-black/40 backdrop-blur-xs"
                       onClick={() => setIsSidebarOpen(false)}
@@ -560,7 +677,7 @@ export default function App() {
                 </>
               ) : (
                 /* Collapsed side button (Click to show side directory) */
-                <aside className="sticky top-20 shrink-0 z-30">
+                <aside className="sticky top-20 shrink-0 z-30 print:hidden no-print">
                   <button
                     onClick={() => setIsSidebarOpen(true)}
                     className={`flex items-center gap-1.5 px-2.5 py-2 rounded-r-md border border-l-0 shadow-sm text-xs font-medium cursor-pointer transition-colors ${
@@ -578,7 +695,7 @@ export default function App() {
             )}
 
             {/* Right Column: Independent Page Content (NO directory box inside text) */}
-            <main className="flex-1 min-w-0">
+            <main className="flex-1 min-w-0 print:w-full print:max-w-none">
 
               {currentPage === 'article' && (
                 <ArticleContent
@@ -592,6 +709,25 @@ export default function App() {
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onNavigateGraph={() => handleNavigatePage('graph')}
                   onNavigateTags={handleNavigateTags}
+                  onPrint={handlePrintArticle}
+                />
+              )}
+
+              {currentPage === 'sanitary-pad' && (
+                <SanitaryPadPage
+                  onOpenWikiLink={handleOpenWikiLink}
+                  onOpenReference={handleOpenReference}
+                  onNavigateSection={handleNavigateSection}
+                  onNavigateWikiTerm={handleNavigateWikiTerm}
+                  onNavigateTamponArticle={(secId) => handleNavigateArticle(secId)}
+                  isDarkMode={isDarkMode}
+                  contentWidth={contentWidth}
+                  onNavigateCategory={() => handleNavigatePage('category')}
+                  onNavigateGraph={() => handleNavigatePage('graph')}
+                  onNavigateTags={handleNavigateTags}
+                  onOpenCitation={handleOpenCitation}
+                  onOpenHealthRadar={handleOpenHealthRadar}
+                  onPrint={handlePrintArticle}
                 />
               )}
 
@@ -652,6 +788,7 @@ export default function App() {
                   onNavigateTags={handleNavigateTags}
                   onNavigateCategory={() => handleNavigatePage('category')}
                   onOpenWikiLink={handleOpenWikiLink}
+                  onPrint={handlePrintArticle}
                 />
               )}
 
@@ -700,6 +837,70 @@ export default function App() {
               )}
             </main>
 
+            {/* 右侧页面工具栏：打印 / 引用 / 质检入口，打印时整块隐藏 */}
+            {(currentPage === 'article' || currentPage === 'sanitary-pad' || currentPage === 'privacy' || currentPage === 'disclaimer' || currentPage === 'conduct') && (
+              <aside className="hidden xl:block w-52 shrink-0 sticky top-20 print:hidden no-print">
+                <div className={`p-3.5 rounded border text-xs space-y-3 transition-colors ${
+                  isDarkMode
+                    ? 'bg-[#202122] border-[#54595d] text-[#eaecf0]'
+                    : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
+                }`}>
+                  <div className="pb-1.5 border-b border-black/10 dark:border-white/10 font-bold flex items-center justify-between">
+                    <span>页面工具</span>
+                    <span className="text-[10px] font-mono font-normal text-[#72777d]">Tools</span>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="text-[10px] font-bold text-[#72777d] uppercase tracking-wider">
+                      打印 / 导出
+                    </div>
+                    <button
+                      onClick={handlePrintArticle}
+                      className="w-full text-left px-2.5 py-2 rounded bg-[#3366cc] hover:bg-[#2a4b8d] text-white font-semibold transition-colors cursor-pointer flex items-center gap-2 shadow-2xs"
+                      title="触发浏览器打印对话框，打印时自动隐藏侧边栏、搜索框和底部导航"
+                    >
+                      <Printer className="w-3.5 h-3.5 shrink-0" />
+                      <span>打印条目</span>
+                    </button>
+                    <p className="text-[10px] text-[#72777d] leading-snug px-0.5">
+                      打印模式将自动隐藏侧边栏、搜索框与底部导航，仅输出纯净文章排版。
+                    </p>
+                  </div>
+
+                  {(currentPage === 'article' || currentPage === 'sanitary-pad') && (
+                    <div className="pt-2 border-t border-black/10 dark:border-white/10 space-y-1.5">
+                      <div className="text-[10px] font-bold text-[#72777d] uppercase tracking-wider">
+                        学术与质检
+                      </div>
+                      <button
+                        onClick={handleOpenCitation}
+                        className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#3366cc] dark:text-[#6699ff] font-medium transition-colors cursor-pointer flex items-center gap-2"
+                      >
+                        <BookmarkCheck className="w-3.5 h-3.5 shrink-0" />
+                        <span>引用此条目</span>
+                      </button>
+                      <button
+                        onClick={handleOpenHealthRadar}
+                        className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-emerald-700 dark:text-emerald-400 font-medium transition-colors cursor-pointer flex items-center gap-2"
+                      >
+                        <Activity className="w-3.5 h-3.5 shrink-0" />
+                        <span>质检雷达 ({currentHealthScore}分)</span>
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="pt-2 border-t border-black/10 dark:border-white/10">
+                    <button
+                      onClick={() => setIsAppearanceOpen(true)}
+                      className="w-full text-left px-2.5 py-1.5 rounded hover:bg-black/5 dark:hover:bg-white/10 text-[#54595d] dark:text-[#a2a9b1] transition-colors cursor-pointer flex items-center gap-2"
+                    >
+                      外观设置
+                    </button>
+                  </div>
+                </div>
+              </aside>
+            )}
+
           </div>
         )}
       </div>
@@ -744,6 +945,27 @@ export default function App() {
         contentWidth={contentWidth}
         onChangeContentWidth={setContentWidth}
       />
+
+      {/* 学术引用弹窗 */}
+      {citationModalMeta && (
+        <ScholarlyCitationModal
+          isOpen={!!citationModalMeta}
+          onClose={() => setCitationModalMeta(null)}
+          isDarkMode={isDarkMode}
+          articleMeta={citationModalMeta}
+        />
+      )}
+
+      {/* 条目质检雷达弹窗 */}
+      {healthRadarModalMeta && (
+        <ArticleHealthRadarModal
+          isOpen={!!healthRadarModalMeta}
+          onClose={() => setHealthRadarModalMeta(null)}
+          isDarkMode={isDarkMode}
+          articleId={healthRadarModalMeta.id}
+          articleTitle={healthRadarModalMeta.title}
+        />
+      )}
     </div>
   );
 }

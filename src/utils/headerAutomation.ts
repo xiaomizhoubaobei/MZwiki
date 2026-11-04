@@ -69,6 +69,17 @@ export function getFeaturedArticleMetrics(): ReadingMetrics {
 }
 
 /**
+ * Derives total reading metrics for the featured Sanitary Napkin (卫生棉 / 卫生巾) article
+ */
+export function getSanitaryPadArticleMetrics(): ReadingMetrics {
+  return {
+    wordCount: 4160,
+    readingMinutes: 9,
+    characterCount: 4160
+  };
+}
+
+/**
  * Computes dynamic reading metrics for an arbitrary encyclopedic WikiEntry
  */
 export function getWikiEntryMetrics(entry: WikiEntry): ReadingMetrics {
@@ -98,6 +109,13 @@ export function getAutomatedBreadcrumbs(
         root,
         { label: '女性生理用品', page: 'category' },
         { label: '卫生棉条', active: true }
+      ];
+
+    case 'sanitary-pad':
+      return [
+        root,
+        { label: '女性生理用品', page: 'category' },
+        { label: '卫生棉（卫生巾）', active: true }
       ];
 
     case 'category':

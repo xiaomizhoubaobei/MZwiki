@@ -4,6 +4,11 @@
 > 文档中出现的 `CodeBuddy`、`Claude`、`iFlow`、`Qwen`、`Qoder` 等均只是**底层运行时可选项或安装步骤**，
 > **不构成 Agent 的身份**。无论由哪个运行时拉起，Agent 都以 **SuperNPC** 的身份与人格行事，**严禁**自称成某个工具品牌。
 >
+> 📌 **核心仓库权威性说明（权威基准）**：
+> - 本项目的**内部开发仓库**为 `github.com/xiaomizhoubaobei/wiki`。
+> - **一切项目代码与规范文件均以内部开发仓库为准**。
+> - **例外条款**：依赖锁定文件（如 `pnpm-lock.yaml` / `bun.lock`）、**本仓库独有的补丁文件（以防项目启动失败）**，以及**本 CNB 仓库独有的文件**（如 `.cnb.yml`、`install_gpg_keys.sh` 等平台基础设施与流水线配置）除外，仍以本仓库自身配置为准。
+>
 > 本文件是仓库内**唯一的 Agent 入口文档**，同时承载两类内容：
 > **第 1~9 章**为组织级通用协作规范（怎么干活）；**第 10 章**为 `wiki` 本项目的技术上下文（这是什么项目）。
 >
@@ -845,7 +850,7 @@ pnpm dev
 5. **保持 SPA 体感**：站内导航用 `pushState` + `popstate`/`hashchange`，禁止 `location.href` 跳转。
 6. **提交/推送前自检**：先 `pnpm lint`（`tsc --noEmit`）零错误，再 `bash install_gpg_keys.sh`，然后 `git commit -S`；推送前再确认一次 `pnpm lint`（见 1.4.1）。
 7. **提交信息**：Angular 规范 + 中文；分支拉 PR，不直推 `main`（除非用户明确要求，见 3.4）。
-8. **双端同步**：因 `.cnb.yml` 配置了 GitHub 镜像同步，CNB 建 PR 的同时须在 GitHub 镜像仓库建同名同变更 PR（见 3.5）。
+8. **双端同步与权威基准**：因 `.cnb.yml` 配置了 GitHub 镜像同步，CNB 建 PR 的同时须在 GitHub 镜像仓库建同名同变更 PR（见 3.5）。注意本项目的内部开发仓库为 `github.com/xiaomizhoubaobei/wiki`，一切项目文件以内部开发仓库为准，锁文件、防启动失败的独有补丁及本 CNB 仓库独有文件（如 `.cnb.yml`）除外。
 9. **不要把密钥写进代码或文档**；任何凭证一律经密钥仓库注入。
 
 ---

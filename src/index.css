@@ -42,13 +42,72 @@
   background: rgba(255, 255, 255, 0.35);
 }
 
-/* Print styling */
+/* Print styling: hide sidebars, search bar, header, footer, and bottom navigation */
 @media print {
-  header, footer, nav, button, .no-print {
+  header,
+  footer,
+  nav,
+  aside,
+  button,
+  .no-print,
+  [data-no-print="true"] {
     display: none !important;
   }
-  body {
-    background: white !important;
-    color: black !important;
+
+  html,
+  body,
+  .dark,
+  .dark body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+  }
+
+  main,
+  article,
+  .wiki-article-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    color: #000000 !important;
+  }
+
+  /* Ensure readable dark text and light backgrounds even if printed from Dark Mode */
+  article,
+  main,
+  article p,
+  article h1,
+  article h2,
+  article h3,
+  article h4,
+  article li,
+  article td,
+  article th,
+  article dl,
+  article dt,
+  article dd,
+  article blockquote {
+    color: #111111 !important;
+    background-color: transparent !important;
+    border-color: #d1d5db !important;
+  }
+
+  /* Prevent awkward page breaks inside figures, tables, and infoboxes */
+  .thumb,
+  table,
+  figure,
+  blockquote,
+  section > h2,
+  section > h3 {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  section > h2,
+  section > h3 {
+    break-after: avoid;
+    page-break-after: avoid;
   }
 }
