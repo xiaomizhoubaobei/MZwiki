@@ -12,7 +12,7 @@ export interface WikiImageData {
   dimensions: string;
   fileSize: string;
   commonsUrl: string;
-  type: 'cellophane' | 'applicator' | 'elements' | 'absorbency' | 'anatomy';
+  type: 'cellophane' | 'applicator' | 'elements' | 'absorbency' | 'anatomy' | 'pad-wings' | 'pad-layers' | 'pad-history-belt' | 'pad-reusable';
 }
 
 interface WikipediaImageThumbProps {
@@ -30,10 +30,10 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
   isDarkMode,
   onImageClick,
 }) => {
-  const alignClass =
-    align === 'right'
-      ? 'float-none sm:float-right clear-right ml-0 sm:ml-5 mb-4'
-      : align === 'left'
+  const alignClass = 
+    align === 'right' 
+      ? 'float-none sm:float-right clear-right ml-0 sm:ml-5 mb-4' 
+      : align === 'left' 
       ? 'float-none sm:float-left clear-left mr-0 sm:mr-5 mb-4'
       : align === 'center'
       ? 'mx-auto mb-4 block'
@@ -47,28 +47,28 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
   };
 
   return (
-    <div
+    <div 
       className={`thumb tright not-italic select-none my-2 transition-colors ${alignClass}`}
       style={{ width: `${width + 4}px`, maxWidth: '100%' }}
     >
       {/* Outer Wikipedia Thumb Container: 1px border, 3px padding, #f8f9fa bg */}
-      <div
+      <div 
         className={`thumbinner p-[3px] border rounded-[2px] transition-colors ${
-          isDarkMode
-            ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]'
+          isDarkMode 
+            ? 'bg-[#27292d] border-[#54595d] text-[#eaecf0]' 
             : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#202122]'
         }`}
         style={{ width: '100%' }}
       >
         {/* Image Area */}
-        <a
+        <a 
           href={`#view-${image.id}`}
           onClick={handleClick}
           className="image block relative overflow-hidden group cursor-pointer border border-[#c8ccd1]/40 dark:border-[#54595d]/40 bg-white dark:bg-[#1a1b1e]"
           title={`${image.title} - 点击放大`}
         >
           {renderImageGraphic(image.type)}
-
+          
           {/* Subtle hover overlay hint */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors pointer-events-none" />
         </a>
@@ -78,10 +78,10 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
           <div className="flex-1 text-[#202122] dark:text-[#eaecf0]">
             {image.caption}
           </div>
-
+          
           {/* Wikipedia's Classic Magnify Icon: Two overlapping rectangles */}
           <div className="magnify shrink-0 mt-0.5">
-            <a
+            <a 
               href={`#view-${image.id}`}
               onClick={handleClick}
               className="internal block p-0.5 text-[#72777d] hover:text-[#3366cc] dark:hover:text-[#6699ff] transition-colors"
@@ -89,9 +89,9 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
               aria-label="放大"
             >
               {/* MediaWiki SVG Magnify / Enlarge Icon */}
-              <svg
-                className="w-3.5 h-3.5 fill-current"
-                viewBox="0 0 20 20"
+              <svg 
+                className="w-3.5 h-3.5 fill-current" 
+                viewBox="0 0 20 20" 
                 aria-hidden="true"
               >
                 {/* Front window and back window icon */}
@@ -109,13 +109,13 @@ export const WikipediaImageThumb: React.FC<WikipediaImageThumbProps> = ({
 /**
  * High-fidelity Vector Representations of Wikipedia Commons Photos
  */
-function renderImageGraphic(type: WikiImageData['type']) {
+export function renderImageGraphic(type: WikiImageData['type']) {
   switch (type) {
     case 'cellophane':
       // Recreates File:Tampon.JPG - Cellophane wrapped tampon above cm ruler
       return (
-        <svg
-          viewBox="0 0 320 200"
+        <svg 
+          viewBox="0 0 320 200" 
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -125,7 +125,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <stop offset="50%" stopColor="#ffffff" />
               <stop offset="100%" stopColor="#e5e7eb" />
             </linearGradient>
-
+            
             {/* Wooden ruler gradient */}
             <linearGradient id="rulerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#e9cf9f" />
@@ -157,7 +157,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <stop offset="50%" stopColor="#f87171" />
               <stop offset="100%" stopColor="#dc2626" />
             </linearGradient>
-
+            
             <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.25" />
             </filter>
@@ -201,28 +201,28 @@ function renderImageGraphic(type: WikiImageData['type']) {
           {/* The Tampon in Cellophane (File:Tampon.JPG) */}
           <g transform="translate(45, 52)" filter="url(#subtleShadow)">
             {/* Withdrawal string peeking out left */}
-            <path
-              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55"
-              fill="none"
-              stroke="#e2e8f0"
-              strokeWidth="2.2"
-              strokeLinecap="round"
+            <path 
+              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55" 
+              fill="none" 
+              stroke="#e2e8f0" 
+              strokeWidth="2.2" 
+              strokeLinecap="round" 
             />
-            <path
-              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55"
-              fill="none"
-              stroke="#cbd5e1"
-              strokeWidth="1.2"
-              strokeDasharray="2,2"
+            <path 
+              d="M 15,35 C 0,38 -15,48 -25,44 C -32,41 -35,52 -40,55" 
+              fill="none" 
+              stroke="#cbd5e1" 
+              strokeWidth="1.2" 
+              strokeDasharray="2,2" 
             />
 
             {/* Left twisted cellophane tail wrapper */}
-            <path
-              d="M 10,22 C 3,25 -2,32 0,37 C 2,42 8,46 12,48 Z"
-              fill="#ffffff"
-              fillOpacity="0.75"
-              stroke="#94a3b8"
-              strokeWidth="0.6"
+            <path 
+              d="M 10,22 C 3,25 -2,32 0,37 C 2,42 8,46 12,48 Z" 
+              fill="#ffffff" 
+              fillOpacity="0.75" 
+              stroke="#94a3b8" 
+              strokeWidth="0.6" 
             />
             {/* Twist crimp lines */}
             <path d="M 2,32 Q 8,36 12,35" stroke="#64748b" strokeWidth="0.8" fill="none" opacity="0.6" />
@@ -253,12 +253,12 @@ function renderImageGraphic(type: WikiImageData['type']) {
             <rect x="12" y="16" width="180" height="38" rx="19" fill="url(#cellophaneShine)" pointerEvents="none" />
 
             {/* Right rounded tip smooth curve */}
-            <path
-              d="M 172,16 C 188,16 200,25 200,35 C 200,45 188,54 172,54 Z"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="1.5"
-              opacity="0.8"
+            <path 
+              d="M 172,16 C 188,16 200,25 200,35 C 200,45 188,54 172,54 Z" 
+              fill="none" 
+              stroke="#ffffff" 
+              strokeWidth="1.5" 
+              opacity="0.8" 
             />
 
             {/* Printed micro-labels on wrapper */}
@@ -283,8 +283,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'applicator':
       // Recreates File:Tampon with applicator.jpg - Modern white applicator tampon
       return (
-        <svg
-          viewBox="0 0 320 200"
+        <svg 
+          viewBox="0 0 320 200" 
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -322,19 +322,19 @@ function renderImageGraphic(type: WikiImageData['type']) {
           {/* Tampon with Applicator Assembly */}
           <g transform="translate(30, 85)" filter="url(#applicatorShadow)">
             {/* White Braided Cotton Withdrawal Cord extending from plunger */}
-            <path
-              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42"
-              fill="none"
-              stroke="#e2e8f0"
-              strokeWidth="2.8"
-              strokeLinecap="round"
+            <path 
+              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42" 
+              fill="none" 
+              stroke="#e2e8f0" 
+              strokeWidth="2.8" 
+              strokeLinecap="round" 
             />
-            <path
-              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42"
-              fill="none"
-              stroke="#94a3b8"
-              strokeWidth="1.2"
-              strokeDasharray="2,2"
+            <path 
+              d="M 235,14 C 255,14 265,30 275,25 C 285,20 280,38 290,42" 
+              fill="none" 
+              stroke="#94a3b8" 
+              strokeWidth="1.2" 
+              strokeDasharray="2,2" 
             />
             {/* Cord knot at the end */}
             <circle cx="290" cy="42" r="2.5" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="0.8" />
@@ -346,7 +346,7 @@ function renderImageGraphic(type: WikiImageData['type']) {
 
             {/* Outer Barrel (外导管) */}
             <rect x="42" y="2" width="108" height="24" rx="3" fill="url(#barrelGrad)" stroke="#cbd5e1" strokeWidth="1" />
-
+            
             {/* Finger Grip Rings (防滑指握区) */}
             <g transform="translate(125, 2)">
               <rect x="0" y="0" width="22" height="24" rx="2" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="1" />
@@ -356,11 +356,11 @@ function renderImageGraphic(type: WikiImageData['type']) {
             </g>
 
             {/* Rounded Petal Tip (花瓣状圆头开口) */}
-            <path
-              d="M 42,2 C 26,3 15,9 15,14 C 15,19 26,25 42,26 Z"
-              fill="url(#barrelGrad)"
-              stroke="#cbd5e1"
-              strokeWidth="1"
+            <path 
+              d="M 42,2 C 26,3 15,9 15,14 C 15,19 26,25 42,26 Z" 
+              fill="url(#barrelGrad)" 
+              stroke="#cbd5e1" 
+              strokeWidth="1" 
             />
             {/* Petal seam slit cuts */}
             <path d="M 15,14 L 34,14" stroke="#94a3b8" strokeWidth="1" />
@@ -386,8 +386,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'elements':
       // Recreates File:Elements of a tampon with applicator.jpg
       return (
-        <svg
-          viewBox="0 0 320 220"
+        <svg 
+          viewBox="0 0 320 220" 
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -450,8 +450,8 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'absorbency':
       // Absorbency standard droplet chart
       return (
-        <svg
-          viewBox="0 0 320 180"
+        <svg 
+          viewBox="0 0 320 180" 
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -479,9 +479,9 @@ function renderImageGraphic(type: WikiImageData['type']) {
               <text x="120" y={row.y + 14} fontSize="9.5" fontFamily="monospace" fill="#0369a1">{row.g}</text>
               <g transform={`translate(210, ${row.y + 4})`}>
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <path
-                    key={i}
-                    d="M 6,0 C 6,0 12,7 12,10 C 12,13 9,15 6,15 C 3,15 0,13 0,10 C 0,7 6,0 6,0 Z"
+                  <path 
+                    key={i} 
+                    d="M 6,0 C 6,0 12,7 12,10 C 12,13 9,15 6,15 C 3,15 0,13 0,10 C 0,7 6,0 6,0 Z" 
                     transform={`translate(${i * 15}, 0)`}
                     fill={i < row.drops ? '#0284c7' : '#e2e8f0'}
                   />
@@ -498,30 +498,30 @@ function renderImageGraphic(type: WikiImageData['type']) {
     case 'anatomy':
       // Anatomical sagittal cross section
       return (
-        <svg
-          viewBox="0 0 320 200"
+        <svg 
+          viewBox="0 0 320 200" 
           className="w-full h-auto block select-none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect width="320" height="200" fill="#f8fafc" />
-
+          
           {/* Uterus & Pelvic Organs Outline */}
-          <path
-            d="M 70,60 C 90,40 140,40 160,60 C 170,72 165,95 155,105 C 150,110 145,115 145,125 L 140,175 C 135,178 120,178 115,175 L 125,125 C 125,115 120,110 115,105 C 100,90 55,80 70,60 Z"
-            fill="#ffe4e6"
-            stroke="#f43f5e"
-            strokeWidth="1.5"
+          <path 
+            d="M 70,60 C 90,40 140,40 160,60 C 170,72 165,95 155,105 C 150,110 145,115 145,125 L 140,175 C 135,178 120,178 115,175 L 125,125 C 125,115 120,110 115,105 C 100,90 55,80 70,60 Z" 
+            fill="#ffe4e6" 
+            stroke="#f43f5e" 
+            strokeWidth="1.5" 
           />
           {/* Cervix marker */}
           <path d="M 125,120 Q 135,123 145,120" stroke="#e11d48" strokeWidth="2" fill="none" />
 
           {/* Vaginal Canal with 45 degree angle */}
-          <path
-            d="M 125,125 L 115,175"
-            stroke="#fda4af"
-            strokeWidth="20"
-            strokeLinecap="round"
-            opacity="0.4"
+          <path 
+            d="M 125,125 L 115,175" 
+            stroke="#fda4af" 
+            strokeWidth="20" 
+            strokeLinecap="round" 
+            opacity="0.4" 
           />
 
           {/* Correctly placed tampon in upper vaginal fornix */}
@@ -545,6 +545,248 @@ function renderImageGraphic(type: WikiImageData['type']) {
 
             <line x1="110" y1="185" x2="60" y2="185" stroke="#94a3b8" strokeWidth="1" />
             <text x="15" y="188" fill="#1e293b" fontWeight="bold">阴道口外棉线</text>
+          </g>
+        </svg>
+      );
+
+    case 'pad-wings':
+      // Recreates File:Sanitary_towel_with_wings.jpg - Top-down view of winged sanitary napkin with embossing channels
+      return (
+        <svg 
+          viewBox="0 0 320 200" 
+          className="w-full h-auto block select-none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="320" height="200" fill="#f1f5f9" />
+          {/* Subtle grid ruler background */}
+          <g stroke="#e2e8f0" strokeWidth="0.6">
+            {[40, 80, 120, 160, 200, 240, 280].map(x => (
+              <line key={x} x1={x} y1="0" x2={x} y2="200" />
+            ))}
+            {[40, 80, 120, 160].map(y => (
+              <line key={y} x1="0" y1={y} x2="320" y2={y} />
+            ))}
+          </g>
+
+          {/* Top & Bottom Wings (蝶翼) */}
+          <path 
+            d="M 122,62 C 125,28 135,18 160,18 C 185,18 195,28 198,62 Z" 
+            fill="#ffffff" 
+            stroke="#cbd5e1" 
+            strokeWidth="1.5" 
+          />
+          <path 
+            d="M 122,138 C 125,172 135,182 160,182 C 185,182 195,172 198,138 Z" 
+            fill="#ffffff" 
+            stroke="#cbd5e1" 
+            strokeWidth="1.5" 
+          />
+          {/* Wing adhesive release strip indicators */}
+          <rect x="145" y="25" width="30" height="8" rx="2" fill="#e0f2fe" stroke="#7dd3fc" strokeWidth="0.8" strokeDasharray="2,1" />
+          <rect x="145" y="167" width="30" height="8" rx="2" fill="#e0f2fe" stroke="#7dd3fc" strokeWidth="0.8" strokeDasharray="2,1" />
+
+          {/* Main Sanitary Pad Body (Hourglass / wider back silhouette) */}
+          <path 
+            d="M 35,100 C 35,68 65,60 115,62 C 145,63 175,63 205,60 C 255,54 288,65 288,100 C 288,135 255,146 205,140 C 175,137 145,137 115,138 C 65,140 35,132 35,100 Z" 
+            fill="#ffffff" 
+            stroke="#94a3b8" 
+            strokeWidth="1.8" 
+          />
+
+          {/* Anti-leak embossed channel ring (防漏导流压花槽) */}
+          <path 
+            d="M 55,100 C 55,79 80,74 125,75 C 155,76 185,76 215,73 C 248,70 268,78 268,100 C 268,122 248,130 215,127 C 185,124 155,124 125,125 C 80,126 55,121 55,100 Z" 
+            fill="#f8fafc" 
+            stroke="#60a5fa" 
+            strokeWidth="1.4" 
+            strokeDasharray="3,2" 
+          />
+
+          {/* Central rapid-absorption core zone (瞬吸蓝芯导流区) */}
+          <ellipse cx="155" cy="100" rx="68" ry="15" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1" opacity="0.85" />
+          <ellipse cx="155" cy="100" rx="38" ry="7" fill="#93c5fd" opacity="0.6" />
+
+          {/* Callout Labels */}
+          <g fontSize="8.5" fontFamily="sans-serif" fill="#334155" fontWeight="bold">
+            <text x="160" y="13" textAnchor="middle" fill="#0284c7">防漏侧翼 / 蝶翼 (Wings)</text>
+            <text x="68" y="52" textAnchor="middle">前端圆弧</text>
+            <text x="255" y="48" textAnchor="middle">加宽扇形防后漏尾端</text>
+            <text x="155" y="103" textAnchor="middle" fill="#1d4ed8" fontSize="8">ADL 中央瞬吸导流芯</text>
+          </g>
+        </svg>
+      );
+
+    case 'pad-layers':
+      // 4-Layer Cross Section Engineering Diagram of Modern Sanitary Napkin
+      return (
+        <svg 
+          viewBox="0 0 320 200" 
+          className="w-full h-auto block select-none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="320" height="200" fill="#f8fafc" />
+          <text x="160" y="18" fontSize="10" fontWeight="bold" fill="#0f172a" textAnchor="middle">
+            现代复合卫生棉四层吸收结构剖面图
+          </text>
+
+          {/* Downward flow arrows (经血下渗路径) */}
+          <g fill="#ef4444" opacity="0.85">
+            <path d="M 105,24 L 105,36 L 101,32 M 105,36 L 109,32" stroke="#ef4444" strokeWidth="1.5" fill="none" />
+            <path d="M 140,22 L 140,36 L 136,32 M 140,36 L 144,32" stroke="#ef4444" strokeWidth="1.5" fill="none" />
+            <path d="M 175,24 L 175,36 L 171,32 M 175,36 L 179,32" stroke="#ef4444" strokeWidth="1.5" fill="none" />
+          </g>
+
+          {/* Layer 1: Top-sheet (亲水棉柔无纺布 / PE漏斗打孔膜) */}
+          <g transform="translate(24, 40)">
+            <rect x="0" y="0" width="185" height="22" rx="4" fill="#ffffff" stroke="#64748b" strokeWidth="1.3" />
+            {/* Funnel micro-perforations */}
+            {[20, 45, 70, 95, 120, 145, 165].map((x) => (
+              <path key={x} d={`M ${x - 4},2 L ${x - 1},20 M ${x + 4},2 L ${x + 1},20`} stroke="#94a3b8" strokeWidth="1" />
+            ))}
+            <text x="195" y="11" fontSize="9" fontWeight="bold" fill="#1e293b">① 表层 (Top-sheet)</text>
+            <text x="195" y="21" fontSize="7.5" fill="#64748b">棉柔无纺布 / PE微孔打孔网膜</text>
+          </g>
+
+          {/* Layer 2: ADL (Acquisition Distribution Layer 导流层) */}
+          <g transform="translate(36, 68)">
+            <rect x="0" y="0" width="160" height="20" rx="3" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1.2" />
+            <line x1="15" y1="10" x2="145" y2="10" stroke="#2563eb" strokeWidth="1" strokeDasharray="4,2" />
+            <text x="183" y="10" fontSize="9" fontWeight="bold" fill="#1d4ed8">② 导流层 (ADL)</text>
+            <text x="183" y="20" fontSize="7.5" fill="#64748b">快速纵向/横向扩散，防止回渗</text>
+          </g>
+
+          {/* Layer 3: Absorbent Core (绒毛木浆 + SAP高分子吸水树脂) */}
+          <g transform="translate(24, 94)">
+            <rect x="0" y="0" width="185" height="42" rx="5" fill="#fef9c3" stroke="#eab308" strokeWidth="1.4" />
+            {/* SAP Gel Beads inside fluff pulp */}
+            {[22, 42, 64, 86, 108, 130, 152, 168].map((x, idx) => (
+              <g key={x}>
+                <circle cx={x} cy={idx % 2 === 0 ? 15 : 27} r="5.5" fill="#38bdf8" stroke="#0284c7" strokeWidth="1" />
+                <circle cx={x + 6} cy={idx % 2 === 0 ? 29 : 14} r="4" fill="#7dd3fc" stroke="#0284c7" strokeWidth="0.8" />
+              </g>
+            ))}
+            <text x="195" y="16" fontSize="9" fontWeight="bold" fill="#b45309">③ 吸收锁水芯 (Core)</text>
+            <text x="195" y="27" fontSize="7.5" fill="#64748b">绒毛木浆 + SAP 高分子吸水珠</text>
+            <text x="195" y="37" fontSize="7.5" fill="#0284c7">吸收自重百倍水份化为水凝胶</text>
+          </g>
+
+          {/* Layer 4: Breathable PE Backsheet & Adhesive (透气防漏底膜与背胶) */}
+          <g transform="translate(24, 142)">
+            <rect x="0" y="0" width="185" height="18" rx="3" fill="#e2e8f0" stroke="#475569" strokeWidth="1.3" />
+            {/* Bottom adhesive strips */}
+            <rect x="25" y="18" width="135" height="5" fill="#f472b6" />
+            {/* Breathable vapor arrows */}
+            {[40, 90, 140].map((x) => (
+              <path key={x} d={`M ${x},15 L ${x},29`} stroke="#10b981" strokeWidth="1.2" strokeDasharray="2,2" />
+            ))}
+            <text x="195" y="11" fontSize="9" fontWeight="bold" fill="#334155">④ 防漏透气底膜 + 背胶</text>
+            <text x="195" y="22" fontSize="7.5" fill="#059669">阻隔液体渗漏，排出闷湿水汽</text>
+          </g>
+        </svg>
+      );
+
+    case 'pad-history-belt':
+      // Evolution from 1920s Sanitary Belt + Loop Pad (Kotex) to 1970s Self-Adhesive Pad
+      return (
+        <svg 
+          viewBox="0 0 320 200" 
+          className="w-full h-auto block select-none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="320" height="200" fill="#fafaf9" />
+          <line x1="160" y1="15" x2="160" y2="185" stroke="#d6d3d1" strokeWidth="1" strokeDasharray="4,3" />
+
+          {/* Left side: 1921-1960s Sanitary Belt & Tabbed Pad */}
+          <g transform="translate(12, 16)">
+            <rect x="4" y="0" width="130" height="18" rx="3" fill="#fef3c7" stroke="#f59e0b" strokeWidth="0.8" />
+            <text x="69" y="12" fontSize="8.5" fontWeight="bold" fill="#92400e" textAnchor="middle">
+              1921–1960年代：生理带固定式
+            </text>
+
+            {/* Elastic Waist Belt */}
+            <ellipse cx="69" cy="52" rx="48" ry="12" fill="none" stroke="#a8a29e" strokeWidth="5" />
+            {/* Front & Back Suspenders / Clips */}
+            <line x1="42" y1="62" x2="55" y2="95" stroke="#78716c" strokeWidth="3" />
+            <line x1="96" y1="62" x2="83" y2="95" stroke="#78716c" strokeWidth="3" />
+            <circle cx="55" cy="95" r="4" fill="#ef4444" />
+            <circle cx="83" cy="95" r="4" fill="#ef4444" />
+
+            {/* Cellucotton Pad with long gauze ends */}
+            <path d="M 55,95 Q 69,145 83,95" fill="none" stroke="#e7e5e4" strokeWidth="12" strokeLinecap="round" />
+            <rect x="48" y="108" width="42" height="18" rx="4" fill="#ffffff" stroke="#78716c" strokeWidth="1.2" />
+
+            <text x="69" y="150" fontSize="8" fill="#57534e" textAnchor="middle">需系弹性腰带并以别针/卡扣</text>
+            <text x="69" y="162" fontSize="8" fill="#57534e" textAnchor="middle">拉住棉垫两端长纱布条</text>
+          </g>
+
+          {/* Right side: 1970s-1990s Self-Adhesive + Wings */}
+          <g transform="translate(170, 16)">
+            <rect x="4" y="0" width="134" height="18" rx="3" fill="#dcfce7" stroke="#10b981" strokeWidth="0.8" />
+            <text x="71" y="12" fontSize="8.5" fontWeight="bold" fill="#065f46" textAnchor="middle">
+              1970–1990年代：自粘背胶与蝶翼
+            </text>
+
+            {/* Modern Pad with Adhesive Strips */}
+            <path d="M 48,45 C 28,45 25,65 48,68 L 48,102 C 25,105 28,125 48,125 L 94,125 C 114,125 117,105 94,102 L 94,68 C 117,65 114,45 94,45 Z" fill="#ffffff" stroke="#64748b" strokeWidth="1.4" />
+            {/* Adhesive strip lines */}
+            <rect x="58" y="42" width="26" height="84" rx="4" fill="#fce7f3" stroke="#ec4899" strokeWidth="1" strokeDasharray="3,2" />
+            {/* Peel-off release paper */}
+            <path d="M 56,85 L 102,70 L 102,115 L 56,120 Z" fill="#e0f2fe" fillOpacity="0.8" stroke="#0284c7" strokeWidth="1" />
+            <text x="71" y="62" fontSize="7.5" fill="#be185d" fontWeight="bold" textAnchor="middle">压敏背胶条</text>
+            <text x="86" y="96" fontSize="7" fill="#0369a1" fontWeight="bold" textAnchor="middle">离型纸撕除</text>
+
+            <text x="71" y="150" fontSize="8" fill="#334155" textAnchor="middle">撕开离型纸直接粘贴于内裤</text>
+            <text x="71" y="162" fontSize="8" fill="#059669" fontWeight="bold" textAnchor="middle">免除生理带束缚，防移位侧漏</text>
+          </g>
+        </svg>
+      );
+
+    case 'pad-reusable':
+      // Reusable Washable Cloth Menstrual Pad with Metal/Resin Snaps
+      return (
+        <svg 
+          viewBox="0 0 320 200" 
+          className="w-full h-auto block select-none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="320" height="200" fill="#f0fdf4" />
+          <text x="160" y="18" fontSize="10" fontWeight="bold" fill="#14532d" textAnchor="middle">
+            可重复水洗式环保布卫生棉（Cloth Menstrual Pad）
+          </text>
+
+          {/* Cloth Pad Wings with Snaps */}
+          <path 
+            d="M 110,58 C 115,24 135,20 160,20 C 185,20 205,24 210,58 Z" 
+            fill="#dcfce7" 
+            stroke="#16a34a" 
+            strokeWidth="1.5" 
+          />
+          <path 
+            d="M 110,142 C 115,176 135,180 160,180 C 185,180 205,176 210,142 Z" 
+            fill="#dcfce7" 
+            stroke="#16a34a" 
+            strokeWidth="1.5" 
+          />
+
+          {/* Snap buttons (子母按扣) */}
+          <circle cx="160" cy="34" r="5.5" fill="#ffffff" stroke="#15803d" strokeWidth="1.8" />
+          <circle cx="160" cy="34" r="2" fill="#15803d" />
+          <circle cx="160" cy="166" r="5.5" fill="#15803d" stroke="#14532d" strokeWidth="1.5" />
+          <circle cx="160" cy="166" r="2" fill="#bbf7d0" />
+
+          {/* Main Organic Cotton Pad Body */}
+          <rect x="38" y="56" width="244" height="88" rx="44" fill="#fefce8" stroke="#16a34a" strokeWidth="1.8" />
+          {/* Quilted absorbent stitching channels (纯棉车缝导流线) */}
+          <rect x="64" y="72" width="192" height="56" rx="28" fill="#fef9c3" stroke="#ca8a04" strokeWidth="1.2" strokeDasharray="4,3" />
+          <line x1="95" y1="88" x2="225" y2="88" stroke="#ca8a04" strokeWidth="1" strokeDasharray="3,2" />
+          <line x1="85" y1="100" x2="235" y2="100" stroke="#ca8a04" strokeWidth="1.2" />
+          <line x1="95" y1="112" x2="225" y2="112" stroke="#ca8a04" strokeWidth="1" strokeDasharray="3,2" />
+
+          {/* Labels */}
+          <g fontSize="8.5" fontFamily="sans-serif" fill="#14532d" fontWeight="bold">
+            <text x="218" y="36">固定子母按扣 (Snaps)</text>
+            <text x="160" y="96" textAnchor="middle" fill="#854d0e">有机纯棉亲肤层 + 多层法兰绒吸水芯</text>
+            <text x="160" y="122" textAnchor="middle" fill="#15803d" fontSize="8">底部 TPU 防水透气膜（可循环水洗 3–5 年）</text>
           </g>
         </svg>
       );

@@ -1,8 +1,9 @@
 import { getWikiEntryByTitle } from '../data/wikiEntriesData';
 
-export type AppPage = 'home' | 'article' | 'entry' | 'privacy' | 'disclaimer' | 'conduct' | 'category' | 'graph' | 'tags' | 'stats' | '404';
+export type AppPage = 'home' | 'article' | 'sanitary-pad' | 'entry' | 'privacy' | 'disclaimer' | 'conduct' | 'category' | 'graph' | 'tags' | 'stats' | '404';
 
 export const ARTICLE_TITLE = '卫生棉条';
+export const SANITARY_PAD_TITLE = '卫生棉';
 export const CATEGORY_TITLE = 'Category:女性生理用品';
 export const GRAPH_TITLE = 'Special:知识图谱';
 export const TAGS_TITLE = 'Special:标签';
@@ -16,7 +17,7 @@ export const POLICY_PATHS: Record<'privacy' | 'disclaimer' | 'conduct', string> 
 
 /**
  * Returns the standard Wikipedia URL path:
- * e.g. /wiki/卫生棉条#usage-guide, /wiki/Wikipedia:首页, /wiki/Category:女性生理用品, /wiki/Special:知识图谱, /wiki/Special:标签, /wiki/Special:统计
+ * e.g. /wiki/卫生棉条#usage-guide, /wiki/卫生棉, /wiki/Wikipedia:首页, /wiki/Category:女性生理用品
  */
 export function getWikiPath(page: AppPage, sectionId?: string): string {
   switch (page) {
@@ -24,6 +25,8 @@ export function getWikiPath(page: AppPage, sectionId?: string): string {
       return '/wiki/Wikipedia:首页';
     case 'article':
       return `/wiki/${encodeURIComponent(ARTICLE_TITLE)}${sectionId && sectionId !== 'top' ? `#${sectionId}` : ''}`;
+    case 'sanitary-pad':
+      return `/wiki/${encodeURIComponent(SANITARY_PAD_TITLE)}${sectionId && sectionId !== 'top' ? `#${sectionId}` : ''}`;
     case 'entry':
       return `/wiki/${encodeURIComponent(sectionId || '卫生棉条')}`;
     case 'category':
@@ -65,7 +68,7 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
 
   // 1. Direct match on pathname
   if (
-    decodedPath.includes('女性生理用品') ||
+    decodedPath.includes('女性生理用品') || 
     decodedPath.includes('Category:') ||
     decodedPath.includes('/category')
   ) {
@@ -73,16 +76,29 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('/wiki/卫生棉条') ||
-    decodedPath.includes('/wiki/Tampon') ||
+    decodedPath.includes('/wiki/卫生棉条') || 
+    decodedPath.includes('/wiki/衛生棉條') || 
+    decodedPath.includes('/wiki/Tampon') || 
     decodedPath.includes('/wiki/article')
   ) {
     return { page: 'article', sectionId: decodedHash || 'top' };
   }
 
   if (
-    decodedPath.includes('知识图谱') ||
-    decodedPath.includes('KnowledgeGraph') ||
+    decodedPath === '/wiki/卫生棉' ||
+    decodedPath === '/wiki/衛生棉' ||
+    decodedPath === '/wiki/卫生巾' ||
+    decodedPath === '/wiki/衛生巾' ||
+    decodedPath.includes('/wiki/Sanitary_napkin') ||
+    decodedPath.includes('/wiki/Sanitary_pad') ||
+    decodedPath.includes('/wiki/sanitary-pad')
+  ) {
+    return { page: 'sanitary-pad', sectionId: decodedHash || 'top' };
+  }
+
+  if (
+    decodedPath.includes('知识图谱') || 
+    decodedPath.includes('KnowledgeGraph') || 
     decodedPath.includes('/graph') ||
     decodedHash === 'graph'
   ) {
@@ -90,8 +106,8 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('标签') ||
-    decodedPath.includes('Special:Tags') ||
+    decodedPath.includes('标签') || 
+    decodedPath.includes('Special:Tags') || 
     decodedPath.includes('/tags') ||
     decodedHash === 'tags'
   ) {
@@ -99,9 +115,9 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('统计') ||
-    decodedPath.includes('Statistics') ||
-    decodedPath.includes('Stats') ||
+    decodedPath.includes('统计') || 
+    decodedPath.includes('Statistics') || 
+    decodedPath.includes('Stats') || 
     decodedPath.includes('/stats') ||
     decodedHash === 'stats'
   ) {
@@ -124,19 +140,23 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
     return { page: 'home', sectionId: 'top' };
   }
 
-  // 2. Compatibility fallback for old hash-based URLs (e.g. #article, #usage-guide, #category)
+  // 2. Compatibility fallback for old hash-based URLs
   if (decodedHash === 'category') {
     return { page: 'category', sectionId: 'top' };
   }
 
+  if (decodedHash === 'sanitary-pad' || decodedHash.startsWith('pad-')) {
+    return { page: 'sanitary-pad', sectionId: decodedHash === 'sanitary-pad' ? 'top' : decodedHash };
+  }
+
   if (decodedHash === 'article' || [
-    'history',
-    'structure-and-types',
-    'usage-guide',
-    'safety-and-tss',
-    'common-myths',
-    'regulations',
-    'society-and-culture',
+    'history', 
+    'structure-and-types', 
+    'usage-guide', 
+    'safety-and-tss', 
+    'common-myths', 
+    'regulations', 
+    'society-and-culture', 
     'references'
   ].includes(decodedHash)) {
     return { page: 'article', sectionId: decodedHash === 'article' ? 'top' : decodedHash };
@@ -149,6 +169,9 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   // 3. If URL starts with /wiki/, check if matching entry exists
   if (decodedPath.startsWith('/wiki/')) {
     const rawTerm = decodedPath.replace('/wiki/', '').trim();
+    if (['卫生棉', '衛生棉', '卫生巾', '衛生巾', '生理棉', 'sanitary napkin', 'sanitary pad'].includes(rawTerm.toLowerCase())) {
+      return { page: 'sanitary-pad', sectionId: decodedHash || 'top' };
+    }
     if (getWikiEntryByTitle(rawTerm)) {
       return { page: 'entry', sectionId: rawTerm };
     }
