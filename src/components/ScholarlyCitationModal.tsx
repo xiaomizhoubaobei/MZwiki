@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Copy, 
-  Check, 
-  Download, 
-  BookmarkCheck, 
-  BookOpen, 
-  ExternalLink, 
+import {
+  X,
+  Copy,
+  Check,
+  Download,
+  BookmarkCheck,
+  BookOpen,
+  ExternalLink,
   FileText,
   Sparkles,
   Info,
   Calendar,
   Layers
 } from 'lucide-react';
-import { 
-  generateAllCitations, 
-  ArticleCitationMeta, 
-  CitationStyleKey, 
-  getRetrievalDate 
+import {
+  generateAllCitations,
+  ArticleCitationMeta,
+  CitationStyleKey,
+  getRetrievalDate
 } from '../utils/scholarlyCitationGenerator';
 
 interface ScholarlyCitationModalProps {
@@ -81,14 +81,14 @@ export const ScholarlyCitationModal: React.FC<ScholarlyCitationModalProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in"
       onClick={onClose}
     >
-      <div 
+      <div
         className={`w-full max-w-2xl rounded-xl shadow-2xl border overflow-hidden flex flex-col max-h-[90vh] transition-colors ${
-          isDarkMode 
-            ? 'bg-[#18191a] border-[#3a3d42] text-[#eaecf0]' 
+          isDarkMode
+            ? 'bg-[#18191a] border-[#3a3d42] text-[#eaecf0]'
             : 'bg-white border-[#c8ccd1] text-[#202122]'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -149,7 +149,7 @@ export const ScholarlyCitationModal: React.FC<ScholarlyCitationModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-4 sm:p-5 space-y-4 overflow-y-auto flex-1 text-xs">
-          
+
           {/* Active Standard Description */}
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-[#202122] dark:text-white flex items-center gap-1.5">
@@ -163,8 +163,8 @@ export const ScholarlyCitationModal: React.FC<ScholarlyCitationModalProps> = ({
 
           {/* Formatted Citation Text Box */}
           <div className={`p-4 rounded-lg font-mono text-xs sm:text-[13px] leading-relaxed border select-all transition-colors ${
-            isDarkMode 
-              ? 'bg-[#0f1011] border-[#3a3d42] text-[#e2e8f0]' 
+            isDarkMode
+              ? 'bg-[#0f1011] border-[#3a3d42] text-[#e2e8f0]'
               : 'bg-[#f8f9fa] border-[#c8ccd1] text-[#1e293b]'
           }`}>
             {currentCitation.key === 'bibtex' ? (
@@ -201,8 +201,8 @@ export const ScholarlyCitationModal: React.FC<ScholarlyCitationModalProps> = ({
               <button
                 onClick={handleDownload}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-medium cursor-pointer transition-colors ${
-                  isDarkMode 
-                    ? 'border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]' 
+                  isDarkMode
+                    ? 'border-[#54595d] text-[#eaecf0] hover:bg-[#2c2e33]'
                     : 'border-[#c8ccd1] text-[#202122] hover:bg-[#eaecf0]'
                 }`}
                 title={`下载 .${currentCitation.fileExtension || 'txt'} 文件`}

@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  ShieldCheck, 
-  Award, 
-  CheckCircle2, 
-  AlertTriangle, 
-  AlertCircle, 
-  Sparkles, 
-  Layers, 
-  BookOpen, 
-  FileText, 
-  GitBranch, 
-  Download, 
-  Check, 
+import {
+  X,
+  ShieldCheck,
+  Award,
+  CheckCircle2,
+  AlertTriangle,
+  AlertCircle,
+  Sparkles,
+  Layers,
+  BookOpen,
+  FileText,
+  GitBranch,
+  Download,
+  Check,
   ExternalLink,
   ChevronRight,
   ListChecks,
   Activity,
   Info
 } from 'lucide-react';
-import { 
-  ArticleHealthReport, 
-  getArticleHealthReport 
+import {
+  ArticleHealthReport,
+  getArticleHealthReport
 } from '../utils/articleHealthRadar';
 
 interface ArticleHealthRadarModalProps {
@@ -70,14 +70,14 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in"
       onClick={onClose}
     >
-      <div 
+      <div
         className={`w-full max-w-3xl rounded-xl shadow-2xl border overflow-hidden flex flex-col max-h-[92vh] transition-colors ${
-          isDarkMode 
-            ? 'bg-[#18191a] border-[#3a3d42] text-[#eaecf0]' 
+          isDarkMode
+            ? 'bg-[#18191a] border-[#3a3d42] text-[#eaecf0]'
             : 'bg-white border-[#c8ccd1] text-[#202122]'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -101,8 +101,8 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
                   条目自动化健康度与质检雷达（Article Health Radar）
                 </h2>
                 <span className={`px-2 py-0.5 rounded text-xs font-mono font-bold ${
-                  report.overallGrade === 'FA' 
-                    ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400' 
+                  report.overallGrade === 'FA'
+                    ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
                     : report.overallGrade === 'GA'
                     ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                     : 'bg-blue-500/15 text-blue-600 dark:text-blue-400'
@@ -171,14 +171,14 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
 
         {/* Modal Body */}
         <div className="p-4 sm:p-5 space-y-4 overflow-y-auto flex-1 text-xs">
-          
+
           {/* TAB 1: Radar Dimensions */}
           {activeTab === 'radar' && (
             <div className="space-y-5">
-              
+
               {/* Top Overview: Radar SVG Graphic + Summary Card */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-                
+
                 {/* SVG Radar Chart Visual (5 cols) */}
                 <div className="md:col-span-5 flex flex-col items-center justify-center p-3 rounded-xl border border-black/5 dark:border-white/5 bg-black/2 dark:bg-white/2">
                   <svg width="240" height="240" viewBox="0 0 240 240" className="overflow-visible select-none">
@@ -309,7 +309,7 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
 
                 <div className="space-y-2.5">
                   {report.radarDimensions.map(d => (
-                    <div 
+                    <div
                       key={d.key}
                       className="p-3 rounded-lg border border-black/5 dark:border-white/5 space-y-2"
                     >
@@ -327,7 +327,7 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
 
                       {/* Progress bar */}
                       <div className="w-full h-1.5 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
-                        <div 
+                        <div
                           className="h-full rounded-full bg-[#3366cc] transition-all duration-500"
                           style={{ width: `${d.score}%` }}
                         />
@@ -336,7 +336,7 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
                       {/* Benchmarks tags */}
                       <div className="flex items-center gap-2 flex-wrap text-[11px] pt-1">
                         {d.metrics.map((m, idx) => (
-                          <div 
+                          <div
                             key={idx}
                             className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] ${
                               m.passed
@@ -384,7 +384,7 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
               ) : (
                 <div className="space-y-3">
                   {report.citationNeededDiagnostics.map((diag) => (
-                    <div 
+                    <div
                       key={diag.id}
                       className="p-3.5 rounded-lg border border-black/10 dark:border-white/10 space-y-2 bg-black/2 dark:bg-white/2"
                     >
@@ -394,8 +394,8 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
                           <span>所在章节：{diag.sectionTitle}</span>
                         </span>
                         <span className={`px-2 py-0.5 rounded text-[10px] font-mono ${
-                          diag.severity === 'high' 
-                            ? 'bg-red-500/10 text-red-600' 
+                          diag.severity === 'high'
+                            ? 'bg-red-500/10 text-red-600'
                             : 'bg-amber-500/10 text-amber-600'
                         }`}>
                           {diag.issueType}
@@ -426,11 +426,11 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
 
               <div className="space-y-2.5">
                 {report.expansionChecklist.map((item) => (
-                  <div 
+                  <div
                     key={item.id}
                     className={`p-3 rounded-lg border flex items-start justify-between gap-3 transition-colors ${
-                      item.completed 
-                        ? 'border-emerald-500/30 bg-emerald-500/5' 
+                      item.completed
+                        ? 'border-emerald-500/30 bg-emerald-500/5'
                         : 'border-black/10 dark:border-white/10 bg-black/2 dark:bg-white/2'
                     }`}
                   >
@@ -440,8 +440,8 @@ export const ArticleHealthRadarModal: React.FC<ArticleHealthRadarModalProps> = (
                           {item.title}
                         </span>
                         <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                          item.priority === 'high' 
-                            ? 'bg-red-500/10 text-red-600' 
+                          item.priority === 'high'
+                            ? 'bg-red-500/10 text-red-600'
                             : 'bg-blue-500/10 text-blue-600'
                         }`}>
                           {item.priority === 'high' ? '高优先级' : '进阶建议'}

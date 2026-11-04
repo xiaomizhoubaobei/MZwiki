@@ -121,11 +121,11 @@ export function evaluateTamponHealth(): ArticleHealthReport {
   const safetyScore = Math.min(100, safetyMetrics.reduce((sum, m) => sum + (m.passed ? m.scoreBonus : 0), 0));
 
   // Overall Score Calculation (Weights: 0.25, 0.25, 0.20, 0.15, 0.15)
-  const weightedTotal = 
-    depthScore * 0.25 + 
-    academicScore * 0.25 + 
-    networkScore * 0.20 + 
-    structureScore * 0.15 + 
+  const weightedTotal =
+    depthScore * 0.25 +
+    academicScore * 0.25 +
+    networkScore * 0.20 +
+    structureScore * 0.15 +
     safetyScore * 0.15;
   const overallScore = Math.round(weightedTotal);
 
@@ -319,11 +319,11 @@ export function evaluateWikiEntryHealth(entry: WikiEntry): ArticleHealthReport {
   ];
 
   // Weighted total
-  const weightedTotal = 
-    depthScore * 0.25 + 
-    academicScore * 0.25 + 
-    networkScore * 0.20 + 
-    structureScore * 0.15 + 
+  const weightedTotal =
+    depthScore * 0.25 +
+    academicScore * 0.25 +
+    networkScore * 0.20 +
+    structureScore * 0.15 +
     safetyScore * 0.15;
   const overallScore = Math.round(weightedTotal);
 

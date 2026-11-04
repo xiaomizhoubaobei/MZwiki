@@ -68,7 +68,7 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
 
   // 1. Direct match on pathname
   if (
-    decodedPath.includes('女性生理用品') || 
+    decodedPath.includes('女性生理用品') ||
     decodedPath.includes('Category:') ||
     decodedPath.includes('/category')
   ) {
@@ -76,9 +76,9 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('/wiki/卫生棉条') || 
-    decodedPath.includes('/wiki/衛生棉條') || 
-    decodedPath.includes('/wiki/Tampon') || 
+    decodedPath.includes('/wiki/卫生棉条') ||
+    decodedPath.includes('/wiki/衛生棉條') ||
+    decodedPath.includes('/wiki/Tampon') ||
     decodedPath.includes('/wiki/article')
   ) {
     return { page: 'article', sectionId: decodedHash || 'top' };
@@ -97,8 +97,8 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('知识图谱') || 
-    decodedPath.includes('KnowledgeGraph') || 
+    decodedPath.includes('知识图谱') ||
+    decodedPath.includes('KnowledgeGraph') ||
     decodedPath.includes('/graph') ||
     decodedHash === 'graph'
   ) {
@@ -106,8 +106,8 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('标签') || 
-    decodedPath.includes('Special:Tags') || 
+    decodedPath.includes('标签') ||
+    decodedPath.includes('Special:Tags') ||
     decodedPath.includes('/tags') ||
     decodedHash === 'tags'
   ) {
@@ -115,9 +115,9 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (
-    decodedPath.includes('统计') || 
-    decodedPath.includes('Statistics') || 
-    decodedPath.includes('Stats') || 
+    decodedPath.includes('统计') ||
+    decodedPath.includes('Statistics') ||
+    decodedPath.includes('Stats') ||
     decodedPath.includes('/stats') ||
     decodedHash === 'stats'
   ) {
@@ -150,13 +150,13 @@ export function parseWikiLocation(): { page: AppPage; sectionId: string; missing
   }
 
   if (decodedHash === 'article' || [
-    'history', 
-    'structure-and-types', 
-    'usage-guide', 
-    'safety-and-tss', 
-    'common-myths', 
-    'regulations', 
-    'society-and-culture', 
+    'history',
+    'structure-and-types',
+    'usage-guide',
+    'safety-and-tss',
+    'common-myths',
+    'regulations',
+    'society-and-culture',
     'references'
   ].includes(decodedHash)) {
     return { page: 'article', sectionId: decodedHash === 'article' ? 'top' : decodedHash };
